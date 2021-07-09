@@ -59,16 +59,16 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// Nuget 版本号
         /// </summary>
-        public string Version { get; }
+        public string Version { get; set; }
 
         /// <summary>
         /// Nuget 目标框架
         /// </summary>
-        public string TargetFramework { get; }
+        public string TargetFramework { get; set; }
 
         /// <summary>
         /// Dll 信息
         /// </summary>
-        public NugetDllInfo NugetDllInfo { get; }
+        public NugetDllInfo NugetDllInfo { get; set; }
     }
 }

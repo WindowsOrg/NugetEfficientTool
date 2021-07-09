@@ -17,6 +17,7 @@ namespace NugetEfficientTool.Business
             VersionUnusualNugetInfoExs = versionUnusualNugetInfoExs;
         }
 
+
         public VersionUnusualNugetInfoExGroup(IGrouping<string, NugetInfoEx> versionUnusualNugetInfoExs)
             : this(versionUnusualNugetInfoExs.Key, versionUnusualNugetInfoExs)
         {

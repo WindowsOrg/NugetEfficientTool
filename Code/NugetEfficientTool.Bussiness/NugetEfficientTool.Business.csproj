@@ -34,8 +34,8 @@
     <Reference Include="dotnetCampus.Configurations, Version=1.6.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\dotnetCampus.Configurations.1.6.8\lib\net45\dotnetCampus.Configurations.dll</HintPath>
     </Reference>
-    <Reference Include="H3C.Log, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3C.Log.1.0.2\lib\net45\H3C.Log.dll</HintPath>
+    <Reference Include="Kybs0.Log, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kybs0.Log.1.0.6\lib\net45\Kybs0.Log.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>

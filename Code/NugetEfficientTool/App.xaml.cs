@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using H3C.Log;
+using Kybs0.Log;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
 using Application = System.Windows.Application;

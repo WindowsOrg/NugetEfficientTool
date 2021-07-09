@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using H3C.Log;
+using Kybs0.Log;
 
 namespace NugetEfficientTool.Business
 {
