@@ -48,9 +48,12 @@ namespace NugetEfficientTool
 
             try
             {
-                _nugetReplaceService.Replace(solutionFile, NugetNameTextBox.Text,SourceProjectTextBox.Text);
-                ReplaceButton.IsEnabled = false;
-                RevertButton.IsEnabled = true;
+                var result = _nugetReplaceService.Replace(solutionFile, NugetNameTextBox.Text, SourceProjectTextBox.Text);
+                if (result)
+                {
+                    ReplaceButton.IsEnabled = false;
+                    RevertButton.IsEnabled = true;
+                }
             }
             catch (Exception exception)
             {

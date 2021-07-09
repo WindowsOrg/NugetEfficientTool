@@ -34,11 +34,11 @@ namespace NugetEfficientTool.Business
         /// <param name="solutionFile">解决方案</param>
         /// <param name="nugetName">Nuget包</param>
         /// <param name="sourceProjectFile">源代码csProject</param>
-        public void Replace(string solutionFile, string nugetName, string sourceProjectFile)
+        public bool Replace(string solutionFile, string nugetName, string sourceProjectFile)
         {
             if (HasReplaced(solutionFile, sourceProjectFile))
             {
-                return;
+                return false;
             }
             var replacedNugetInfo = new ReplacedNugetInfo()
             {
@@ -74,22 +74,23 @@ namespace NugetEfficientTool.Business
                 }
             }
             NugetReplaceCacheManager.SaveReplacedNugetInfo(replacedNugetInfo);
+            return true;
         }
         /// <summary>
         /// 替换为原Nuget包
         /// </summary>
-        public void Revert(string solutionFile, string nugetName, string sourceProjectFile)
+        public bool Revert(string solutionFile, string nugetName, string sourceProjectFile)
         {
             if (!HasReplaced(solutionFile, sourceProjectFile))
             {
-                return;
+                return false;
             }
 
             var replacedNugetInfo = NugetReplaceCacheManager.GetReplacedNugetInfo(solutionFile, nugetName);
             if (replacedNugetInfo == null)
             {
                 MessageBox.Show($"没有{solutionFile}的Nuget替换记录，不能恢复");
-                return;
+                return false;
             }
             //恢复解决方案文件 - Sln file
             new SlnFileNugetReplacer(solutionFile, replacedNugetInfo.Name, sourceProjectFile).RevertNuget();
@@ -101,6 +102,7 @@ namespace NugetEfficientTool.Business
                 if (replacedFileRecord == null)
                 {
                     MessageBox.Show($"没有{configFile}的Nuget替换记录，不能恢复");
+                    return false;
                 }
                 var nugetConfigType = NugetConfig.GetNugetConfigType(configFile);
                 switch (nugetConfigType)
@@ -122,6 +124,7 @@ namespace NugetEfficientTool.Business
 
             replacedNugetInfo.Records.Clear();
             NugetReplaceCacheManager.ClearReplacedNugetInfo(replacedNugetInfo.SolutionFile, replacedNugetInfo.Name);
+            return true;
         }
     }
 }
