@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="dotnetCampus.Configurations, Version=1.6.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\dotnetCampus.Configurations.1.6.8\lib\net45\dotnetCampus.Configurations.dll</HintPath>
-    </Reference>
     <Reference Include="Kybs0.Log, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Kybs0.Log.1.0.6\lib\net45\Kybs0.Log.dll</HintPath>
     </Reference>
