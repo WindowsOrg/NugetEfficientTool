@@ -1,0 +1,243 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Geometry.xaml"/>
+        <ResourceDictionary Source="../Colors/Shared.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <DrawingImage x:Key="Image.TriangleDown">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Geometry="{StaticResource Geometry.TriangleDown}">
+                <GeometryDrawing.Pen>
+                    <Pen Thickness="1" Brush="#666666" />
+                </GeometryDrawing.Pen>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.TriangleDown.White">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Geometry="{StaticResource Geometry.TriangleDown}">
+                <GeometryDrawing.Pen>
+                    <Pen Thickness="1" Brush="#ffffff" />
+                </GeometryDrawing.Pen>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.TriangleDown.Accent">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Geometry="{StaticResource Geometry.TriangleDown}">
+                <GeometryDrawing.Pen>
+                    <Pen Thickness="1" Brush="#4ECB78" />
+                </GeometryDrawing.Pen>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <PathFigureCollection x:Key="Path.Question">M7,10.9970845C7,10.7094252 7.09824463,10.4713323 7.29473684,10.2827988 7.49122905,10.0942653 7.72982316,10 8.01052632,10 8.28070311,10 8.51315692,10.0942653 8.70789474,10.2827988 8.90263255,10.4713323 9,10.7094252 9,10.9970845 9,11.2808566 8.90877284,11.5189495 8.72631579,11.7113703 8.54385874,11.903791 8.32456268,12 8.06842105,12 7.74210363,12 7.48245711,11.9008756 7.28947368,11.7026239 7.09649026,11.5043722 7,11.2691948 7,10.9970845z M7.0642334,8.99849861C6.97814636,8.99849861 6.91725768,8.9929655 6.91725768,8.77233388 6.91725768,8.23194631 7.16942222,7.74592453 7.67375887,7.31425398 7.98581716,7.04565897 8.19700496,6.82183316 8.30732861,6.64276982 8.41765225,6.46370648 8.47281324,6.27025702 8.47281324,6.06241565 8.47281324,5.83538891 8.39401182,5.64913386 8.23640662,5.5036449 8.07880142,5.35815593 7.87549376,5.28541254 7.62647754,5.28541254 7.0433383,5.28541254 6.50118454,5.51243587 6,5.96648934L6,4.47963155C6.52640137,4.15987558 7.12529215,4 7.79669031,4 8.47754478,4 9.01497045,4.15987558 9.40898345,4.47963155 9.80299645,4.79938751 10,5.25503292 10,5.84658145 10,6.20151057 9.92277461,6.52286049 9.76832151,6.81064086 9.61386842,7.09842123 9.33018331,7.41337613 8.91725768,7.75551501 8.58628676,8.03690025 8.38140307,8.2559298 8.30260047,8.41261022 8.22379787,8.56929065 8.18439716,8.73556125 8.18439716,8.91142703 8.1949707,9.01863416 8,8.99849861 7.87192383,8.99849861L7.0642334,8.99849861z</PathFigureCollection>
+    <DrawingImage x:Key="Image.Question.Light">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFAAAAAA">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M8,15C4.13400675,15 1,11.8659932 1,8 1,4.13400675 4.13400675,1 8,1 11.8659932,1 15,4.13400675 15,8 15,11.8659932 11.8659932,15 8,15z M8,14C11.3137085,14 14,11.3137085 14,8 14,4.6862915 11.3137085,2 8,2 4.6862915,2 2,4.6862915 2,8 2,11.3137085 4.6862915,14 8,14z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#A11296DB">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="{StaticResource Path.Question}"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Question.Dark">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFAAAAAA">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M8,15C4.13400675,15 1,11.8659932 1,8 1,4.13400675 4.13400675,1 8,1 11.8659932,1 15,4.13400675 15,8 15,11.8659932 11.8659932,15 8,15z M8,14C11.3137085,14 14,11.3137085 14,8 14,4.6862915 11.3137085,2 8,2 4.6862915,2 2,4.6862915 2,8 2,11.3137085 4.6862915,14 8,14z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FF1296DB">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="{StaticResource Path.Question}"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <!--刷新-->
+    <DrawingImage x:Key="Image.Refresh.Gray">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Heavy}">
+                <GeometryDrawing.Geometry>
+                    <PathGeometry FillRule="Nonzero" Figures="M512,101.498886108398C595.622131347656,101.498878479004,671.643859863281,124.299949645996,740.05615234375,169.911178588867L770.466674804688,124.299957275391C785.667419433594,101.489776611328,816.077941894531,109.099235534668,823.678283691406,131.900299072266L876.889892578125,299.14453125C876.889892578125,314.345245361328,861.680053710938,337.155426025391,846.479370117188,337.155426025391L671.634765625,329.555053710938C648.833679199219,329.555053710938,633.623901367188,299.14453125,648.833679199219,283.934722900391L686.844604492188,238.323486328125 686.844604492188,230.723129272461C641.233337402344,192.712249755859 572.811950683594,177.511535644531 512,177.511535644531 329.555053710938,177.511535644531 177.511535644531,329.555053710938 177.511535644531,512 177.511535644531,694.444946289063 329.555053710938,846.488464355469 512,846.488464355469 694.444946289063,846.488464355469 846.488464355469,694.444946289063 846.488464355469,512 846.488464355469,489.198944091797 861.689147949219,473.989105224609 884.490234375,473.989105224609 907.300415039063,473.989105224609 922.501098632813,489.198944091797 922.501098632813,512 922.501098632813,740.05615234375 740.065307617188,922.510192871094 512,922.510192871094 283.943817138672,922.510192871094 101.489776611328,740.05615234375 101.489776611328,512 101.489776611328,283.943817138672 283.943817138672,101.498878479004 512,101.498886108398z">
+                    </PathGeometry>
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Refresh.Green">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Accent.Normal}">
+                <GeometryDrawing.Geometry>
+                    <PathGeometry FillRule="Nonzero" Figures="M512,101.498886108398C595.622131347656,101.498878479004,671.643859863281,124.299949645996,740.05615234375,169.911178588867L770.466674804688,124.299957275391C785.667419433594,101.489776611328,816.077941894531,109.099235534668,823.678283691406,131.900299072266L876.889892578125,299.14453125C876.889892578125,314.345245361328,861.680053710938,337.155426025391,846.479370117188,337.155426025391L671.634765625,329.555053710938C648.833679199219,329.555053710938,633.623901367188,299.14453125,648.833679199219,283.934722900391L686.844604492188,238.323486328125 686.844604492188,230.723129272461C641.233337402344,192.712249755859 572.811950683594,177.511535644531 512,177.511535644531 329.555053710938,177.511535644531 177.511535644531,329.555053710938 177.511535644531,512 177.511535644531,694.444946289063 329.555053710938,846.488464355469 512,846.488464355469 694.444946289063,846.488464355469 846.488464355469,694.444946289063 846.488464355469,512 846.488464355469,489.198944091797 861.689147949219,473.989105224609 884.490234375,473.989105224609 907.300415039063,473.989105224609 922.501098632813,489.198944091797 922.501098632813,512 922.501098632813,740.05615234375 740.065307617188,922.510192871094 512,922.510192871094 283.943817138672,922.510192871094 101.489776611328,740.05615234375 101.489776611328,512 101.489776611328,283.943817138672 283.943817138672,101.498878479004 512,101.498886108398z" />
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!--列表排序图标-->
+    <DrawingImage x:Key="Image.SortDefault">
+        <DrawingImage.Drawing>
+            <DrawingGroup Transform="1,0,0,1,-736,-371">
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFAAAAAA">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M0,2L5,2 5,3 0,3 0,2z M1,1L4,1 4,2 1,2 1,1z M2,0L3,0 3,1 2,1 2,0z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFAAAAAA">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M0,5L5,5 5,6 0,6 0,5z M1,6L4,6 4,7 1,7 1,6z M2,7L3,7 3,8 2,8 2,7z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.SortAscending">
+        <DrawingImage.Drawing>
+            <DrawingGroup Transform="1,0,0,1,-736,-371">
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF30C361">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M0,2L5,2 5,3 0,3 0,2z M1,1L4,1 4,2 1,2 1,1z M2,0L3,0 3,1 2,1 2,0z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFAAAAAA">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M0,5L5,5 5,6 0,6 0,5z M1,6L4,6 4,7 1,7 1,6z M2,7L3,7 3,8 2,8 2,7z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.SortDescending">
+        <DrawingImage.Drawing>
+            <DrawingGroup Transform="1,0,0,1,-736,-371">
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFAAAAAA">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M0,2L5,2 5,3 0,3 0,2z M1,1L4,1 4,2 1,2 1,1z M2,0L3,0 3,1 2,1 2,0z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FF30C361">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M0,5L5,5 5,6 0,6 0,5z M1,6L4,6 4,7 1,7 1,6z M2,7L3,7 3,8 2,8 2,7z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+<!--反馈-->
+    <DrawingImage x:Key="Image.Feedback.Light">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Text.Light}" Geometry="{StaticResource Geometry.FeedBack}"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Feedback.Hover">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Accent.Normal}" Geometry="{StaticResource Geometry.FeedBack}"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="Image.DownloadTask.DownloadedTip">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Accent.Normal}">
+                <GeometryDrawing.Geometry>
+                    <StreamGeometry>M8,16C3.581722,16 0,12.418278 0,8 0,3.581722 3.581722,0 8,0 12.418278,0 16,3.581722 16,8 16,12.418278 12.418278,16 8,16z M4,8L4,9 6,9 6,8 4,8z M5,9L5,10 7,10 7,9 5,9z M6,10L6,11 8,11 8,10 6,10z M7,9L7,10 9,10 9,9 7,9z M8,8L8,9 10,9 10,8 8,8z M9,7L9,8 11,8 11,7 9,7z M10,6L10,7 12,7 12,6 10,6z M11,5L11,6 12,6 12,5 11,5z</StreamGeometry>
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="Image.Add.White">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFFFFFFF" Geometry="{StaticResource Geometry.NewDoc}">
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Add.Gray">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#AAAAAA" 
+                             Geometry="{StaticResource Geometry.NewDoc}">
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Add.Dark">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Normal}">
+                <GeometryDrawing.Geometry>
+                    <PathGeometry FillRule="Nonzero" Figures="M7,3L9,3 9,7 13,7 13,9 9,9 9,13 7,13 7,9 3,9 3,7 7,7 7,3z" />
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Back.LightGray">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Light}" 
+                             Geometry="{StaticResource Geometry.Back}">
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Back.Gray">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Faint}" 
+                             Geometry="{StaticResource Geometry.Back}">
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Back.Dark">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Heavy}" 
+                             Geometry="{StaticResource Geometry.Back}">
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.Folder.Yellow">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <SolidColorBrush Color="#FFFF4000" Opacity="0" />
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="0,0,24,24" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFCA160">
+                        <GeometryDrawing.Geometry>
+                            <StreamGeometry>M9.59681761,5.69178446C9.95531979,6.08811558 10.848282,7.57642056 11.0328413,7.78746526 11.2174006,7.99850995 11.6344527,7.99850995 11.6344527,7.99850995L18.9849643,7.99851005C20.5765211,7.99851005,21,8.34301729,21,10.090332L20.9999995,17.7224313C20.9999995,18.428013,20.3973834,19,19.6515321,19L4.51536716,19C3.68348473,19,3.00854086,18.3244264,3.00784396,17.4983392L3,8.20023656 3,6.29624217C3,5.58088624,3.59774449,5.00097569,4.33601073,5.00097569L8.06928458,5.00097569C8.06928458,5.00097569,8.9208191,4.94445497,9.59681761,5.69178446z M11.3616055,6.45318604C11.2410445,6.2028983,11.3652887,6,11.6375973,6L18.9480209,6C19.221008,6,19.582997,6.17418671,19.7522727,6.38376617L19.940035,6.61623383C20.1112239,6.82818203,20.0193021,7,19.7490032,7L12.1259968,7C11.8493039,7,11.5321254,6.80718994,11.4067051,6.54681396L11.3616055,6.45318604z</StreamGeometry>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Image.NewFolder.Gray">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="{StaticResource Brush.Icon.Heavy}" 
+                             Geometry="{StaticResource Geometry.NewGroup}">
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

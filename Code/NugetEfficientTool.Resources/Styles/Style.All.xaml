@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Style.Window.xaml"/>
+        <ResourceDictionary Source="Style.ContextMenu.xaml"/>
+        <ResourceDictionary Source="Style.Button.xaml"/>
+        <ResourceDictionary Source="Style.Button.Close.xaml"/>
+        <ResourceDictionary Source="Style.ListBox.xaml"/>
+        <ResourceDictionary Source="Style.TexBlock.xaml"/>
+        <ResourceDictionary Source="Style.TextBox.xaml"/>
+        <ResourceDictionary Source="Style.PasswordBox.xaml"/>
+        <ResourceDictionary Source="Style.ComboBox.xaml"/>
+        <ResourceDictionary Source="Style.ScrollViewer.xaml"/>
+        <ResourceDictionary Source="Style.ListViewHeader.xaml"/>
+        <ResourceDictionary Source="Style.TabControl.xaml"/>
+        <ResourceDictionary Source="Style.TabItem.xaml"/>
+        <ResourceDictionary Source="Style.CheckBox.xaml"/>
+        <ResourceDictionary Source="Style.ProgressBar.xaml"/>
+        <ResourceDictionary Source="Style.ToolTip.xaml"/>
+        <ResourceDictionary Source="Style.RadioButton.xaml"/>
+        <ResourceDictionary Source="Style.ContextMenu.xaml"/>
+        <ResourceDictionary Source="Style.MenuItem.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

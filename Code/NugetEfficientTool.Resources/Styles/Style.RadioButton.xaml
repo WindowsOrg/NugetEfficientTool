@@ -1,0 +1,62 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helper="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+                    xmlns:resources="clr-namespace:NugetEfficientTool.Resources">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Colors/Shared.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <ControlTemplate x:Key="RadioButton.Tempate.PointAndText" TargetType="RadioButton">
+        <Grid x:Name="RootGrid" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" 
+                            Background="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundNormal)}">
+            <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                <Grid VerticalAlignment="Center" Margin="0 0 0 -2">
+                    <Ellipse x:Name="BackgroundEllipse" Width="14" Height="14" Fill="Transparent" StrokeThickness="1" 
+                             Stroke="{StaticResource Brush.Icon.Normal}" 
+                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Ellipse x:Name="FillEllipse" Width="8" Height="8" Visibility="Collapsed"
+                             Fill="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.FillNormal)}" 
+                             StrokeThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <TextBlock x:Name="ContentTextBlock" Text="{TemplateBinding Content}" VerticalAlignment="Center"
+                                       Foreground="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundNormal)}"
+                                       Padding="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ContentPading)}"/>
+            </StackPanel>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="FillEllipse" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ContentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundHover)}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="ContentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundPressed)}"/>
+            </Trigger>
+            <Trigger Property="Content" Value="{x:Null}">
+                <Setter TargetName="ContentTextBlock" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Content" Value="">
+                <Setter TargetName="ContentTextBlock" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="Style.RadioButton.Base" TargetType="RadioButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="UseLayoutRounding" Value="True"></Setter>
+        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"></Setter>
+        <Setter Property="FontFamily" Value="{x:Static resources:FontFamilies.YaHei}"></Setter>
+    </Style>
+    <Style x:Key="Style.RadioButton.PointAndText.Green" TargetType="RadioButton" BasedOn="{StaticResource Style.RadioButton.Base}">
+        <Setter Property="helper:ControlHelper.FillNormal" Value="{StaticResource Brush.Icon.Accent.Normal}"></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Normal}"></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Light}"></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Dark}"></Setter>
+        <Setter Property="helper:ControlHelper.ContentPading" Value="4 0 0 0"></Setter>
+        <Setter Property="Template" Value="{StaticResource RadioButton.Tempate.PointAndText}"/>
+    </Style>
+</ResourceDictionary>

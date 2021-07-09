@@ -1,0 +1,61 @@
+﻿<Window x:Class="NugetEfficientTool.Resources.NotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resources="clr-namespace:NugetEfficientTool.Resources"
+        xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+        mc:Ignorable="d" x:Name="TheNotificationWindow"
+        WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight"
+        Style="{DynamicResource Style.AlertWindow}" Title="提示">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/NugetEfficientTool.Resources;component/ProjectResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <utils:NullToVisibility x:Key="NullToVisibility"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="120"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <resources:WindowHeaderView HeaderBackground="#EEEEEE" MinimizeButtonVisibility="Collapsed" FontSize="12"/>
+        <Border Grid.Row="1" x:Name="ContentBorder" BorderThickness="0" Background="White">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
+                        MinWidth="280" MaxWidth="550" Margin="20 0">
+                <TextBlock x:Name="ContentTextBlock" Foreground="{StaticResource Brush.Text.Normal}" FontSize="16"
+                           Padding="12,6" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock x:Name="SubContentTextBlock" Foreground="{StaticResource Brush.Text.Faint}" FontSize="12"
+                           Margin="0 0 0 -12" Padding="12,6" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"
+                           Visibility="{Binding RelativeSource={RelativeSource Self},Path=Text,Converter={StaticResource NullToVisibility}}"/>
+            </StackPanel>
+        </Border>
+        <Border x:Name="OkCancelBorder" Grid.Row="2" BorderThickness="0 1 0 0" 
+                BorderBrush="{StaticResource Brush.BorderBrush.Lightest}" Visibility="Collapsed">
+            <Grid x:Name="OperationGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CancelButton" Grid.Column="0" Content="取消" Style="{StaticResource Style.Button.Text}"
+                        utils:ControlHelper.ForegroundHover="{StaticResource Brush.Text.Accent.Normal}"
+                        utils:ControlHelper.ForegroundPressed="{StaticResource Brush.Text.Accent.Dark}" 
+                        Click="CancelButton_OnClick" Height="30" Visibility="Visible" FontSize="12"/>
+                <Button x:Name="OkButton" Grid.Column="1"  Content="确定" Style="{StaticResource Style.Button.Text}" 
+                        utils:ControlHelper.ForegroundHover="{StaticResource Brush.Text.Accent.Normal}"
+                        utils:ControlHelper.ForegroundPressed="{StaticResource Brush.Text.Accent.Dark}" 
+                        Click="OkButton_OnClick" Height="30" BorderThickness="1 0 0 0" 
+                        BorderBrush="{StaticResource Brush.BorderBrush.Lightest}" FontSize="12" />
+            </Grid>
+        </Border>
+        <Border x:Name="OkBorder" Grid.Row="2" BorderThickness="0 1 0 0" BorderBrush="{StaticResource Brush.BorderBrush.Lightest}">
+            <Button x:Name="ConfirmButton" Content="确定" Style="{StaticResource Style.Button.Text}" 
+                    utils:ControlHelper.ForegroundHover="{StaticResource Brush.Text.Accent.Normal}" 
+                    utils:ControlHelper.ForegroundPressed="{StaticResource Brush.Text.Accent.Dark}" 
+                    Click="OkButton_OnClick" Height="30" FontSize="12"/>
+        </Border>
+    </Grid>
+</Window>

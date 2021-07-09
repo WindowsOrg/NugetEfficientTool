@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Images/Image.All.xaml"/>
+        <ResourceDictionary Source="Colors/Shared.xaml"/>
+        <ResourceDictionary Source="Styles/Style.All.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

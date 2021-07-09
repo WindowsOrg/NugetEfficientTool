@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="Image.OcrTranslate" UriSource="ImageFiles/reconize_0.png"></BitmapImage>
+    <BitmapImage x:Key="Image.OcrTranslate.Selected" UriSource="ImageFiles/reconoze_1.png"></BitmapImage>
+    <BitmapImage x:Key="Image.OcrTranslate1" UriSource="ImageFiles/ocrTrans_0.png"></BitmapImage>
+    <BitmapImage x:Key="Image.OcrTranslate.Selected1" UriSource="ImageFiles/ocrTrans_1.png"></BitmapImage>
+    <BitmapImage x:Key="Image.NoDoc.Big" UriSource="ImageFiles/NoDoc.png"></BitmapImage>
+    <BitmapImage x:Key="Image.NoDoc.Small" UriSource="ImageFiles/NoDoc_Small.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.Delete.Normal" UriSource="ImageFiles/delete_gray.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Delete.Hover" UriSource="ImageFiles/delete_greenLight.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.CrossWord" UriSource="ImageFiles/crossWord.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.Menu.Normal" UriSource="ImageFiles/menu_normal.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Menu.Light" UriSource="ImageFiles/menu_light.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Menu.Heavy" UriSource="ImageFiles/menu_heavy.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.Setting.Gray" UriSource="ImageFiles/setting_gray.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Setting.Green" UriSource="ImageFiles/setting_green.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.Setting.Usage.Gray" UriSource="ImageFiles/setting_usage_gray.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Setting.Usage.Green" UriSource="ImageFiles/setting_usage_green.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.Flat.Gray" UriSource="ImageFiles/Flat_gray.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Flat.Green" UriSource="ImageFiles/Flat_green.png"></BitmapImage>
+
+    <BitmapImage x:Key="Image.Restart.Gray" UriSource="ImageFiles/restart_gray.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Restart.Green" UriSource="ImageFiles/restart_green.png"></BitmapImage>
+
+</ResourceDictionary>

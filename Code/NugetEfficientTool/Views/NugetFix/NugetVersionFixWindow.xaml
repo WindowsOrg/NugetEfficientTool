@@ -1,0 +1,44 @@
+﻿<Window x:Class="NugetEfficientTool.NugetVersionFixWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="请选择 Nuget 版本修复策略" Height="300" Width="600" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="5 0" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Margin" Value="5 0" />
+                <Setter Property="Padding" Value="4" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="AcceptsReturn" Value="False" />
+                <Setter Property="AcceptsTab" Value="False" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="MinWidth" Value="100" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Column="0" VerticalAlignment="Center"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <WrapPanel Name="PanelNugetVersionSelectors" Orientation="Vertical" />
+        </ScrollViewer>
+        <Button Name="ButtonFix" Grid.Column="1" Margin="10" Content="执行修复" HorizontalAlignment="Center"
+                VerticalAlignment="Center" Click="ButtonFix_OnClick" />
+    </Grid>
+</Window>

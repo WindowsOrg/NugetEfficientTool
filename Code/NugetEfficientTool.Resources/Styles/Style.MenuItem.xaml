@@ -1,0 +1,561 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helper="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+                    xmlns:resources="clr-namespace:NugetEfficientTool.Resources">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Colors/Shared.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--菜单快捷标识颜色-->
+    <SolidColorBrush x:Key="Brush.InputGestureText" Color="#AAAAAA" />
+
+    <!--当MenuItem为可调用命令的子菜单-->
+    <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="MenuItem">
+        <Border Background="{TemplateBinding Background}" Height="{TemplateBinding Height}">
+            <ContentPresenter Margin="{TemplateBinding Padding}" ContentSource="Header" VerticalAlignment="Center"
+                              HorizontalAlignment="Left" />
+        </Border>
+    </ControlTemplate>
+
+    <!--【已完成】【当MenuItem为顶级菜单标头】-->
+    <!--通用菜单项模版：文本样式(通过改变背景色或边框或文本前景色颜色，来表现不同事件下的按钮状态)-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.TopLevelHeaderTemplateKey" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True">
+            <Border Name="ButtonBorder"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <Grid Margin="{TemplateBinding Padding}" x:Name="ContentGrid"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="HeaderTextBlock"
+                           Margin="0 0 24 0" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Text="{TemplateBinding Header}"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                           TextDecorations="{Binding Path=(helper:ControlHelper.TextDecorations),RelativeSource={RelativeSource TemplatedParent}}" />
+                <!--快捷键-->
+                <TextBlock x:Name="InputGestureText"
+                           Margin="12 0 0 0" Grid.Column="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Text="{TemplateBinding InputGestureText}"
+                           Foreground="{DynamicResource Brush.InputGestureText}" />
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="helper:ControlHelper.IsShowHandWhenMouseOverText"
+                               Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Cursor" Value="Hand" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentGrid"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--【已完成】【当MenuItem为顶级菜单】-->
+    <!--通用菜单项模版：文本样式(通过改变背景色或边框或文本前景色颜色，来表现不同事件下的按钮状态)-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.TopLevelItemTemplateKey" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True">
+            <Border Name="ButtonBorder"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <Grid Margin="{TemplateBinding Padding}" x:Name="ContentGrid"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="HeaderTextBlock"
+                           Margin="0 0 24 0" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Text="{TemplateBinding Header}"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                           TextDecorations="{Binding Path=(helper:ControlHelper.TextDecorations),RelativeSource={RelativeSource TemplatedParent}}" />
+                <!--快捷键-->
+                <TextBlock x:Name="InputGestureText"
+                           Margin="12 0 0 0" Grid.Column="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Text="{TemplateBinding InputGestureText}"
+                           Foreground="{DynamicResource Brush.InputGestureText}" />
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="helper:ControlHelper.IsShowHandWhenMouseOverText"
+                               Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Cursor" Value="Hand" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentGrid"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--【已完成】【当MenuItem为子菜单标头，含箭头】-->
+    <!--通用菜单项模版：文本样式(通过改变背景色或边框或文本前景色颜色，来表现不同事件下的按钮状态)-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.SubmenuHeaderTemplateKey" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True">
+            <Border Name="ButtonBorder"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <Grid Margin="{TemplateBinding Padding}" x:Name="ContentGrid"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="HeaderTextBlock"
+                           Grid.Column="0"
+                           Margin="0 0 24 0"
+                           VerticalAlignment="Center"
+                           Text="{TemplateBinding Header}"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                           TextDecorations="{Binding Path=(helper:ControlHelper.TextDecorations),RelativeSource={RelativeSource TemplatedParent}}" />
+                <!--快捷键-->
+                <TextBlock x:Name="InputGestureText"
+                           Margin="12 0 0 0"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Text="{TemplateBinding InputGestureText}"
+                           Foreground="{DynamicResource Brush.InputGestureText}" />
+                <!--下级箭头-->
+                <Path x:Name="SubItemArrow"
+                      Grid.Column="2"
+                      VerticalAlignment="Center"
+                      Data="M0.5,0 V5 M1.5,1 V4 M2.5,2 V3"
+                      StrokeThickness="1" SnapsToDevicePixels="True"
+                      Stroke="{DynamicResource Brush.Text.Normal}"
+                      Stretch="{Binding Path=(helper:ControlHelper.ImageStretch),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Grid>
+            <!--弹出的子菜单容器-->
+            <Popup IsOpen="{TemplateBinding IsSubmenuOpen}"
+                   Placement="Right"
+                   Focusable="False"
+                   VerticalOffset="-5"
+                   PopupAnimation="Slide"
+                   AllowsTransparency="True"
+                   MinWidth="{TemplateBinding ActualWidth}"
+                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=MenuItem}}">
+                <Grid x:Name="PopupRootGrid">
+                    <!--下面的Grid是为了解决 https://jira.cvte.com/browse/EN-10385 菜单间距问题，通过增加一个Grid扩大popup热区面积。
+                                注：#01000000不是标准化颜色，直接使用此颜色，来代表接近透明的颜色-->
+                    <Grid Margin="-10 0 0 0" Background="#01000000"/>
+                    <Border BorderThickness="6">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6" Color="{StaticResource Color.BorderBrush.Lighter}" ShadowDepth="0"/>
+                        </Border.Effect>
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                </Grid>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="helper:ControlHelper.IsShowHandWhenMouseOverText"
+                               Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Cursor" Value="Hand" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentGrid"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--【已完成】【当MenuItem为可调用命令的子菜单】-->
+    <!--通用菜单项模版：文本样式(通过改变背景色或边框或文本前景色颜色，来表现不同事件下的按钮状态)-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.SubmenuItemTemplateKey" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True">
+            <Border Name="ButtonBorder"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <Grid Margin="{TemplateBinding Padding}" x:Name="ContentGrid"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Path x:Name="AccentCheck" Grid.Column="0"
+                      Visibility="Collapsed"
+                      Data="{DynamicResource Geometry.Checked}"
+                      Fill="{Binding Path=(helper:ControlHelper.FillNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                      Height="{Binding Path=(helper:ControlHelper.ImageSize),RelativeSource={RelativeSource TemplatedParent}}"
+                      Width="{Binding Path=(helper:ControlHelper.ImageSize),RelativeSource={RelativeSource TemplatedParent}}" />
+                <TextBlock x:Name="HeaderTextBlock" Grid.Column="1"
+                           Margin="0 0 24 0"
+                           Text="{TemplateBinding Header}" TextAlignment="Left"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                           TextDecorations="{Binding Path=(helper:ControlHelper.TextDecorations),RelativeSource={RelativeSource TemplatedParent}}" />
+                <!--快捷键-->
+                <TextBlock x:Name="InputGestureText" Grid.Column="2"
+                           Margin="12 0 0 0"
+                           HorizontalAlignment="Right"
+                           Text="{TemplateBinding InputGestureText}"
+                           Foreground="{DynamicResource Brush.InputGestureText}" />
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="AccentCheck" Property="Fill"
+                        Value="{Binding Path=(helper:ControlHelper.FillHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Foreground" TargetName="HeaderTextBlock"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="AccentCheck" Property="Fill"
+                        Value="{Binding Path=(helper:ControlHelper.FillPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsCheckable" Value="True">
+                <Setter TargetName="AccentCheck" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="helper:ControlHelper.IsShowHandWhenMouseOverText"
+                               Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Cursor" Value="Hand" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentGrid"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--【已完成】通用菜单项模版：纯文字样式-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.Text" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True"
+              Background="{TemplateBinding Background}">
+            <Border Name="ButtonBorder"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <Grid x:Name="ContentGrid">
+                <TextBlock x:Name="TextBlock"
+                           Text="{TemplateBinding Header}"
+                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="TextBlock" Property="Foreground"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="TextBlock" Property="Foreground"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentGrid"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--【已完成】通用菜单项模版：Geometry形状(左)+文字(右)样式-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.GeometryAndText" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True"
+              Background="{TemplateBinding Background}">
+            <Border Name="ButtonBorder"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <StackPanel Orientation="Horizontal" x:Name="ContentStackPanel"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Margin="{TemplateBinding Padding}">
+                <Path x:Name="LeftPath" Stretch="None"
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                      Margin="{Binding Path=(helper:ControlHelper.ImageMargin),RelativeSource={RelativeSource TemplatedParent}}"
+                      Height="{Binding Path=(helper:ControlHelper.ImageSize),RelativeSource={RelativeSource TemplatedParent}}"
+                      Width="{Binding Path=(helper:ControlHelper.ImageSize),RelativeSource={RelativeSource TemplatedParent}}"
+                      Data="{Binding Path=(helper:ControlHelper.Geometry), RelativeSource={RelativeSource TemplatedParent}}"
+                      Fill="{Binding Path=(helper:ControlHelper.FillNormal), RelativeSource={RelativeSource TemplatedParent}}" />
+                <TextBlock x:Name="RightTextBlock"
+                           Text="{TemplateBinding Header}"
+                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}" />
+            </StackPanel>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="RightTextBlock" Property="Foreground"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="LeftPath" Property="Fill"
+                        Value="{Binding Path=(helper:ControlHelper.FillHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="RightTextBlock" Property="Foreground"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="LeftPath" Property="Fill"
+                        Value="{Binding Path=(helper:ControlHelper.FillPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentStackPanel"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--【已完成】通用菜单项模版：文字(左)样式 + Image图标(右),ToolTip只能图标上面有-->
+    <ControlTemplate x:Key="ControlTemplate.MenuItem.TextAndImage" TargetType="{x:Type MenuItem}">
+        <Grid x:Name="RootGrid"
+              UseLayoutRounding="True"
+              SnapsToDevicePixels="True"
+              Background="{TemplateBinding Background}">
+            <Border Name="ButtonBorder"
+                    ToolTip=""
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{Binding Path=(helper:ControlHelper.BorderBrushNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{Binding Path=(helper:ControlHelper.BackgroundNormal),RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="{Binding Path=(helper:ControlHelper.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" />
+            <StackPanel Orientation="Horizontal" x:Name="ContentStackPanel" ToolTip=""
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Margin="{TemplateBinding Padding}">
+                <TextBlock x:Name="LeftTextBlock"
+                           Text="{TemplateBinding Header}"
+                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                           Foreground="{Binding Path=(helper:ControlHelper.ForegroundNormal),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Image x:Name="RightPath" Stretch="None"
+                      ToolTip="{TemplateBinding ToolTip}"
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                      Margin="{Binding Path=(helper:ControlHelper.ImageMargin),RelativeSource={RelativeSource TemplatedParent}}"
+                      Height="{Binding Path=(helper:ControlHelper.ImageSize),RelativeSource={RelativeSource TemplatedParent}}"
+                      Width="{Binding Path=(helper:ControlHelper.ImageSize),RelativeSource={RelativeSource TemplatedParent}}"
+                      Source="{Binding Path=(helper:ControlHelper.Image), RelativeSource={RelativeSource TemplatedParent}}"/>
+            </StackPanel>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="LeftTextBlock" Property="Foreground"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BorderBrushPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter Property="Background" TargetName="ButtonBorder"
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+                <Setter TargetName="LeftTextBlock" Property="Foreground"
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ContentStackPanel"
+                        Value="{Binding Path=(helper:ControlHelper.DisabledOpacity),RelativeSource={RelativeSource TemplatedParent}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="Style.MenuItem.Base" TargetType="MenuItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="{x:Static resources:FontFamilies.YaHei}" />
+        <Setter Property="helper:ControlHelper.ImageSize" Value="16" />
+    </Style>
+
+    <!--【带背景和文本的菜单项(居左)】
+        文字颜色：
+            灰色(#666666)；
+        图标大小：无；
+        标准高：30
+        字体大小：12
+        背景色: 
+            *Normal状态为白色(#FFFFFF)；
+            *Hover状态为绿色(#D8F0D3)；
+            *Preesed状态为绿色(#BFE0B8);
+        边框颜色：无
+        圆角：2px-->
+    <Style x:Key="Style.MenuItem.Default" BasedOn="{StaticResource Style.MenuItem.Base}"
+           TargetType="{x:Type MenuItem}">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Padding" Value="12 0 12 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Template" Value="{StaticResource ControlTemplate.MenuItem.TopLevelHeaderTemplateKey}" />
+        <Setter Property="helper:ControlHelper.BackgroundNormal"
+                Value="{StaticResource Brush.Background.Lightest}" />
+        <Setter Property="helper:ControlHelper.BackgroundHover"
+                Value="{StaticResource Brush.Background.Marked.Lighter}" />
+        <Setter Property="helper:ControlHelper.BackgroundPressed"
+                Value="{StaticResource Brush.Background.Marked.Light}" />
+        <Setter Property="helper:ControlHelper.ForegroundNormal"
+                Value="{StaticResource Brush.Text.Normal}" />
+        <Setter Property="helper:ControlHelper.ForegroundHover"
+                Value="{StaticResource Brush.Text.Normal}" />
+        <Setter Property="helper:ControlHelper.ForegroundPressed"
+                Value="{StaticResource Brush.Text.Normal}" />
+        <Style.Triggers>
+            <Trigger Property="Role" Value="TopLevelHeader">
+                <Setter Property="Template" Value="{StaticResource ControlTemplate.MenuItem.TopLevelHeaderTemplateKey}" />
+            </Trigger>
+            <Trigger Property="Role" Value="TopLevelItem">
+                <Setter Property="Template" Value="{StaticResource ControlTemplate.MenuItem.TopLevelItemTemplateKey}" />
+            </Trigger>
+            <Trigger Property="Role" Value="SubmenuHeader">
+                <Setter Property="Template" Value="{StaticResource ControlTemplate.MenuItem.SubmenuHeaderTemplateKey}" />
+            </Trigger>
+            <Trigger Property="Role" Value="SubmenuItem">
+                <Setter Property="Template" Value="{StaticResource ControlTemplate.MenuItem.SubmenuItemTemplateKey}" />
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" Value="{StaticResource Brush.Background.Marked.Lighter}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource Brush.Text.Light}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="Style.MenuItem.GeometryAndText" BasedOn="{StaticResource Style.MenuItem.Base}"
+           TargetType="{x:Type MenuItem}">
+        <Setter Property="Template" Value="{StaticResource ControlTemplate.MenuItem.GeometryAndText}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="12 0 24 0"/>
+        <Setter Property="helper:ControlHelper.ImageMargin" Value="0 0 6 0" />
+        <Setter Property="helper:ControlHelper.BackgroundNormal"
+                Value="{StaticResource Brush.Background.Lightest}" />
+        <Setter Property="helper:ControlHelper.BackgroundHover"
+                Value="{StaticResource Brush.Background.Marked.Lighter}" />
+        <Setter Property="helper:ControlHelper.BackgroundPressed"
+                Value="{StaticResource Brush.Background.Marked.Light}" />
+        <Setter Property="helper:ControlHelper.FillNormal" 
+                Value="{StaticResource Brush.Icon.Heavy}"/>
+        <Setter Property="helper:ControlHelper.FillHover" 
+                Value="{StaticResource Brush.Icon.Heavy}"/>
+        <Setter Property="helper:ControlHelper.FillPressed" 
+                Value="{StaticResource Brush.Icon.Heavy}"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal"
+                Value="{StaticResource Brush.Text.Normal}" />
+        <Setter Property="helper:ControlHelper.ForegroundHover"
+                Value="{StaticResource Brush.Text.Normal}" />
+        <Setter Property="helper:ControlHelper.ForegroundPressed"
+                Value="{StaticResource Brush.Text.Normal}" />
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="NugetEfficientTool.Resources.ProgressBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+             xmlns:resources="clr-namespace:NugetEfficientTool.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="TheProgressBarControl">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../ProjectResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <resources:VisibilityReverseConverter x:Key="VisibilityReverseConverter"/>
+
+            <ControlTemplate x:Key="Template.Content" TargetType="ContentControl">
+                <StackPanel Orientation="Horizontal">
+                    <Grid Height="16" Width="16">
+                        <Border x:Name="ImageBackgroundBorder" CornerRadius="8" Height="16" Width="16" Background="White" Visibility="Collapsed"></Border>
+                        <Image x:Name="TipsImage" Stretch="Uniform" Source="{StaticResource Image.DownloadTask.DownloadedTip}" Visibility="Collapsed"/>
+                        <ProgressBar x:Name="DownloadProgressBar" Style="{StaticResource Style.AnnulusDownloadProgressBar}"
+                                                           utils:ControlHelper.Geometry="{StaticResource Geometry.AnnulusDownload}"
+                                                           Value="{Binding ElementName=TheProgressBarControl,Path=Value}"
+                                                           Maximum="{Binding ElementName=TheProgressBarControl,Path=Maximum}"
+                                                           Minimum="{Binding ElementName=TheProgressBarControl,Path=Minimum}"
+                                                           Visibility="{Binding Visibility, ElementName=TipsImage,Converter={StaticResource VisibilityReverseConverter}}"/>
+                    </Grid>
+                    <TextBlock x:Name="TipTextBlock" Foreground="{StaticResource Brush.Text.Normal}" Margin="6 0 0 0" Visibility="Collapsed"></TextBlock>
+                </StackPanel>
+                <ControlTemplate.Triggers>
+                     <DataTrigger Binding="{Binding ElementName=TheProgressBarControl,Path=ProgressState}" Value="{x:Static resources:ProgressState.Progressing}"> 
+                         <Setter TargetName="TipTextBlock" Property="Text"  
+                         Value="{Binding ElementName=TheProgressBarControl,Path=Value, StringFormat=下载中…{0}%}"/> 
+                     </DataTrigger> 
+                    <DataTrigger Binding="{Binding ElementName=TheProgressBarControl,Path=ProgressState}" Value="{x:Static resources:ProgressState.Completed}">
+                        <Setter TargetName="ImageBackgroundBorder" Property="Visibility" Value="Visible" />
+                        <Setter TargetName="TipsImage" Property="Visibility" Value="Visible" />
+                        <Setter TargetName="TipTextBlock" Property="Text" Value="{Binding ElementName=TheProgressBarControl,Path=ProgressedTip}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ElementName=TheProgressBarControl,Path=ProgressState}" Value="{x:Static resources:ProgressState.Error}">
+                        <Setter TargetName="ImageBackgroundBorder" Property="Visibility" Value="Visible" />
+                        <Setter TargetName="TipsImage" Property="Source" Value="{StaticResource Image.DownloadTask.DownloadFailedTip}" />
+                        <Setter TargetName="TipsImage" Property="Visibility" Value="Visible" />
+                        <Setter TargetName="TipsImage" Property="ToolTip" Value="{Binding ElementName=TheProgressBarControl,Path=ProgressErrorTip}" />
+                        <Setter TargetName="TipTextBlock" Property="Text" Value="{Binding ElementName=TheProgressBarControl,Path=ProgressErrorTip}"/>
+                    </DataTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ContentControl Template="{StaticResource Template.Content}"></ContentControl>
+</UserControl>

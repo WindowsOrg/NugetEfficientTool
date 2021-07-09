@@ -1,0 +1,492 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helper="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+                    xmlns:resources="clr-namespace:NugetEfficientTool.Resources">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Colors/Shared.xaml"/>
+        <ResourceDictionary Source="../Images/Image.All.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="4,2"/>
+    </Style>
+    <ControlTemplate x:Key="Button.Tempate.Geometry" TargetType="Button">
+        <Grid x:Name="RootGrid" Background="Transparent">
+            <Border x:Name="CoverBorder" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
+            <Path x:Name="IconPath" Fill="{Binding Path=(helper:ControlHelper.ForegroundNormal), RelativeSource={RelativeSource TemplatedParent}}" 
+                  Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  Data="{Binding Path=(helper:ControlHelper.Geometry),RelativeSource={RelativeSource TemplatedParent}}"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="CoverBorder" Property="Background" 
+                            Value="{Binding Path=(helper:ControlHelper.BackgroundHover), RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter TargetName="IconPath" Property="Fill" 
+                            Value="{Binding Path=(helper:ControlHelper.ForegroundHover), RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="CoverBorder" Property="Background" 
+                            Value="{Binding Path=(helper:ControlHelper.BackgroundPressed), RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter TargetName="IconPath" Property="Fill" 
+                            Value="{Binding Path=(helper:ControlHelper.ForegroundPressed), RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="IconPath" Property="Opacity" Value="0.4"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="Style.Button.Geometry" TargetType="Button">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="UseLayoutRounding" Value="True"></Setter>
+        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"></Setter>
+        <Setter Property="Template" Value="{StaticResource Button.Tempate.Geometry}"/>
+        <Setter Property="FontFamily" Value="{x:Static resources:FontFamilies.YaHei}"></Setter>
+    </Style>
+    <Style x:Key="Style.Button.Geometry.Background" TargetType="Button" BasedOn="{StaticResource Style.Button.Geometry}">
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="#0D000000" />
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="#14000000" />
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Icon.Faint}" />
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Icon.Heavy}" />
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Icon.Heavy}" />
+    </Style>
+    <Style x:Key="Style.Button.Geometry.Background.SimpleSize" TargetType="Button" BasedOn="{StaticResource Style.Button.Geometry.Background}">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Padding" Value="5 2" />
+    </Style>
+    <Style x:Key="Style.Button.WindowClose" BasedOn="{StaticResource Style.Button.Geometry.Background.SimpleSize}" TargetType="Button">
+        <Setter Property="helper:ControlHelper.Geometry" Value="{StaticResource Geometry.Window.Close}" />
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="#D94C4C" />
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="#B34747" />
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Icon.Faint}" />
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="#FFFFFF" />
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="#99FFFFFF" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="RootGrid" Background="Transparent">
+                        <Border x:Name="CoverBorder" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
+                        <Path x:Name="IconPath" Fill="{Binding Path=(helper:ControlHelper.ForegroundNormal), RelativeSource={RelativeSource TemplatedParent}}" 
+                  Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  Data="{Binding Path=(helper:ControlHelper.Geometry),RelativeSource={RelativeSource TemplatedParent}}"
+                  RenderTransformOrigin="0.5,0.5">
+                            <Path.RenderTransform>
+                                <RotateTransform x:Name="IconPathTransform" Angle="0"></RotateTransform>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CoverBorder" Property="Background" 
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundHover), RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter TargetName="IconPath" Property="Fill" 
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundHover), RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="CoverBorder" Property="Background" 
+                        Value="{Binding Path=(helper:ControlHelper.BackgroundPressed), RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter TargetName="IconPath" Property="Fill" 
+                        Value="{Binding Path=(helper:ControlHelper.ForegroundPressed), RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="IconPath" Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                                <Storyboard TargetName="IconPathTransform" TargetProperty="Angle">
+                                    <DoubleAnimation From="0" To="90" Duration="0:0:0.1"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                                <Storyboard TargetName="IconPathTransform" TargetProperty="Angle">
+                                    <DoubleAnimation From="90" To="0" Duration="0:0:0.1"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Style.Button.Image" TargetType="Button" BasedOn="{StaticResource Style.Button.Geometry}">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="helper:ControlHelper.ImageSize" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="RootBorder" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.CornerRadius)}"
+                            Background="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundNormal)}">
+                        <Image x:Name="ContentImage" Stretch="Uniform" Source="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.Image)}"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Height="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageSize)}"
+                               Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageSize)}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentImage" Property="Source" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageHover)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundHover)}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ContentImage" Property="Source" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImagePressed)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundPressed)}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Style.Button.Image.Background.Gray" TargetType="Button" BasedOn="{StaticResource Style.Button.Image}">
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="#0D000000" />
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="#14000000" />
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Icon.Faint}" />
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Icon.Heavy}" />
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Icon.Heavy}" />
+    </Style>
+    <Style x:Key="Style.Button.Text" TargetType="Button" BasedOn="{StaticResource Style.Button.Geometry}">
+        <Setter Property="MinWidth" Value="76"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Normal}"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="{StaticResource Brush.Background.Lightest}"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="{StaticResource Brush.Background.Lighter}"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="{StaticResource Brush.Background.Light}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="helper:ControlHelper.CornerRadius" Value="0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="RootBorder" Background="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundNormal)}"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" 
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.CornerRadius)}"
+                            Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <TextBlock x:Name="CotnentTextBlock" Text="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                   FontSize="{TemplateBinding FontSize}" 
+                                   TextDecorations="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.TextDecorations)}"
+                                   VerticalAlignment="Center" Foreground="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundNormal)}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="RootBorder" Property="Background" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundHover)}"/>
+                            <Setter TargetName="CotnentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundHover)}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="RootBorder" Property="Background" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundPressed)}"/>
+                            <Setter TargetName="CotnentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundPressed)}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="RootBorder" Property="Opacity" 
+                                    Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Style.Button.AccentBackground.Text" TargetType="Button" BasedOn="{StaticResource Style.Button.Text}">
+        <Setter Property="MinWidth" Value="76"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Brightest}"/>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Brightest}"/>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Brightest}"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="{StaticResource Brush.Text.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="{StaticResource Brush.Text.Accent.Light}"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="{StaticResource Brush.Text.Accent.Dark}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="helper:ControlHelper.CornerRadius" Value="4"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style x:Key="Style.Button.Text.GrayBackground.DarkText" TargetType="Button" BasedOn="{StaticResource Style.Button.Text}">
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="{StaticResource Brush.Background.Lighter}"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="{StaticResource Brush.Background.Light}"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="{StaticResource Brush.Background.Deep}"/>
+        <Setter Property="helper:ControlHelper.CornerRadius" Value="4"/>
+    </Style>
+    <Style x:Key="Style.Button.Transparent.Text" TargetType="Button" BasedOn="{StaticResource Style.Button.Text}">
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Padding" Value="0,0"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Accent.Dark}"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="Transparent"/>
+    </Style>
+    <Style x:Key="Style.Button.AccentBackground.Text.WhiteTextAndAccentBackground" TargetType="Button" BasedOn="{StaticResource Style.Button.AccentBackground.Text}">
+    </Style>
+    <Style x:Key="Style.Button.AccentBackground.Text.AccentTextAndTransparentBackground" TargetType="Button" BasedOn="{StaticResource Style.Button.AccentBackground.Text}">
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="Padding" Value="0 0 2 0"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Accent.Light}"/>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Accent.Dark}"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="Transparent"/>
+    </Style>
+    <Style x:Key="Style.Button.LinkText" TargetType="Button" BasedOn="{StaticResource Style.Button.Geometry}">
+        <Setter Property="MinWidth" Value="76"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Accent.Light}"/>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Accent.Dark}"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="Transparent"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="RootBorder" Background="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundNormal)}"
+                            Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <TextBlock x:Name="CotnentTextBlock" Text="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                   FontSize="{TemplateBinding FontSize}" 
+                                   TextDecorations="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.TextDecorations)}"
+                                   VerticalAlignment="Center" Foreground="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundNormal)}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="RootBorder" Property="Background" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundHover)}"/>
+                            <Setter TargetName="CotnentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundHover)}"/>
+                            <Setter TargetName="CotnentTextBlock" Property="TextDecorations" Value="UnderLine"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="RootBorder" Property="Background" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundPressed)}"/>
+                            <Setter TargetName="CotnentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundPressed)}"/>
+                            <Setter TargetName="CotnentTextBlock" Property="TextDecorations" Value="UnderLine"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Style.Button.ImageAndText" TargetType="Button" BasedOn="{StaticResource Style.Button.Geometry}">
+        <Setter Property="helper:ControlHelper.ContentPading" Value="4 0 0 0"/>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Light}"/>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.ImageSize" Value="16"/>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="RootBorder" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" 
+                            Padding="{TemplateBinding Padding}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.CornerRadius)}"
+                            Background="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundNormal)}">
+                        <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                            <Image x:Name="ContentImage" Stretch="Uniform"
+                                   Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageSize)}"
+                                   Height="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageSize)}"
+                                   Margin="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageMargin)}"
+                                   Source="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.Image)}"
+                                   VerticalAlignment="Center"/>
+                            <TextBlock x:Name="ContentTextBlock" Text="{TemplateBinding Content}" VerticalAlignment="Center"
+                                       Foreground="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundNormal)}"
+                                       Padding="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ContentPading)}"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundHover)}"/>
+                            <Setter TargetName="ContentImage" Property="Source" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageHover)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundHover)}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ContentTextBlock" Property="Foreground" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ForegroundPressed)}"/>
+                            <Setter TargetName="ContentImage" Property="Source" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImagePressed)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundPressed)}"/>
+                        </Trigger>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="ContentTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Content" Value="">
+                            <Setter TargetName="ContentTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Style.Button.ImageAndText.WhiteBackground" TargetType="Button" BasedOn="{StaticResource Style.Button.ImageAndText}">
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="Foreground" Value="{StaticResource Brush.Text.Brightest}" ></Setter>
+        <Setter Property="helper:ControlHelper.ImageSize" Value="16" ></Setter>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="{StaticResource Brush.Background.Lightest}" ></Setter>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="{StaticResource Brush.Background.Lighter}" ></Setter>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="{StaticResource Brush.Background.Light}" ></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Normal}" ></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Normal}" ></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Normal}" ></Setter>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.BorderBrush.Light}"></Setter>
+        <Setter Property="Padding" Value="10,0" ></Setter>
+        <Setter Property="FontSize" Value="14" ></Setter>
+        <Setter Property="helper:ControlHelper.ContentPading" Value="2 0 0 0" ></Setter>
+        <Setter Property="helper:ControlHelper.CornerRadius" Value="2" ></Setter>
+    </Style>
+
+    <Style x:Key="Style.Button.ImageAndText.GreenBackground" TargetType="Button" BasedOn="{StaticResource Style.Button.ImageAndText}">
+        <Setter Property="Foreground" Value="{StaticResource Brush.Text.Brightest}" ></Setter>
+        <Setter Property="helper:ControlHelper.ImageSize" Value="16" ></Setter>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="{StaticResource Brush.Accent.Normal}" ></Setter>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="{StaticResource Brush.Accent.Light}" ></Setter>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="{StaticResource Brush.Accent.Dark}" ></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundNormal" Value="{StaticResource Brush.Text.Brightest}" ></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundHover" Value="{StaticResource Brush.Text.Brightest}" ></Setter>
+        <Setter Property="helper:ControlHelper.ForegroundPressed" Value="{StaticResource Brush.Text.Brightest}" ></Setter>
+        <Setter Property="Padding" Value="10,0" ></Setter>
+        <Setter Property="FontSize" Value="14" ></Setter>
+        <Setter Property="helper:ControlHelper.ContentPading" Value="2 0 0 0" ></Setter>
+        <Setter Property="helper:ControlHelper.CornerRadius" Value="2" ></Setter>
+    </Style>
+
+    <Style x:Key="Style.Button.Image.GreenBackground" TargetType="Button" BasedOn="{StaticResource Style.Button.ImageAndText}">
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="{StaticResource Brush.Accent.Normal}"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="{StaticResource Brush.Accent.Light}"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="{StaticResource Brush.Accent.Dark}"/>
+    </Style>
+
+    <Style x:Key="Style.ToggleButton" TargetType="ToggleButton">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                        <Border x:Name="RootBorder" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="2"
+                                    SnapsToDevicePixels="True">
+                            <ContentPresenter ContentSource="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="RootBorder" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F4F4F4" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="#E4E4E4" />
+                <Setter Property="BorderBrush" Value="#F4F4F4" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="Style.ToggleButton.Image" TargetType="ToggleButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="helper:ControlHelper.ImageSize" Value="16"></Setter>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundNormal" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundHover" Value="Transparent"/>
+        <Setter Property="helper:ControlHelper.BackgroundPressed" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="RootGrid" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.CornerRadius)}"
+                          Background="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundNormal)}">
+                        <Image x:Name="ContentImage" Stretch="Uniform" Source="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.Image)}"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Height="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageSize)}"
+                               Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageSize)}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentImage" Property="Source" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImageHover)}"/>
+                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundHover)}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ContentImage" Property="Source" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.ImagePressed)}"/>
+                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(helper:ControlHelper.BackgroundPressed)}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Style.ToggleButton.Select" TargetType="ToggleButton" BasedOn="{StaticResource Style.ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid x:Name="RootGrid" Background="White"
+                          Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="SelectionTextBox" Text="{TemplateBinding Content}" Foreground="{StaticResource Brush.Text.Normal}" VerticalAlignment="Center"/>
+                        <Image x:Name="RightTriangleImage" Grid.Column="1" Source="{StaticResource Image.TriangleDown}" Stretch="None" VerticalAlignment="Center"
+                                   HorizontalAlignment="Right" Margin="6 0 0 0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="SelectionTextBox" Property="Foreground" Value="{StaticResource Brush.Accent.Light}"/>
+                            <Setter TargetName="RightTriangleImage" Property="Source" Value="{StaticResource Image.TriangleDown.Accent}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="SelectionTextBox" Property="Foreground" Value="{StaticResource Brush.Accent.Normal}"/>
+                            <Setter TargetName="RightTriangleImage" Property="Source" Value="{StaticResource Image.TriangleDown.Accent}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="RootGrid" Property="Opacity" Value="0.8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

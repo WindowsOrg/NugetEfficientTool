@@ -1,0 +1,113 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Colors/Shared.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                    <Border x:Name="Border" Padding="0 2" SnapsToDevicePixels="true" Background="Transparent" Height="24">
+                        <ContentPresenter Margin="{Binding RelativeSource={RelativeSource AncestorType=ComboBox},Path=(utils:ControlHelper.ContentPading)}" 
+                                          HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Brush.Background.Marked.Lighter}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Brush.Background.Marked.Light}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Style.ComboBox" TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+            <Setter Property="IsEditable" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="utils:ControlHelper.ContentPading" Value="11 0 0 0" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Text.Normal}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--单击打开下拉弹出框的ToggleButton-->
+                            <ToggleButton Grid.Column="0" Grid.ColumnSpan="2" Name="ToggleButton" BorderThickness="{TemplateBinding BorderThickness}"
+                                      Style="{DynamicResource Style.ToggleButton}" Focusable="False" ClickMode="Press" Background="{TemplateBinding Background}"
+                                      Height="{TemplateBinding Height}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                      IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Content>
+                                    <Grid Grid.Column="0" Grid.ColumnSpan="2">
+                                        <TextBlock x:Name="HintTextBlock"
+                                               Foreground="{DynamicResource Brush.Text.Faint}" HorizontalAlignment="Left" Margin="11 0 0 0"
+                                               Visibility="Collapsed" FontSize="{TemplateBinding FontSize}" />
+                                        <Image Source="{DynamicResource Image.TriangleDown}" Stretch="None" VerticalAlignment="Center"
+                                           HorizontalAlignment="Right" Margin="0 0 10 0" />
+                                    </Grid>
+                                </ToggleButton.Content>
+                            </ToggleButton>
+
+                            <!--选定内容显示区-->
+                            <ContentPresenter Grid.Column="0" Name="ContentSite" IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              Margin="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(utils:ControlHelper.ContentPading)}" 
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                            <!--下拉弹出框-->
+                            <Popup Grid.Column="0" Grid.ColumnSpan="2" Name="Popup" IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True" Focusable="False" PopupAnimation="Slide" VerticalOffset="2">
+                                <Border x:Name="PopupBorder" Background="White" BorderThickness="1"
+                                    BorderBrush="#F4F4F4" MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer SnapsToDevicePixels="True" Margin="0 -1">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="SelectedValue" Value="{x:Null}">
+                                <Setter TargetName="HintTextBlock" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="SelectedValue" Value="">
+                                <Setter TargetName="HintTextBlock" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="PopupBorder" Property="MinHeight" Value="100" />
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="True">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleButton" Property="Background" Value="#E4E4E4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+</ResourceDictionary>
