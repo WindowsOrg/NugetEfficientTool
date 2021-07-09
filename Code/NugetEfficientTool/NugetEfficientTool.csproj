@@ -76,7 +76,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NugetFix\NugetFixView.xaml">
+    <Page Include="Views\NugetFix\NugetErrorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,8 +91,8 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetFix\NugetFixView.xaml.cs">
-      <DependentUpon>NugetFixView.xaml</DependentUpon>
+    <Compile Include="Views\NugetFix\NugetErrorView.xaml.cs">
+      <DependentUpon>NugetErrorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

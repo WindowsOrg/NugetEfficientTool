@@ -12,10 +12,10 @@ namespace NugetEfficientTool
     /// <summary>
     /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class NugetFixView : UserControl
+    public partial class NugetErrorView : UserControl
     {
         private readonly UserOperationConfig _operationConfig;
-        public NugetFixView()
+        public NugetErrorView()
         {
             InitializeComponent();
             _operationConfig = new UserOperationConfig();
