@@ -12,19 +12,23 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="dllPath">Dll 绝对路径</param>
         /// <param name="dllFullName">Dll 完整名称</param>
-        public NugetDllInfo( string dllPath,  string dllFullName)
+        public NugetDllInfo(string dllPath, string dllFullName)
         {
             DllPath = dllPath ?? throw new ArgumentNullException(nameof(dllPath));
-            if (!File.Exists(DllPath))
+            var fullName = string.Empty;
+            try
             {
-                DllFullName = dllFullName ?? throw new ArgumentNullException(nameof(dllFullName));
+                if (File.Exists(DllPath))
+                {
+                    var dllFile = Assembly.LoadFile(DllPath);
+                    fullName = $"{dllFile.FullName.Replace(", PublicKeyToken=null", string.Empty)}, processorArchitecture=MSIL";
+                }
             }
-            else
+            catch (Exception)
             {
-                var dllFile = Assembly.LoadFile(DllPath);
-                DllFullName =
-                    $"{dllFile.FullName.Replace(", PublicKeyToken=null", string.Empty)}, processorArchitecture=MSIL";
+                // ignored
             }
+            DllFullName = string.IsNullOrEmpty(fullName) ? dllFullName ?? throw new ArgumentNullException(nameof(dllFullName)) : fullName;
         }
 
         /// <summary>
