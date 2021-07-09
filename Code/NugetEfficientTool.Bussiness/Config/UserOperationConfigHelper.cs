@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -49,7 +50,7 @@ namespace NugetEfficientTool.Business
             IniFileHelper.IniWriteValue(UserOperationSection, NugetReplaceConfigKey, jsonData);
         }
     }
-
+    [DataContract]
     public class ReplaceNugetConfig
     {
         public ReplaceNugetConfig(string nugetName, string sourceCroProjFile)
@@ -61,10 +62,12 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// Nuget名称
         /// </summary>
+        [DataMember(Name = "Name")]
         public string Name { get; set; }
         /// <summary>
         /// 源代码csproj文件路径(可能是相对路径，也可能是绝对路径)
         /// </summary>
+        [DataMember(Name = "SourceCsprojPath")]
         public string SourceCsprojPath { get; set; }
     }
 }
