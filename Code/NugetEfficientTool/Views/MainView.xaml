@@ -32,7 +32,7 @@
         </TabControl>
         <Grid Grid.Column="1" Margin="-1 0 -1 -1" VerticalAlignment="Stretch">
             <nugetEfficientTool:NugetReplaceView Visibility="{Binding ElementName=ReplaceViewItem,Path=IsSelected,Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <nugetEfficientTool:NugetFixView Visibility="{Binding ElementName=FixViewItem,Path=IsSelected,Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <nugetEfficientTool:NugetErrorView Visibility="{Binding ElementName=FixViewItem,Path=IsSelected,Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </UserControl>
