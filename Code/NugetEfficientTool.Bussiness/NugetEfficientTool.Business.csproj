@@ -57,7 +57,7 @@
     <Compile Include="Config\ReplacedNugetInfo.cs" />
     <Compile Include="Config\NugetReplaceCacheManager.cs" />
     <Compile Include="Config\UIHabitsConfigHelper.cs" />
-    <Compile Include="Config\UserOperationConfig.cs" />
+    <Compile Include="Config\UserOperationConfigHelper.cs" />
     <Compile Include="Config\WindowLocationSizeMode.cs" />
     <Compile Include="CustomText.cs" />
     <Compile Include="Nuget\NugetReplaceHelper\PackageFileNugetReplacer.cs" />

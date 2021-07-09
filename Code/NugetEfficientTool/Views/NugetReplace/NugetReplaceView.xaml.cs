@@ -23,19 +23,29 @@ namespace NugetEfficientTool
     public partial class NugetReplaceView : UserControl
     {
         private readonly NugetReplaceService _nugetReplaceService = new NugetReplaceService();
-        private readonly UserOperationConfig _operationConfig;
         public NugetReplaceView()
         {
             InitializeComponent();
-            _operationConfig = new UserOperationConfig();
             Loaded += NugetFixView_Loaded;
+            UserOperationConfigHelper.SolutionFileUpdated += UserOperationConfigHelper_SolutionFileUpdated;
+        }
+
+        private void UserOperationConfigHelper_SolutionFileUpdated(object sender, string currentSolution)
+        {
+            SolutionTextBox.Text = currentSolution;
         }
 
         private void NugetFixView_Loaded(object sender, RoutedEventArgs e)
         {
             Loaded -= NugetFixView_Loaded;
-            var currentSolution = _operationConfig.GetSolutionFile();
+            var currentSolution = UserOperationConfigHelper.GetSolutionFile();
             SolutionTextBox.Text = currentSolution;
+            var replaceNugetConfigs = UserOperationConfigHelper.GetNugetReplaceConfig();
+            if (replaceNugetConfigs.Any())
+            {
+                NugetNameTextBox.Text = replaceNugetConfigs[0].Name;
+                SourceProjectTextBox.Text = replaceNugetConfigs[0].SourceCsprojPath;
+            }
         }
         /// <summary>
         /// 替换源包
@@ -44,8 +54,7 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void ReplaceButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!GetInputSolutionFile(out var solutionFile)) return;
-
+            if (!CheckInputText(out var solutionFile, out var nugetName, out var sourceCroProjFile)) return;
             try
             {
                 var result = _nugetReplaceService.Replace(solutionFile, NugetNameTextBox.Text, SourceProjectTextBox.Text);
@@ -69,47 +78,82 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void RevertButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!GetInputSolutionFile(out var solutionFile)) return;
+            if (!CheckInputText(out var solutionFile, out var nugetName, out var sourceCroProjFile)) return;
             try
             {
-                _nugetReplaceService.Revert(solutionFile, NugetNameTextBox.Text, SourceProjectTextBox.Text);
+                _nugetReplaceService.Revert(solutionFile, nugetName, sourceCroProjFile);
             }
             catch (Exception exception)
             {
-                NugetReplaceCacheManager.ClearReplacedNugetInfo(solutionFile, NugetNameTextBox.Text);
+                NugetReplaceCacheManager.ClearReplacedNugetInfo(solutionFile, nugetName);
                 MessageBox.Show(exception.Message);
                 CustomText.Log.Error(exception);
             }
             ReplaceButton.IsEnabled = true;
             RevertButton.IsEnabled = false;
         }
-        private bool GetInputSolutionFile(out string solutionFile)
+        private bool CheckInputText(out string solutionFile, out string nugetName, out string sourceCroProjFile)
         {
-            SolutionTextBox.Text = SolutionTextBox.Text.Trim('"');
             solutionFile = SolutionTextBox.Text;
-
+            nugetName = NugetNameTextBox.Text;
+            sourceCroProjFile = SourceProjectTextBox.Text;
             if (string.IsNullOrWhiteSpace(solutionFile))
             {
-                MessageBox.Show("源代码路径不能为空…… 心急吃不了热豆腐……");
-                return true;
+                MessageBox.Show("解决方案路径不能为空…… 心急吃不了热豆腐……");
+                return false;
             }
-
+            if (string.IsNullOrWhiteSpace(nugetName))
+            {
+                MessageBox.Show("Nuget名称不能为空…… 心急吃不了热豆腐……");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(sourceCroProjFile))
+            {
+                MessageBox.Show("源代码路径不能为空…… 心急吃不了热豆腐……");
+                return false;
+            }
             if (!File.Exists(solutionFile))
             {
-                // 其实输入的可能是文件夹
-                if (SolutionFileHelper.TryGetSlnFile(solutionFile, out var slnFile))
+                MessageBox.Show("找不到指定的解决方案，这是啥情况？？？");
+                return false;
+            }
+            UserOperationConfigHelper.SaveSolutionFile(solutionFile);
+            UserOperationConfigHelper.SaveNugetReplaceConfig(new List<ReplaceNugetConfig>() { new ReplaceNugetConfig(nugetName, sourceCroProjFile) });
+            return true;
+        }
+
+        private async void SourceProjectTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
+            SourceProjectTextBox.Text = SourceProjectTextBox.Text.Trim('"');
+        }
+
+        private async void NugetNameTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
+            NugetNameTextBox.Text = NugetNameTextBox.Text.Trim('"');
+        }
+
+        private async void SolutionTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
+            SolutionTextBox.Text = SolutionTextBox.Text.Trim('"');
+            var solutionFile = SolutionTextBox.Text;
+            // 其实输入的可能是文件夹
+            try
+            {
+                if (!File.Exists(solutionFile) && Directory.Exists(solutionFile))
                 {
-                    solutionFile = slnFile;
-                }
-                else
-                {
-                    MessageBox.Show("找不到指定的解决方案，这是啥情况？？？");
-                    return false;
+                    if (SolutionFileHelper.TryGetSlnFile(solutionFile, out var slnFile))
+                    {
+                        SolutionTextBox.Text = slnFile;
+                    }
                 }
             }
-
-            _operationConfig.SaveSolutionFile(solutionFile);
-            return true;
+            catch (Exception exception)
+            {
+                CustomText.Log.Error(exception);
+            }
         }
     }
 }

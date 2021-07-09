@@ -15,7 +15,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="项目路径：" VerticalAlignment="Center" Width="100" TextAlignment="Right" Style="{StaticResource Style.TextBlock.Dark}"/>
                 <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" 
-                         Width="400" Height="32" HorizontalAlignment="Right"/>
+                         Width="400" Height="32" HorizontalAlignment="Right" TextChanged="SolutionTextBox_OnTextChanged"/>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="0 30 0 0">
@@ -23,13 +23,13 @@
                 <TextBlock Text="Nuget名称：" VerticalAlignment="Center" Width="100" TextAlignment="Right"
                            Style="{StaticResource Style.TextBlock.Dark}"/>
                 <TextBox x:Name="NugetNameTextBox" Style="{StaticResource Style.DefaultTextBox}" 
-                             Width="400" Height="32" HorizontalAlignment="Right" Text="H3C.Board.Core"/>
+                             Width="400" Height="32" HorizontalAlignment="Right" TextChanged="NugetNameTextBox_OnTextChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 12 0 0">
                 <TextBlock Text="源代码.csproj：" VerticalAlignment="Center" Width="100" TextAlignment="Right"
                            Style="{StaticResource Style.TextBlock.Dark}"/>
                 <TextBox Name="SourceProjectTextBox" Style="{StaticResource Style.DefaultTextBox}" 
-                             Width="400" Height="32" HorizontalAlignment="Right" Text=""/>
+                             Width="400" Height="32" HorizontalAlignment="Right" TextChanged="SourceProjectTextBox_OnTextChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 40 0 0">
                 <Button x:Name="ReplaceButton" Content="替换" Click="ReplaceButton_OnClick" 

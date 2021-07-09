@@ -14,18 +14,22 @@ namespace NugetEfficientTool
     /// </summary>
     public partial class NugetErrorView : UserControl
     {
-        private readonly UserOperationConfig _operationConfig;
         public NugetErrorView()
         {
             InitializeComponent();
-            _operationConfig = new UserOperationConfig();
             Loaded += NugetFixView_Loaded;
+            UserOperationConfigHelper.SolutionFileUpdated += UserOperationConfigHelper_SolutionFileUpdated;
+        }
+
+        private void UserOperationConfigHelper_SolutionFileUpdated(object sender, string currentSolution)
+        {
+            SolutionTextBox.Text = currentSolution;
         }
 
         private void NugetFixView_Loaded(object sender, RoutedEventArgs e)
         {
             Loaded -= NugetFixView_Loaded;
-            SolutionTextBox.Text = _operationConfig.GetSolutionFile();
+            SolutionTextBox.Text = UserOperationConfigHelper.GetSolutionFile();
         }
         /// <summary>
         /// 检查Nuget版本问题
@@ -56,7 +60,7 @@ namespace NugetEfficientTool
                 }
             }
 
-            _operationConfig.SaveSolutionFile(solutionFile);
+            UserOperationConfigHelper.SaveSolutionFile(solutionFile);
             //检测Nuget版本
             _nugetVersionChecker = new NugetVersionChecker(solutionFile);
             _nugetVersionChecker.Check();
