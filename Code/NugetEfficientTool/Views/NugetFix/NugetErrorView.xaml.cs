@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using NugetEfficientTool.Business;
@@ -31,6 +32,45 @@ namespace NugetEfficientTool
             Loaded -= NugetFixView_Loaded;
             SolutionTextBox.Text = UserOperationConfigHelper.GetSolutionFile();
         }
+        private async void SolutionTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
+            SolutionTextBox.Text = SolutionTextBox.Text.Trim('"');
+            var solutionFile = SolutionTextBox.Text;
+            // 其实输入的可能是文件夹
+            try
+            {
+                if (!File.Exists(solutionFile) && Directory.Exists(solutionFile))
+                {
+                    if (SolutionFileHelper.TryGetSlnFile(solutionFile, out var slnFile))
+                    {
+                        SolutionTextBox.Text = slnFile;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                CustomText.Log.Error(exception);
+            }
+
+            SolutionTextBox.SelectionStart = SolutionTextBox.Text.Length;
+        }
+        private bool CheckInputText(out string solutionFile)
+        {
+            solutionFile = SolutionTextBox.Text;
+            if (string.IsNullOrWhiteSpace(solutionFile))
+            {
+                MessageBox.Show("解决方案路径不能为空…… 心急吃不了热豆腐……");
+                return false;
+            }
+            if (!File.Exists(solutionFile))
+            {
+                MessageBox.Show("找不到指定的解决方案，这是啥情况？？？");
+                return false;
+            }
+            UserOperationConfigHelper.SaveSolutionFile(solutionFile);
+            return true;
+        }
         /// <summary>
         /// 检查Nuget版本问题
         /// </summary>
@@ -38,29 +78,10 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void CheckNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
-            SolutionTextBox.Text = SolutionTextBox.Text.Trim('"');
-            var solutionFile = SolutionTextBox.Text;
-
-            if (string.IsNullOrWhiteSpace(solutionFile))
+            if (!CheckInputText(out var solutionFile))
             {
-                MessageBox.Show("源代码路径不能为空…… 心急吃不了热豆腐……");
                 return;
             }
-            if (!File.Exists(solutionFile))
-            {
-                // 其实输入的可能是文件夹
-                if (SolutionFileHelper.TryGetSlnFile(solutionFile, out var slnFile))
-                {
-                    solutionFile = slnFile;
-                }
-                else
-                {
-                    MessageBox.Show("找不到指定的解决方案，这是啥情况？？？");
-                    return;
-                }
-            }
-
-            UserOperationConfigHelper.SaveSolutionFile(solutionFile);
             //检测Nuget版本
             _nugetVersionChecker = new NugetVersionChecker(solutionFile);
             _nugetVersionChecker.Check();

@@ -32,12 +32,6 @@ namespace NugetEfficientTool.Business
             _solutionFilePath = solutionFilePath;
         }
 
-        #region 私有变量
-
-        private readonly string _solutionFilePath;
-
-        #endregion
-
         #region 对外字段 & 方法
 
         /// <summary>
@@ -165,6 +159,12 @@ namespace NugetEfficientTool.Business
 
             return nugetMismatchVersionMessage;
         }
+
+        #endregion
+
+        #region private fields
+
+        private readonly string _solutionFilePath;
 
         #endregion
     }

@@ -70,7 +70,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="项目路径：" VerticalAlignment="Center" Style="{StaticResource Style.TextBlock.Dark}"/>
                 <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" 
-                         Width="400" Height="32" HorizontalAlignment="Right"/>
+                         Width="400" Height="32" HorizontalAlignment="Right" TextChanged="SolutionTextBox_OnTextChanged"/>
                 <Button Name="CheckNugetButton" Margin="5" Content="开始检测" Click="CheckNugetButton_OnClick" 
                         Style="{StaticResource Style.Button.AccentBackground.Text}"/>
             </StackPanel>

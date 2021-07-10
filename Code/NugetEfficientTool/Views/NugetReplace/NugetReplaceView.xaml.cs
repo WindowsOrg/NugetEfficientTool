@@ -124,18 +124,32 @@ namespace NugetEfficientTool
 
         private async void SourceProjectTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!SourceProjectTextBox.Text.Contains('"'))
+            {
+                return;
+            }
             await Task.Delay(TimeSpan.FromMilliseconds(10));
             SourceProjectTextBox.Text = SourceProjectTextBox.Text.Trim('"');
+            SourceProjectTextBox.SelectionStart = SourceProjectTextBox.Text.Length;
         }
 
         private async void NugetNameTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!NugetNameTextBox.Text.Contains('"'))
+            {
+                return;
+            }
             await Task.Delay(TimeSpan.FromMilliseconds(10));
             NugetNameTextBox.Text = NugetNameTextBox.Text.Trim('"');
+            NugetNameTextBox.SelectionStart = NugetNameTextBox.Text.Length;
         }
 
         private async void SolutionTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!SolutionTextBox.Text.Contains('"'))
+            {
+                return;
+            }
             await Task.Delay(TimeSpan.FromMilliseconds(10));
             SolutionTextBox.Text = SolutionTextBox.Text.Trim('"');
             var solutionFile = SolutionTextBox.Text;
@@ -154,6 +168,7 @@ namespace NugetEfficientTool
             {
                 CustomText.Log.Error(exception);
             }
+            SolutionTextBox.SelectionStart = SolutionTextBox.Text.Length;
         }
     }
 }
