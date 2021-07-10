@@ -48,7 +48,7 @@ namespace NugetEfficientTool.Business
             }
             //获取nuget相关信息
             var badFormatNugetConfigList = new List<NugetConfigReader>();
-            var goodFormatNugetInfoExList = new List<NugetInfoEx>();
+            var goodFormatNugetInfoExList = new List<FileNugetInfo>();
             foreach (var nugetConfigFile in nugetConfigFiles)
             {
                 var nugetConfigReader = new NugetConfigReader(nugetConfigFile);
@@ -82,7 +82,7 @@ namespace NugetEfficientTool.Business
         /// </summary>
         public IEnumerable<NugetConfigReader> ErrorFormatNugetConfigs { get; private set; }
 
-        public IEnumerable<VersionUnusualNugetInfoExGroup> MismatchVersionNugetInfoExs { get; private set; }
+        public IEnumerable<FileNugetInfoGroup> MismatchVersionNugetInfoExs { get; private set; }
 
         /// <summary>
         /// 检测信息
@@ -93,10 +93,10 @@ namespace NugetEfficientTool.Business
 
         #region 私有方法
 
-        private IEnumerable<VersionUnusualNugetInfoExGroup> GetMismatchVersionNugets(
-             IEnumerable<NugetInfoEx> nugetPackageInfoExs)
+        private IEnumerable<FileNugetInfoGroup> GetMismatchVersionNugets(
+             IEnumerable<FileNugetInfo> nugetPackageInfoExs)
         {
-            var mismatchVersionNugetGroupList = new List<VersionUnusualNugetInfoExGroup>();
+            var mismatchVersionNugetGroupList = new List<FileNugetInfoGroup>();
             var nugetPackageInfoGroups = nugetPackageInfoExs.GroupBy(x => x.Name);
             foreach (var nugetPackageInfoGroup in nugetPackageInfoGroups)
             {
@@ -110,7 +110,7 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
 
-                mismatchVersionNugetGroupList.Add(new VersionUnusualNugetInfoExGroup(nugetPackageInfoGroup));
+                mismatchVersionNugetGroupList.Add(new FileNugetInfoGroup(nugetPackageInfoGroup));
             }
 
             return mismatchVersionNugetGroupList;
@@ -120,7 +120,7 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="nugetInfoExs"></param>
         /// <returns></returns>
-        private void CompensateNugetInfos(IEnumerable<NugetInfoEx> nugetInfoExs)
+        private void CompensateNugetInfos(IEnumerable<FileNugetInfo> nugetInfoExs)
         {
             var nugetInfoExGroups = nugetInfoExs.GroupBy(i => Path.GetDirectoryName(i.ConfigPath)).ToList();
             foreach (var nugetInfoExGroup in nugetInfoExGroups)
@@ -139,14 +139,14 @@ namespace NugetEfficientTool.Business
         }
 
         private string CreateNugetMismatchVersionMessage(
-             IEnumerable<VersionUnusualNugetInfoExGroup> mismatchVersionNugetInfoExs)
+             IEnumerable<FileNugetInfoGroup> mismatchVersionNugetInfoExs)
         {
             var nugetMismatchVersionMessage = string.Empty;
             foreach (var mismatchVersionNugetInfoEx in mismatchVersionNugetInfoExs)
             {
                 var headMessage = $"{mismatchVersionNugetInfoEx.NugetName} 存在版本异常：";
                 var detailMessage = string.Empty;
-                foreach (var nugetPackageInfo in mismatchVersionNugetInfoEx.VersionUnusualNugetInfoExs)
+                foreach (var nugetPackageInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
                 {
                     var mainDetailMessage = $"  {nugetPackageInfo.Version}，{nugetPackageInfo.ConfigPath}";
                     detailMessage = StringSplicer.SpliceWithNewLine(detailMessage, mainDetailMessage);

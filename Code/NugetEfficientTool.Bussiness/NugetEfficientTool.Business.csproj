@@ -78,14 +78,14 @@
     <Compile Include="Nuget\Utils\NugetConfigType.cs" />
     <Compile Include="Nuget\Utils\NugetFixStrategy.cs" />
     <Compile Include="Nuget\Utils\NugetInfo.cs" />
-    <Compile Include="Nuget\Utils\NugetInfoEx.cs" />
+    <Compile Include="Nuget\Utils\FileNugetInfo.cs" />
     <Compile Include="Nuget\Utils\NugetVersion.cs" />
     <Compile Include="Nuget\NugetFixHelper\NugetVersionChecker.cs" />
     <Compile Include="Nuget\Utils\PackagesConfig.cs" />
     <Compile Include="Nuget\Utils\SolutionFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nuget\Utils\StringSplicer.cs" />
-    <Compile Include="Nuget\Utils\VersionUnusualNugetInfoExGroup.cs" />
+    <Compile Include="Nuget\Utils\FileNugetInfoGroup.cs" />
     <Compile Include="Nuget\Utils\XmlReader.cs" />
     <Compile Include="UserPath\UserPath.cs" />
   </ItemGroup>

@@ -156,7 +156,7 @@ namespace NugetEfficientTool
                 var repairLog = string.Empty;
                 foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugetInfoExs)
                 {
-                    foreach (var nugetInfoEx in mismatchVersionNugetInfoEx.VersionUnusualNugetInfoExs)
+                    foreach (var nugetInfoEx in mismatchVersionNugetInfoEx.FileNugetInfos)
                     {
                         var nugetConfigRepairer = new NugetConfigRepairer(nugetInfoEx.ConfigPath, nugetFixStrategies);
                         nugetConfigRepairer.Repair();

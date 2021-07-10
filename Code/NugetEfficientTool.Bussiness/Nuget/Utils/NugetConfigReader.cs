@@ -28,7 +28,7 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// Nuget 包信息列表
         /// </summary>
-        public IEnumerable<NugetInfoEx> PackageInfoExs { get; private set; }
+        public IEnumerable<FileNugetInfo> PackageInfoExs { get; private set; }
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace NugetEfficientTool.Business
         protected override void ParseXml()
         {
             var nugetInfos = _nugetConfigParser.GetNugetInfos();
-            var nugetInfoExs = nugetInfos.Select(x => new NugetInfoEx(x, FilePath));
+            var nugetInfoExs = nugetInfos.Select(x => new FileNugetInfo(x, FilePath));
             PackageInfoExs = nugetInfoExs;
         }
 

@@ -11,7 +11,7 @@ namespace NugetEfficientTool
     /// </summary>
     public partial class NugetVersionFixWindow : Window
     {
-        public NugetVersionFixWindow(IEnumerable<VersionUnusualNugetInfoExGroup> mismatchVersionNugetInfoExs)
+        public NugetVersionFixWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetInfoExs)
         {
             if (ReferenceEquals(mismatchVersionNugetInfoExs, null))
                 throw new ArgumentNullException(nameof(mismatchVersionNugetInfoExs));
@@ -21,7 +21,7 @@ namespace NugetEfficientTool
             foreach (var mismatchVersionNugetInfoEx in _mismatchVersionNugetInfoExs)
             {
                 var nugetName = mismatchVersionNugetInfoEx.NugetName;
-                var repeatNugetVersions = mismatchVersionNugetInfoEx.VersionUnusualNugetInfoExs.Select(x => x.Version)
+                var repeatNugetVersions = mismatchVersionNugetInfoEx.FileNugetInfos.Select(x => x.Version)
                     .Distinct();
                 var nugetVersionSelectorUserControl =
                     new NugetVersionSelectorUserControl(nugetName, repeatNugetVersions);
@@ -31,7 +31,7 @@ namespace NugetEfficientTool
 
         public event EventHandler<NugetFixStrategiesEventArgs> NugetFixStrategiesSelected;
 
-        private readonly IEnumerable<VersionUnusualNugetInfoExGroup> _mismatchVersionNugetInfoExs;
+        private readonly IEnumerable<FileNugetInfoGroup> _mismatchVersionNugetInfoExs;
 
         private readonly List<NugetFixStrategy> _nugetFixStrategyList = new List<NugetFixStrategy>();
 
@@ -52,7 +52,8 @@ namespace NugetEfficientTool
 
                 var nugetName = nugetVersionSelectorUserControl.NugetName;
                 var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
-                FixNugetVersion(nugetName, selectedVersion);
+                var fixNugetStrategy = FixNugetVersion(nugetName, selectedVersion);
+                _nugetFixStrategyList.Add(fixNugetStrategy);
             }
 
             if (!_nugetFixStrategyList.Any())
@@ -67,21 +68,18 @@ namespace NugetEfficientTool
         /// </summary>
         /// <param name="nugetName"></param>
         /// <param name="selectedVersion"></param>
-        private void FixNugetVersion(string nugetName, string selectedVersion)
+        private NugetFixStrategy FixNugetVersion(string nugetName, string selectedVersion)
         {
-            var versionUnusualNugetInfoExGroup = _mismatchVersionNugetInfoExs.FirstOrDefault(x => x.NugetName == nugetName);
+            var nugetInfoExGroup = _mismatchVersionNugetInfoExs.FirstOrDefault(x => x.NugetName == nugetName);
+            if (nugetInfoExGroup == null) return null;
 
-            if (versionUnusualNugetInfoExGroup == null) return;
+            var selectedVersionNugetInfos = nugetInfoExGroup.FileNugetInfos.Where(x => x.Version == selectedVersion).ToList();
 
-            var selectedVersionNugetInfoExs =
-                versionUnusualNugetInfoExGroup.VersionUnusualNugetInfoExs.Where(x => x.Version == selectedVersion)
-                    .ToList();
-
-            var targetFrameworks = selectedVersionNugetInfoExs.Where(x => x.TargetFramework != null)
+            var targetFrameworks = selectedVersionNugetInfos.Where(x => x.TargetFramework != null)
                 .Select(x => x.TargetFramework).Distinct().ToList();
             targetFrameworks.Sort();
             targetFrameworks.Reverse();
-            var nugetDllInfos = selectedVersionNugetInfoExs.Where(x => x.NugetDllInfo != null)
+            var nugetDllInfos = selectedVersionNugetInfos.Where(x => x.NugetDllInfo != null)
                 .Select(x => x.NugetDllInfo).Distinct().ToList();
 
             var dllPaths = nugetDllInfos.Select(x => x.DllPath).Distinct().ToList();
@@ -96,26 +94,24 @@ namespace NugetEfficientTool
 
                 errorMessage = StringSplicer.SpliceWithDoubleNewLine(errorMessage, dllPathMessage);
                 MessageBox.Show(errorMessage);
-                return;
+                return null;
             }
 
             var nugetDllInfo = nugetDllInfos.FirstOrDefault();
             if (nugetDllInfo != null)
             {
-                _nugetFixStrategyList.Add(new NugetFixStrategy(nugetName, selectedVersion, nugetDllInfo));
+                return new NugetFixStrategy(nugetName, selectedVersion, nugetDllInfo);
             }
             else
             {
                 var targetFramework = targetFrameworks.FirstOrDefault();
                 if (targetFramework == null)
                 {
-                    _nugetFixStrategyList.Add(
-                        new NugetFixStrategy(nugetName, selectedVersion, new NugetDllInfo("", "")));
+                    return new NugetFixStrategy(nugetName, selectedVersion, new NugetDllInfo("", ""));
                 }
                 else
                 {
-                    _nugetFixStrategyList.Add(
-                        new NugetFixStrategy(nugetName, selectedVersion, targetFramework));
+                    return new NugetFixStrategy(nugetName, selectedVersion, targetFramework);
                 }
             }
         }
