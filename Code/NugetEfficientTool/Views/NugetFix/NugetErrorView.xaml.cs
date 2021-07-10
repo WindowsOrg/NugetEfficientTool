@@ -156,9 +156,15 @@ namespace NugetEfficientTool
                 var repairLog = string.Empty;
                 foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugetInfoExs)
                 {
-                    foreach (var nugetInfoEx in mismatchVersionNugetInfoEx.FileNugetInfos)
+                    foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
                     {
-                        var nugetConfigRepairer = new NugetConfigRepairer(nugetInfoEx.ConfigPath, nugetFixStrategies);
+                        //如果文件已经满足当前修复策略，则跳过
+                        if (nugetFixStrategies.All(i=>$"{i.NugetName}_{i.NugetVersion}_{i.TargetFramework}"== 
+                                                      $"{fileNugetInfo.Name}_{fileNugetInfo.Version}_{fileNugetInfo.TargetFramework}"))
+                        {
+                            continue;
+                        }
+                        var nugetConfigRepairer = new NugetConfigRepairer(fileNugetInfo.ConfigPath, nugetFixStrategies);
                         nugetConfigRepairer.Repair();
                         repairLog = StringSplicer.SpliceWithDoubleNewLine(repairLog, nugetConfigRepairer.Log);
                     }
