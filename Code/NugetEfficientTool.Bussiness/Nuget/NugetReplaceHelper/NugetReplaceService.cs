@@ -61,14 +61,20 @@ namespace NugetEfficientTool.Business
                     case NugetConfigType.CsProj:
                         {
                             var replacedFileRecord = new CsProjNugetReplacer(configFile, nugetName, newProjectId, sourceProjectFile).ReplaceNuget();
-                            replacedNugetInfo.Records.Add(replacedFileRecord);
+                            if (replacedFileRecord != null)
+                            {
+                                replacedNugetInfo.Records.Add(replacedFileRecord);
+                            }
                         }
                         break;
                     //package file
                     case NugetConfigType.PackagesConfig:
                         {
                             var replacedFileRecord = new PackageFileNugetReplacer(configFile, nugetName).ReplaceNuget();
-                            replacedNugetInfo.Records.Add(replacedFileRecord);
+                            if (replacedFileRecord != null)
+                            {
+                                replacedNugetInfo.Records.Add(replacedFileRecord);
+                            }
                         }
                         break;
                 }
@@ -101,8 +107,9 @@ namespace NugetEfficientTool.Business
                 var replacedFileRecord = replacedNugetInfo.Records.FirstOrDefault(i => i.FileName == configFile);
                 if (replacedFileRecord == null)
                 {
-                    MessageBox.Show($"没有{configFile}的Nuget替换记录，不能恢复");
-                    return false;
+                    //MessageBox.Show($"没有{configFile}的Nuget替换记录，不能恢复");
+                    //return false;
+                    continue;
                 }
                 var nugetConfigType = NugetConfig.GetNugetConfigType(configFile);
                 switch (nugetConfigType)

@@ -31,7 +31,8 @@ namespace NugetEfficientTool.Business
 
         public ReplacedFileRecord ReplaceNuget()
         {
-            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).ToList();
+            var references = CsProj.GetReferences(Document).ToList();
+            var nugetInfoReferences= references.Where(CsProj.IsNugetInfoReference).ToList();
             var referenceElement = nugetInfoReferences.Where(x =>
                 CsProj.GetNugetInfoFromNugetInfoReference(x).Name == _nugetName).FirstOrDefault();
             if (referenceElement != null)
@@ -44,7 +45,7 @@ namespace NugetEfficientTool.Business
                 {
                     NugetName = _nugetName,
                     FileName = File,
-                    ModifiedLineIndex = nugetInfoReferences.IndexOf(referenceElement),
+                    ModifiedLineIndex = references.IndexOf(referenceElement),
                     Version = version,
                     NugetDllPath = referenceElement.Value
                 };
@@ -62,7 +63,7 @@ namespace NugetEfficientTool.Business
                 }
                 else
                 {
-                    var itemGroup = Document.Root.Elements(CsProj.ItemGroupName).ToList()[0];
+                    var itemGroup = Document.Root.Elements().Where(i => i.Name.LocalName == CsProj.ItemGroupName).ToList()[0];
                     itemGroup.Add(xElement);
                 }
                 SaveFile();
@@ -73,15 +74,15 @@ namespace NugetEfficientTool.Business
 
         public void RevertNuget()
         {
-            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).ToList();
-
+            var references = CsProj.GetReferences(Document).ToList();
+            var nugetInfoReferences = references.Where(CsProj.IsNugetInfoReference).ToList();
             //添加package引用
             var referenceElement = new XElement(CsProj.ReferenceName);
             referenceElement.SetAttributeValue(CsProj.IncludeAttribute, $"{_lastReplacedRecord.NugetName}, Version={_lastReplacedRecord.Version}, Culture=neutral, processorArchitecture=MSIL");
             var hintPathElement = new XElement(CsProj.HintPathElementName);
             hintPathElement.SetValue(_lastReplacedRecord.NugetDllPath);
             referenceElement.Add(hintPathElement);
-            nugetInfoReferences[_lastReplacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
+            references[_lastReplacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
             //删除源代码引用
             var projectReferences = CsProj.GetProjectReferences(Document);
             var sourceProjectReferences = projectReferences.Where(i => i.Attribute(CsProj.IncludeAttribute).Value.Contains(_sourceProjectFile)).ToList();
