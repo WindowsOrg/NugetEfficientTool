@@ -10,6 +10,16 @@ namespace NugetEfficientTool.Business
         #region 替换记录
 
         private static List<ReplacedNugetInfo> _replacedNugetInfos;
+
+        public static List<ReplacedNugetInfo> GetReplacedNugetInfos()
+        {
+            if (_replacedNugetInfos == null)
+            {
+                _replacedNugetInfos = UserOperationConfigHelper.GetReplaceRecords();
+            }
+
+            return _replacedNugetInfos;
+        }
         /// <summary>
         /// 记录替换记录
         /// </summary>
@@ -18,11 +28,8 @@ namespace NugetEfficientTool.Business
         /// <returns></returns>
         public static ReplacedNugetInfo GetReplacedNugetInfo(string solutionFile, string nugetName)
         {
-            if (_replacedNugetInfos == null)
-            {
-                _replacedNugetInfos = UserOperationConfigHelper.GetReplaceRecords();
-            }
-            var replacedNugetInfo = _replacedNugetInfos.FirstOrDefault(i => i.SolutionFile == solutionFile && i.Name == nugetName);
+            var replacedNugetInfos = GetReplacedNugetInfos();
+            var replacedNugetInfo = replacedNugetInfos.FirstOrDefault(i => i.SolutionFile == solutionFile && i.Name == nugetName);
             return replacedNugetInfo;
         }
 
@@ -46,10 +53,13 @@ namespace NugetEfficientTool.Business
             {
                 _replacedNugetInfos.Remove(nugetInfo);
             }
-            _replacedNugetInfos.Add(replacedNugetInfo);
+            //nuget替换后，要按后替换先恢复的原则，进行保存
+            _replacedNugetInfos.Insert(0, replacedNugetInfo);
             UserOperationConfigHelper.SaveReplaceRecords(_replacedNugetInfos);
         }
 
         #endregion
+
+
     }
 }

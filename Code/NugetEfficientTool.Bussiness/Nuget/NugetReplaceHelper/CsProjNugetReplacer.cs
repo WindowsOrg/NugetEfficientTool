@@ -75,7 +75,6 @@ namespace NugetEfficientTool.Business
         public void RevertNuget()
         {
             var references = CsProj.GetReferences(Document).ToList();
-            var nugetInfoReferences = references.Where(CsProj.IsNugetInfoReference).ToList();
             //添加package引用
             var referenceElement = new XElement(CsProj.ReferenceName);
             referenceElement.SetAttributeValue(CsProj.IncludeAttribute, $"{_lastReplacedRecord.NugetName}, Version={_lastReplacedRecord.Version}, Culture=neutral, processorArchitecture=MSIL");
