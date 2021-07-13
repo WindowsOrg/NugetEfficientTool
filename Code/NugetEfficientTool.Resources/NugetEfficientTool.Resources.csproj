@@ -58,6 +58,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Class1.cs" />
+    <Compile Include="Controls\VirtualListBox.cs" />
     <Compile Include="FontFamilys.cs" />
     <Compile Include="Controls\CircleLoading.xaml.cs">
       <DependentUpon>CircleLoading.xaml</DependentUpon>

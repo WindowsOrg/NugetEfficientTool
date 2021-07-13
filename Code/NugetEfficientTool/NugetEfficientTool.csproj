@@ -66,9 +66,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\NugetReplace\NugetReplaceItem.cs" />
     <Compile Include="Views\NugetReplace\NugetReplaceView.xaml.cs">
       <DependentUpon>NugetReplaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NugetReplace\NugetReplaceViewModel.cs" />
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

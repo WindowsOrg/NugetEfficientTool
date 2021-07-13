@@ -49,6 +49,26 @@ namespace NugetEfficientTool.Business
             var jsonData = JsonConvert.SerializeObject(replaceNugetConfigs);
             IniFileHelper.IniWriteValue(UserOperationSection, NugetReplaceConfigKey, jsonData);
         }
+
+        /// <summary>
+        /// 当前Nuget替换信息
+        /// </summary>
+        private const string ReplaceRecordsKey = "ReplaceRecords";
+        public static List<ReplacedNugetInfo> GetReplaceRecords()
+        {
+            var valueJson = IniFileHelper.IniReadValue(UserOperationSection, ReplaceRecordsKey);
+            if (string.IsNullOrEmpty(valueJson))
+            {
+                return new List<ReplacedNugetInfo>();
+            }
+            var replaceRecords = JsonConvert.DeserializeObject<List<ReplacedNugetInfo>>(valueJson);
+            return replaceRecords;
+        }
+        public static void SaveReplaceRecords(List<ReplacedNugetInfo> replaceRecords)
+        {
+            var jsonData = JsonConvert.SerializeObject(replaceRecords);
+            IniFileHelper.IniWriteValue(UserOperationSection, ReplaceRecordsKey, jsonData);
+        }
     }
     [DataContract]
     public class ReplaceNugetConfig

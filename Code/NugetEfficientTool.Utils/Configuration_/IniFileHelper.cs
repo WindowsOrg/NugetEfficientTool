@@ -33,7 +33,7 @@ namespace NugetEfficientTool.Utils
         public static string IniReadValue(string Section, string Key)
         {
             StringBuilder temp = new StringBuilder(5000);
-            int i = GetPrivateProfileString(Section, Key, "", temp, 500, GetIniPath());
+            int i = GetPrivateProfileString(Section, Key, "", temp, 5000, GetIniPath());
             return temp.ToString();
         }
 

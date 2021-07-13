@@ -4,39 +4,157 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+             xmlns:resources="clr-namespace:NugetEfficientTool.Resources;assembly=NugetEfficientTool.Resources"
+             xmlns:nugetEfficientTool="clr-namespace:NugetEfficientTool"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="TheNugetReplaceView">
+    <UserControl.DataContext>
+        <nugetEfficientTool:NugetReplaceViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style x:Key="Style.Control" TargetType="ContentControl">
+            <d:Grid.DataContext>
+                <nugetEfficientTool:NugetReplaceItem/>
+            </d:Grid.DataContext>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Margin" Value="0 6 0 6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid Background="#01ffffff" PreviewMouseUp="ReplacingItem_OnPreviewMouseUp">
+                            <Border x:Name="RootBorder" Height="120" Padding="20 0 0 0"
+                                    BorderThickness="1" BorderBrush="#EEEEEE" CornerRadius="6">
+                                <Grid x:Name="ContentGrid">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox x:Name="NugetCheckBox" VerticalAlignment="Center" Style="{StaticResource Style.DefaultCheckBox}" 
+                                                  IsChecked="{Binding IsSelected}" Click="NugetCheckBox_OnClick">
+                                        </CheckBox>
+                                        <Grid Grid.Column="1" Margin="0 8">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Nuget名称：" VerticalAlignment="Center" TextAlignment="Right"
+                                                       Style="{StaticResource Style.TextBlock.Dark}"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="NugetNameTextBox" Style="{StaticResource Style.DefaultTextBox}" 
+                                                     VerticalAlignment="Center" Height="32" 
+                                                     Text="{Binding NugetName}" TextChanged="NugetNameTextBox_OnTextChanged"
+                                                     IsEnabled="{Binding HasReplaced,Converter={x:Static resources:BooleanToBoolean.ReverseBoolean}}"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="源代码.csproj：" VerticalAlignment="Center" TextAlignment="Right"
+                                                       Style="{StaticResource Style.TextBlock.Dark}"/>
+                                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="SourceProjectTextBox" Style="{StaticResource Style.DefaultTextBox}" 
+                                                     VerticalAlignment="Center" Height="32"
+                                                     Text="{Binding SourceCsprojFile}" TextChanged="SourceProjectTextBox_OnTextChanged"
+                                                     IsEnabled="{Binding HasReplaced,Converter={x:Static resources:BooleanToBoolean.ReverseBoolean}}"/>
+                                        </Grid>
+                                        <Grid Grid.Column="2" Margin="12 0 0 0">
+                                            <StackPanel x:Name="OperationPanel" Orientation="Horizontal"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                Background="Transparent">
+                                                <Button Name="DeleteButton" Margin="0 0 16 0" 
+                                                            Style="{StaticResource Style.Button.Image}"
+                                                            ToolTip="删除" VerticalAlignment="Center"
+                                                            utils:ControlHelper.Image="{StaticResource Image.Delete.Normal}"
+                                                            utils:ControlHelper.ImageHover="{StaticResource Image.Delete.Hover}"
+                                                            utils:ControlHelper.ImagePressed="{StaticResource Image.Delete.Hover}"
+                                                            Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.DeleteNugetItemCommand}"
+                                                            CommandParameter="{Binding}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <!--<ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="OperationPanel" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource Brush.BorderBrush.Marked.Light}" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource Brush.BorderBrush.Accent.Light}" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>-->
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Style.ItemsControl" TargetType="resources:CustomItemsControl">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource Style.Control}"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel></StackPanel>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin" Value="24 0 10 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ItemsControl">
+                        <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                    BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                    Background="{TemplateBinding Panel.Background}"
+                                    x:Name="Bd" SnapsToDevicePixels="True">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="12 5">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="项目路径：" VerticalAlignment="Center" Width="100" TextAlignment="Right" Style="{StaticResource Style.TextBlock.Dark}"/>
-                <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" 
+                <TextBlock Text="项目路径：" VerticalAlignment="Center" TextAlignment="Right" Style="{StaticResource Style.TextBlock.Dark}"/>
+                <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" Text="{Binding SolutionFileUrl}"
                          Width="400" Height="32" HorizontalAlignment="Right" TextChanged="SolutionTextBox_OnTextChanged"/>
             </StackPanel>
         </Grid>
-        <StackPanel Grid.Row="1" Margin="0 30 0 0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Nuget名称：" VerticalAlignment="Center" Width="100" TextAlignment="Right"
-                           Style="{StaticResource Style.TextBlock.Dark}"/>
-                <TextBox x:Name="NugetNameTextBox" Style="{StaticResource Style.DefaultTextBox}" 
-                             Width="400" Height="32" HorizontalAlignment="Right" TextChanged="NugetNameTextBox_OnTextChanged"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 12 0 0">
-                <TextBlock Text="源代码.csproj：" VerticalAlignment="Center" Width="100" TextAlignment="Right"
-                           Style="{StaticResource Style.TextBlock.Dark}"/>
-                <TextBox Name="SourceProjectTextBox" Style="{StaticResource Style.DefaultTextBox}" 
-                             Width="400" Height="32" HorizontalAlignment="Right" TextChanged="SourceProjectTextBox_OnTextChanged"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 40 0 0">
-                <Button x:Name="ReplaceButton" Content="替换" Click="ReplaceButton_OnClick" 
-                        Style="{StaticResource Style.Button.AccentBackground.Text}"/>
-                <Button x:Name="RevertButton" Content="还原" Click="RevertButton_OnClick" IsEnabled="False"
-                        Style="{StaticResource Style.Button.AccentBackground.Text}" Margin="12 0 0 0"/>
-            </StackPanel>
+        <!--Nuget列表-->
+        <Grid Grid.Row="1" Margin="0 20 0 0">
+            <TextBlock Text="Nuget替换列表" Style="{StaticResource Style.TextBlock.Dark}"
+               FontSize="16" FontWeight="Bold" VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
+            <Button x:Name="AddNugetItemButton" Content="添加"  Style="{StaticResource Style.Button.AccentBackground.Text}"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 24 0"
+                    Command="{Binding AddNugetItemCommand}"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0 12 8 0">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          CanContentScroll="True"
+                          PanningMode="VerticalOnly" Padding="0 0 6 0">
+                <resources:CustomItemsControl x:Name="NugetReplacingStrategiesItemsControl" Background="Transparent" BorderThickness="0"
+                                              Style="{StaticResource Style.ItemsControl}"
+                                              ItemsSource="{Binding NugetReplaceItems,Mode=TwoWay}"/>
+            </ScrollViewer>
+        </Grid>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
+            <Button x:Name="ReplaceButton" Content="替换" Command="{Binding ReplaceNugetItemsCommand}" 
+                    VerticalAlignment="Center" Style="{StaticResource Style.Button.AccentBackground.Text}"
+                    IsEnabled="{Binding CanSelectedItemsReplace}"/>
+            <Button x:Name="RevertButton" Content="还原" Command="{Binding RevertNugetItemsCommand}" VerticalAlignment="Center"
+                    Style="{StaticResource Style.Button.AccentBackground.Text}" Margin="12 0 0 0"
+                    IsEnabled="{Binding CanSelectedItemsRevert}"/>
         </StackPanel>
     </Grid>
 </UserControl>

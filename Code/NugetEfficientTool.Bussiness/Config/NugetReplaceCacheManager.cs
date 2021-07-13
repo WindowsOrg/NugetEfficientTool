@@ -8,7 +8,8 @@ namespace NugetEfficientTool.Business
     {
 
         #region 替换记录
-        private static readonly List<ReplacedNugetInfo> ReplacedNugetInfos = new List<ReplacedNugetInfo>();
+
+        private static List<ReplacedNugetInfo> _replacedNugetInfos;
         /// <summary>
         /// 记录替换记录
         /// </summary>
@@ -17,8 +18,11 @@ namespace NugetEfficientTool.Business
         /// <returns></returns>
         public static ReplacedNugetInfo GetReplacedNugetInfo(string solutionFile, string nugetName)
         {
-            var replacedNugetInfo =
-                ReplacedNugetInfos.FirstOrDefault(i => i.SolutionFile == solutionFile && i.Name == nugetName);
+            if (_replacedNugetInfos == null)
+            {
+                _replacedNugetInfos = UserOperationConfigHelper.GetReplaceRecords();
+            }
+            var replacedNugetInfo = _replacedNugetInfos.FirstOrDefault(i => i.SolutionFile == solutionFile && i.Name == nugetName);
             return replacedNugetInfo;
         }
 
@@ -27,7 +31,8 @@ namespace NugetEfficientTool.Business
             var nugetInfo = GetReplacedNugetInfo(solutionFile, name);
             if (nugetInfo != null)
             {
-                ReplacedNugetInfos.Remove(nugetInfo);
+                _replacedNugetInfos.Remove(nugetInfo);
+                UserOperationConfigHelper.SaveReplaceRecords(_replacedNugetInfos);
             }
         }
         /// <summary>
@@ -39,9 +44,10 @@ namespace NugetEfficientTool.Business
             var nugetInfo = GetReplacedNugetInfo(replacedNugetInfo.SolutionFile, replacedNugetInfo.Name);
             if (nugetInfo != null)
             {
-                ReplacedNugetInfos.Remove(nugetInfo);
+                _replacedNugetInfos.Remove(nugetInfo);
             }
-            ReplacedNugetInfos.Add(replacedNugetInfo);
+            _replacedNugetInfos.Add(replacedNugetInfo);
+            UserOperationConfigHelper.SaveReplaceRecords(_replacedNugetInfos);
         }
 
         #endregion
