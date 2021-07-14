@@ -95,8 +95,7 @@ namespace NugetEfficientTool.Business
             var replacedNugetInfo = NugetReplaceCacheManager.GetReplacedNugetInfo(solutionFile, nugetName);
             if (replacedNugetInfo == null)
             {
-                MessageBox.Show($"没有{solutionFile}的Nuget替换记录，不能恢复");
-                return false;
+                throw new InvalidOperationException($"没有{solutionFile}的Nuget替换记录，不能恢复");
             }
             //恢复解决方案文件 - Sln file
             new SlnFileNugetReplacer(solutionFile, replacedNugetInfo.Name, sourceProjectFile).RevertNuget();

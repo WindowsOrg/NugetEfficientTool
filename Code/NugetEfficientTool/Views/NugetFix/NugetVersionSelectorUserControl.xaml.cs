@@ -74,7 +74,7 @@ namespace NugetEfficientTool
             }
             catch (Exception)
             {
-                MessageBox.Show($"无法从 {version} 构造版本号对象。请保留现场，并联系开发者。");
+                CustomText.Notification.ShowInfo(Window.GetWindow(this), $"无法从 {version} 构造版本号对象。请保留现场，并联系开发者。");
                 return new Version(0, 0);
             }
         }
