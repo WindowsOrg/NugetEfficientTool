@@ -27,6 +27,7 @@ namespace NugetEfficientTool
             InitializeComponent();
             Loaded += NugetFixView_Loaded;
             UserOperationConfigHelper.SolutionFileUpdated += UserOperationConfigHelper_SolutionFileUpdated;
+            SolutionTextBox.TextChanged += SolutionTextBox_OnTextChanged;
         }
 
         private void UserOperationConfigHelper_SolutionFileUpdated(object sender, string currentSolution)
@@ -73,13 +74,9 @@ namespace NugetEfficientTool
 
         private async void SolutionTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!SolutionTextBox.Text.Contains('"'))
-            {
-                return;
-            }
             await Task.Delay(TimeSpan.FromMilliseconds(10));
-            SolutionTextBox.Text = SolutionTextBox.Text.Trim('"');
-            var solutionFile = SolutionTextBox.Text;
+            var sourceText = SolutionTextBox.Text;
+            var solutionFile = sourceText.Trim('"');
             // 其实输入的可能是文件夹
             try
             {
@@ -87,7 +84,7 @@ namespace NugetEfficientTool
                 {
                     if (SolutionFileHelper.TryGetSlnFile(solutionFile, out var slnFile))
                     {
-                        SolutionTextBox.Text = slnFile;
+                        solutionFile = slnFile;
                     }
                 }
             }
@@ -95,14 +92,20 @@ namespace NugetEfficientTool
             {
                 CustomText.Log.Error(exception);
             }
-            SolutionTextBox.SelectionStart = SolutionTextBox.Text.Length;
+            if (sourceText != solutionFile)
+            {
+                SolutionTextBox.TextChanged -= SolutionTextBox_OnTextChanged;
+                SolutionTextBox.Text = solutionFile;
+                SolutionTextBox.TextChanged += SolutionTextBox_OnTextChanged;
+                SolutionTextBox.SelectionStart = solutionFile.Length;
+            }
         }
 
         private void ReplacingItem_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement uiElement && uiElement.DataContext is NugetReplaceItem item)
             {
-                if (e.OriginalSource is CheckBox|| e.OriginalSource is TextBox|| e.OriginalSource is Button)
+                if (e.OriginalSource is CheckBox || e.OriginalSource is TextBox || e.OriginalSource is Button)
                 {
                     return;
                 }
@@ -110,7 +113,7 @@ namespace NugetEfficientTool
                 ViewModel.UpdateOperationStatus();
             }
         }
-        public Window Window=>Window.GetWindow(this);
+        public Window Window => Window.GetWindow(this);
         private void NugetCheckBox_OnClick(object sender, RoutedEventArgs e)
         {
             ViewModel.UpdateOperationStatus();
@@ -119,6 +122,6 @@ namespace NugetEfficientTool
 
     public interface INugetReplaceView
     {
-        Window Window { get;}
+        Window Window { get; }
     }
 }
