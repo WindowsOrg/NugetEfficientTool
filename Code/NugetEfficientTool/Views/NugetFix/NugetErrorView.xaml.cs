@@ -60,12 +60,12 @@ namespace NugetEfficientTool
             solutionFile = SolutionTextBox.Text;
             if (string.IsNullOrWhiteSpace(solutionFile))
             {
-                MessageBox.Show("解决方案路径不能为空…… 心急吃不了热豆腐……");
+                CustomText.Notification.ShowInfo(Window.GetWindow(this), "解决方案路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
             if (!File.Exists(solutionFile))
             {
-                MessageBox.Show("找不到指定的解决方案，这是啥情况？？？");
+                CustomText.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
                 return false;
             }
             UserOperationConfigHelper.SaveSolutionFile(solutionFile);
@@ -95,13 +95,13 @@ namespace NugetEfficientTool
         //    var idePath = TextBoxIdePath.Text;
         //    if (string.IsNullOrWhiteSpace(idePath))
         //    {
-        //        MessageBox.Show("大佬，IDE 路径都还没配置，你这样我很难帮你办事啊……");
+        //        CustomText.Notification.ShowInfo(Window.GetWindow(this),"大佬，IDE 路径都还没配置，你这样我很难帮你办事啊……");
         //        return;
         //    }
 
         //    if (!File.Exists(idePath))
         //    {
-        //        MessageBox.Show("找不到配置的 IDE，可能离家出走了吧……");
+        //        CustomText.Notification.ShowInfo(Window.GetWindow(this),"找不到配置的 IDE，可能离家出走了吧……");
         //        return;
         //    }
 
@@ -159,7 +159,7 @@ namespace NugetEfficientTool
                     foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
                     {
                         //如果文件已经满足当前修复策略，则跳过
-                        if (nugetFixStrategies.All(i=>$"{i.NugetName}_{i.NugetVersion}_{i.TargetFramework}"== 
+                        if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}_{i.TargetFramework}" ==
                                                       $"{fileNugetInfo.Name}_{fileNugetInfo.Version}_{fileNugetInfo.TargetFramework}"))
                         {
                             continue;
@@ -181,7 +181,8 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                CustomText.Notification.ShowInfo(Window.GetWindow(this), exception.Message);
+                CustomText.Log.Error(exception);
             }
         }
 

@@ -93,7 +93,7 @@ namespace NugetEfficientTool
                 }
 
                 errorMessage = StringSplicer.SpliceWithDoubleNewLine(errorMessage, dllPathMessage);
-                MessageBox.Show(errorMessage);
+                CustomText.Notification.ShowInfo(this, errorMessage);
                 return null;
             }
 
