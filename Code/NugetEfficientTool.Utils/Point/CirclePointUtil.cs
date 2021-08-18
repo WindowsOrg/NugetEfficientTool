@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace NugetEfficientTool.Utils
 {
@@ -11,9 +12,9 @@ namespace NugetEfficientTool.Utils
         /// <param name="r">半径</param>
         /// <param name="arcAngel">弧度角度</param>
         /// <returns></returns>
-        public static System.Windows.Point GetPointByAngel(System.Windows.Point centerPoint, double r, double arcAngel)
+        public static Point GetPointByAngel(Point centerPoint, double r, double arcAngel)
         {
-            var p = new System.Windows.Point
+            var p = new Point
             {
                 X = Math.Sin(arcAngel) * r + centerPoint.X,
                 Y = centerPoint.Y - Math.Cos(arcAngel) * r

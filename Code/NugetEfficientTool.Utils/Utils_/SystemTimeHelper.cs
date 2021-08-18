@@ -90,7 +90,7 @@ namespace NugetEfficientTool.Utils
             byte[] receiveBytes = new byte[1024];
             int nBytes, nTotalBytes = 0;
             StringBuilder sb = new StringBuilder();
-            System.Text.Encoding encoding = Encoding.UTF8;
+            Encoding encoding = Encoding.UTF8;
 
             while ((nBytes = socket.Receive(receiveBytes, 0, 1024, SocketFlags.None)) > 0)
             {

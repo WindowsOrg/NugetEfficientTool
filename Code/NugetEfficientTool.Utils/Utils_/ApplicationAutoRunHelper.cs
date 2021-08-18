@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Forms;
 using Microsoft.Win32;
 
 namespace NugetEfficientTool.Utils
@@ -13,7 +14,7 @@ namespace NugetEfficientTool.Utils
         {
             try
             {
-                string executablePath = System.Windows.Forms.Application.ExecutablePath;
+                string executablePath = Application.ExecutablePath;
                 string exeName = Path.GetFileNameWithoutExtension(executablePath);
                 SetAutoRun(autoRun, exeName, executablePath);
             }

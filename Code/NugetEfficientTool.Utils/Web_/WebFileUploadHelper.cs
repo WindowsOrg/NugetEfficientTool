@@ -116,7 +116,7 @@ namespace NugetEfficientTool.Utils
             byte[] endbytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
 
             //1.HttpWebRequest
-            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = $"multipart/form-data; boundary=" + boundary;
             request.Method = "POST";
             request.KeepAlive = true;

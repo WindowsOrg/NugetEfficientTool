@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -52,7 +53,7 @@ namespace NugetEfficientTool
             this._notifyIcon.BalloonTipText = "Nuget工具";
             this._notifyIcon.ShowBalloonTip(2000);
             this._notifyIcon.Text = "Nuget工具\r\ncopyright @ Winter";
-            this._notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            this._notifyIcon.Icon = Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
             this._notifyIcon.Visible = true;
             //打开菜单项
             MenuItem open = new MenuItem("打开");
@@ -79,7 +80,7 @@ namespace NugetEfficientTool
 
         private void Close(object sender, EventArgs e)
         {
-            Application.Current.Shutdown();
+            Current.Shutdown();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 
@@ -14,7 +15,7 @@ namespace NugetEfficientTool.Utils
         public static void DisableSystemMenuAlignment()
         {
             _menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
-            System.Diagnostics.Debug.Assert(_menuDropAlignmentField != null);
+            Debug.Assert(_menuDropAlignmentField != null);
 
             EnsureStandardPopupAlignment();
             SystemParameters.StaticPropertyChanged -= SystemParameters_StaticPropertyChanged;

@@ -24,7 +24,7 @@ namespace NugetEfficientTool.Utils
         {
             using (Bitmap newImage = new Bitmap(maxWidth, maxHeight, PixelFormat.Format24bppRgb))
             {
-                using (Graphics g = Graphics.FromImage((System.Drawing.Image)newImage))
+                using (Graphics g = Graphics.FromImage((Image)newImage))
                 {
                     g.InterpolationMode = interpolationMode;
                     using (Image image = Image.FromFile(imageFilePath))
@@ -86,7 +86,7 @@ namespace NugetEfficientTool.Utils
         {
             using (Bitmap newImage = new Bitmap(fixedWidth, fixedHeight, PixelFormat.Format24bppRgb))
             {
-                using (Graphics g = Graphics.FromImage((System.Drawing.Image)newImage))
+                using (Graphics g = Graphics.FromImage((Image)newImage))
                 {
                     g.Clear(Color.Black);
                     g.InterpolationMode = interpolationMode;

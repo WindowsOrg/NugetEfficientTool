@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
+using LinqToDB.Data;
 using LinqToDB.DataProvider.SQLite;
 
 namespace NugetEfficientTool.Utils
 {
-    public class DbConnection<TDB> where TDB : LinqToDB.Data.DataConnection, new()
+    public class DbConnection<TDB> where TDB : DataConnection, new()
     {
         private readonly string _connectionString;
         private readonly Func<string> _getConnectionStringFunc;

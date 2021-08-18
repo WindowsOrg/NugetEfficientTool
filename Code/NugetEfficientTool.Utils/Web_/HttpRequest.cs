@@ -25,7 +25,7 @@ namespace NugetEfficientTool.Utils
             get
             {
                 if (this._timeOut <= 0)
-                    this._timeOut = HttpRequest.DefaultTimeOut;
+                    this._timeOut = DefaultTimeOut;
                 return this._timeOut;
             }
             set
