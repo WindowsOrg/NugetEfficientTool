@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
-using NugetEfficientTool.Business;
-using NugetEfficientTool.Business;
 
 namespace NugetEfficientTool.Business
 {
