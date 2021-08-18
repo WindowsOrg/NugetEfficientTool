@@ -7,30 +7,28 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    internal interface INugetFileReplacer
+    /// <summary>
+    /// 文件替换（抽象类）
+    /// </summary>
+    public abstract class XmlFileNugetReplacer
     {
-        ReplacedFileRecord ReplaceNuget();
-        void RevertNuget();
-    }
-    public class XmlFileNugetReplacer
-    {
-        private string _xmlFile;
+        protected readonly string XmlFile;
         protected XmlFileNugetReplacer(string xmlFile)
         {
-            _xmlFile = xmlFile;
+            XmlFile = xmlFile;
             Document = new XmlReader(xmlFile).Document;
         }
 
-        protected string File => _xmlFile;
+        protected string File => XmlFile;
         public XDocument Document { get; }
 
         public void SaveFile()
         {
-            Document.Save(_xmlFile);
+            Document.Save(XmlFile);
             //修复自动生成xmlns的问题
-            var allText = System.IO.File.ReadAllText(_xmlFile);
+            var allText = System.IO.File.ReadAllText(XmlFile);
             var removedXmlnsText = allText.Replace(" xmlns=\"\"", string.Empty);
-            System.IO.File.WriteAllText(_xmlFile, removedXmlnsText, Encoding.UTF8);
+            System.IO.File.WriteAllText(XmlFile, removedXmlnsText, Encoding.UTF8);
         }
     }
 }

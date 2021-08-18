@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace NugetEfficientTool.Business
 {
+    /// <summary>
+    /// 解决方案Nuget替换类
+    /// </summary>
     class SlnFileNugetReplacer : INugetFileReplacer
     {
         private readonly string _solutionFile;
@@ -52,7 +55,9 @@ namespace NugetEfficientTool.Business
             File.WriteAllLines(_solutionFile, solutionFileLines, Encoding.UTF8);
             return null;
         }
-
+        /// <summary>
+        /// 恢复Nuget包
+        /// </summary>
         public void RevertNuget()
         {
             var solutionFileLines = File.ReadAllLines(_solutionFile).ToList();

@@ -32,44 +32,48 @@ namespace NugetEfficientTool.Business
         public ReplacedFileRecord ReplaceNuget()
         {
             var references = CsProj.GetReferences(Document).ToList();
-            var nugetInfoReferences= references.Where(CsProj.IsNugetInfoReference).ToList();
-            var referenceElement = nugetInfoReferences.Where(x =>
-                CsProj.GetNugetInfoFromNugetInfoReference(x).Name == _nugetName).FirstOrDefault();
-            if (referenceElement != null)
+            var nugetInfoReferences = references.Where(CsProj.IsNugetInfoReference).ToList();
+            var referenceElement = nugetInfoReferences.FirstOrDefault(x => CsProj.GetNugetInfoFromNugetInfoReference(x).Name == _nugetName);
+            if (referenceElement == null)
             {
-                var includeString = referenceElement.Attribute(CsProj.IncludeAttribute).Value;
-                var version = includeString.Replace($"{_nugetName},", string.Empty).Replace("Version=", string.Empty)
-                    .Replace("Culture=neutral", string.Empty).Replace("processorArchitecture=MSIL", string.Empty)
-                    .Replace(",", string.Empty).Trim();
-                var replacedFileRecord = new ReplacedFileRecord()
-                {
-                    NugetName = _nugetName,
-                    FileName = File,
-                    ModifiedLineIndex = references.IndexOf(referenceElement),
-                    Version = version,
-                    NugetDllPath = referenceElement.Value
-                };
-                //删除Nuget的引用
-                referenceElement.Remove();
-                //添加源项目的引用
-                var xElement = new XElement("ProjectReference");
-                xElement.SetAttributeValue("Include", _sourceProjectFile);
-                xElement.Add(new XElement("Project", $"{{{_newProjectId}}}"));
-                xElement.Add(new XElement("Name", _nugetName));
-                var projectReferences = CsProj.GetProjectReferences(Document).ToList();
-                if (projectReferences.Any())
-                {
-                    projectReferences[0].AddBeforeSelf(xElement);
-                }
-                else
-                {
-                    var itemGroup = Document.Root.Elements().Where(i => i.Name.LocalName == CsProj.ItemGroupName).ToList()[0];
-                    itemGroup.Add(xElement);
-                }
-                SaveFile();
-                return replacedFileRecord;
+                return null;
             }
-            return null;
+
+            var includeString = referenceElement.Attribute(CsProj.IncludeAttribute)?.Value;
+            if (string.IsNullOrEmpty(includeString))
+            {
+                return null;
+            }
+            var version = includeString.Replace($"{_nugetName},", string.Empty).Replace("Version=", string.Empty)
+                .Replace("Culture=neutral", string.Empty).Replace("processorArchitecture=MSIL", string.Empty)
+                .Replace(",", string.Empty).Trim();
+            var replacedFileRecord = new ReplacedFileRecord()
+            {
+                NugetName = _nugetName,
+                FileName = File,
+                ModifiedLineIndex = references.IndexOf(referenceElement),
+                Version = version,
+                NugetDllPath = referenceElement.Value
+            };
+            //删除Nuget的引用
+            referenceElement.Remove();
+            //添加源项目的引用
+            var xElement = new XElement("ProjectReference");
+            xElement.SetAttributeValue("Include", _sourceProjectFile);
+            xElement.Add(new XElement("Project", $"{{{_newProjectId}}}"));
+            xElement.Add(new XElement("Name", _nugetName));
+            var projectReferences = CsProj.GetProjectReferences(Document).ToList();
+            if (projectReferences.Any())
+            {
+                projectReferences[0].AddBeforeSelf(xElement);
+            }
+            else
+            {
+                var itemGroup = Document.Root.Elements().Where(i => i.Name.LocalName == CsProj.ItemGroupName).ToList()[0];
+                itemGroup.Add(xElement);
+            }
+            SaveFile();
+            return replacedFileRecord;
         }
 
         public void RevertNuget()
