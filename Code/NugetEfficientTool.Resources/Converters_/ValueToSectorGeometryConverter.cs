@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -27,11 +23,11 @@ namespace NugetEfficientTool.Resources
             string miniLang;
             if (angle <= Math.PI)
             {
-                miniLang = String.Format(culture, "M50,50 L50,0 A50,50 0 0 1 {0},{1} L50,50Z", point.X, point.Y);
+                miniLang = string.Format(culture, "M50,50 L50,0 A50,50 0 0 1 {0},{1} L50,50Z", point.X, point.Y);
             }
             else
             {
-                miniLang = String.Format(culture, "M50,50 L50,0 A50,50 0 0 1 50,100 A50,50 0 0 1 {0},{1}Z", point.X, point.Y);
+                miniLang = string.Format(culture, "M50,50 L50,0 A50,50 0 0 1 50,100 A50,50 0 0 1 {0},{1}Z", point.X, point.Y);
             }
             return Geometry.Parse(miniLang);
         }

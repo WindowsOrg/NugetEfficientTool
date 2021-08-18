@@ -280,16 +280,16 @@ namespace NugetEfficientTool.Utils
         static readonly IntPtr HWND_TOP = new IntPtr(0);
         static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
 
-        private const UInt32 SWP_NOSIZE = 0x0001;
-        const UInt32 SWP_NOMOVE = 0x0002;
-        const UInt32 SWP_NOREDRAW = 0x0008;
-        const UInt32 SWP_NOACTIVATE = 0x0010;
+        private const uint SWP_NOSIZE = 0x0001;
+        const uint SWP_NOMOVE = 0x0002;
+        const uint SWP_NOREDRAW = 0x0008;
+        const uint SWP_NOACTIVATE = 0x0010;
 
-        const UInt32 SWP_NOOWNERZORDER = 0x0200;
-        const UInt32 SWP_NOSENDCHANGING = 0x0400;
+        const uint SWP_NOOWNERZORDER = 0x0200;
+        const uint SWP_NOSENDCHANGING = 0x0400;
 
         //很重要，窗口切换等需要将popup显示层级重新刷新
-        const UInt32 TOPMOST_FLAGS =
+        const uint TOPMOST_FLAGS =
             SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOMOVE | SWP_NOREDRAW | SWP_NOSENDCHANGING;
 
 

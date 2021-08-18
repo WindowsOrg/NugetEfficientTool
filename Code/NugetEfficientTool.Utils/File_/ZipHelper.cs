@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using Overwrite = ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite;
 
 namespace NugetEfficientTool.Utils
 {
@@ -110,7 +109,7 @@ namespace NugetEfficientTool.Utils
         public static bool TryExtractZip(string zipFileName, string targetDirectory,
             string fileFilter, out Exception exception)
         {
-            return TryExtractZip(zipFileName, targetDirectory, Overwrite.Always,
+            return TryExtractZip(zipFileName, targetDirectory, FastZip.Overwrite.Always,
                 fileFilter, out exception);
         }
 
@@ -124,7 +123,7 @@ namespace NugetEfficientTool.Utils
         /// <param name="fileFilter">组成<see cref="NameFilter"/>的正则表达式</param>
         /// <param name="exception"></param>
         /// <returns></returns>
-        public static bool TryExtractZip(string zipFileName, string targetDirectory, Overwrite overwrite,
+        public static bool TryExtractZip(string zipFileName, string targetDirectory, FastZip.Overwrite overwrite,
             string fileFilter, out Exception exception)
         {
             exception = null;
@@ -150,7 +149,7 @@ namespace NugetEfficientTool.Utils
         public static void ExtractZip(string zipFileName, string targetDirectory,
             string fileFilter)
         {
-            ExtractZip(zipFileName, targetDirectory, Overwrite.Always, fileFilter);
+            ExtractZip(zipFileName, targetDirectory, FastZip.Overwrite.Always, fileFilter);
         }
 
         /// <summary>
@@ -161,7 +160,7 @@ namespace NugetEfficientTool.Utils
         /// <param name="targetDirectory"></param>
         /// <param name="overwrite"></param>
         /// <param name="fileFilter">组成<see cref="NameFilter"/>的正则表达式</param>
-        public static void ExtractZip(string zipFileName, string targetDirectory, Overwrite overwrite,
+        public static void ExtractZip(string zipFileName, string targetDirectory, FastZip.Overwrite overwrite,
             string fileFilter)
         {
             var exceptions = new List<Exception>();
@@ -197,17 +196,17 @@ namespace NugetEfficientTool.Utils
             }
         }
 
-        public static Overwrite ToOverWrite(this Overwrite value)
+        public static FastZip.Overwrite ToOverWrite(this FastZip.Overwrite value)
         {
             switch (value)
             {
-                case Overwrite.Prompt:
-                    return Overwrite.Prompt;
+                case FastZip.Overwrite.Prompt:
+                    return FastZip.Overwrite.Prompt;
                 default:
-                case Overwrite.Always:
-                    return Overwrite.Always;
-                case Overwrite.Never:
-                    return Overwrite.Never;
+                case FastZip.Overwrite.Always:
+                    return FastZip.Overwrite.Always;
+                case FastZip.Overwrite.Never:
+                    return FastZip.Overwrite.Never;
             }
         }
         private static void UnZipFile(string zipFilePath)
@@ -236,7 +235,7 @@ namespace NugetEfficientTool.Utils
                         Directory.CreateDirectory(directoryName);
                     }
 
-                    if (fileName != String.Empty)
+                    if (fileName != string.Empty)
                     {
                         using (FileStream streamWriter = File.Create(theEntry.Name))
                         {

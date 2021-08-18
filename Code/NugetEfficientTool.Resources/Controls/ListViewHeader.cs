@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using NugetEfficientTool.Utils;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool.Resources
 {
