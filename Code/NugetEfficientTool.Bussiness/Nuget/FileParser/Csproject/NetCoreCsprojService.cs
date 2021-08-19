@@ -54,7 +54,8 @@ namespace NugetEfficientTool.Business
             var references = GetReferences(document);
             //添加package引用
             var referenceElement = new XElement(CsProjConst.PackageReferenceName);
-            referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute, $"{replacedRecord.NugetName}, Version={replacedRecord.Version}");
+            referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute,replacedRecord.NugetName);
+            referenceElement.SetAttributeValue(CsProjConst.VersionAttribute, replacedRecord.Version);
             references[replacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
         }
     }

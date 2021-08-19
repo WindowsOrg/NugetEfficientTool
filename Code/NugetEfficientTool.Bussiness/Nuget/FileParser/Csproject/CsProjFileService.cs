@@ -53,11 +53,11 @@ namespace NugetEfficientTool.Business
             {
                 case CsprojFileType.NetFramework:
                     {
-                        return NetCoreCsProj;
+                        return NetFrameworkCsProj;
                     }
                 case CsprojFileType.NetCore:
                     {
-                        return NetFrameworkCsProj;
+                        return NetCoreCsProj;
                     }
             }
             return null;
@@ -97,11 +97,11 @@ namespace NugetEfficientTool.Business
             {
                 case CsprojFileType.NetFramework:
                     {
-                        return NetCoreCsProj;
+                        return NetFrameworkCsProj;
                     }
                 case CsprojFileType.NetCore:
                     {
-                        return NetFrameworkCsProj;
+                        return NetCoreCsProj;
                     }
             }
             return null;
