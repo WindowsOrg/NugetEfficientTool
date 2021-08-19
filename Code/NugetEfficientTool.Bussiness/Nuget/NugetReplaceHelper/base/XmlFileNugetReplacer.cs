@@ -4,7 +4,7 @@ using System.Xml.Linq;
 namespace NugetEfficientTool.Business
 {
     /// <summary>
-    /// 文件替换（抽象类）
+    /// 文件nuget替换（抽象类）
     /// </summary>
     public abstract class XmlFileNugetReplacer
     {

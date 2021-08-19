@@ -50,8 +50,8 @@ namespace NugetEfficientTool.Business
                     firstPackageReference.SetAttributeValue(attribute, null);
                 }
 
-                firstPackageReference.SetAttributeValue(CsProj.IncludeAttribute, nugetFixStrategy.NugetName);
-                firstPackageReference.SetAttributeValue(CsProj.VersionAttribute, nugetFixStrategy.NugetVersion);
+                firstPackageReference.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetName);
+                firstPackageReference.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
             }
 
             if (packageReferenceList.Count > 1)
@@ -85,12 +85,12 @@ namespace NugetEfficientTool.Business
                     ;
                 }
 
-                firstNugetInfoReference.SetAttributeValue(CsProj.IncludeAttribute,
+                firstNugetInfoReference.SetAttributeValue(CsProjConst.IncludeAttribute,
                     nugetFixStrategy.NugetDllInfo.DllFullName);
                 Log = StringSplicer.SpliceWithNewLine(Log,
                     $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
                 var hintPathElementList = firstNugetInfoReference.Elements()
-                    .Where(x => x.Name.LocalName == CsProj.HintPathElementName).ToList();
+                    .Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
                 for (var j = 0; j < hintPathElementList.Count; j++)
                 {
                     if (j != 0)
@@ -162,10 +162,10 @@ namespace NugetEfficientTool.Business
 
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
-            var packageReferences = CsProj.GetPackageReferences(Document).Where(x =>
-                x.Attribute(CsProj.IncludeAttribute).Value == nugetFixStrategy.NugetName);
+            var packageReferences = CsProj.GetReferences(Document).Where(x =>
+                x.Attribute(CsProjConst.IncludeAttribute).Value == nugetFixStrategy.NugetName);
             var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).Where(x =>
-                CsProj.GetNugetInfoFromNugetInfoReference(x).Name == nugetFixStrategy.NugetName);
+                CsProj.GetNugetInfo(x).Name == nugetFixStrategy.NugetName);
             if (!packageReferences.Any() && !nugetInfoReferences.Any())
             {
                 return false;

@@ -1,8 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
+    /// <summary>
+    /// 项目文件Nuget替换类
+    /// </summary>
     public class CsProjNugetReplacer : XmlFileNugetReplacer, INugetFileReplacer
     {
         private readonly string _nugetName;
@@ -23,35 +28,49 @@ namespace NugetEfficientTool.Business
             _sourceProjectFile = sourceProjectFile;
         }
 
+        #region 替换Nuget
+
+        /// <summary>
+        /// 替换Nuget
+        /// </summary>
+        /// <returns></returns>
         public ReplacedFileRecord ReplaceNuget()
         {
             var references = CsProj.GetReferences(Document).ToList();
-            var nugetInfoReferences = references.Where(CsProj.IsNugetInfoReference).ToList();
-            var referenceElement = nugetInfoReferences.FirstOrDefault(x => CsProj.GetNugetInfoFromNugetInfoReference(x).Name == _nugetName);
+            var nugetInfoReferences = references.Where(CsProj.IsNugetReference).ToList();
+            var referenceElement = nugetInfoReferences.FirstOrDefault(x => CsProj.GetNugetInfo(x).Name == _nugetName);
             if (referenceElement == null)
             {
                 return null;
             }
+            //获取Nuget引用信息
+            var replacedFileRecord = GetNugetReferenceInfo(referenceElement, references.IndexOf(referenceElement));
+            //删除Nuget的引用
+            referenceElement.Remove();
+            //添加源项目的引用
+            AddSourceReference();
+            SaveFile();
+            return replacedFileRecord;
+        }
 
-            var includeString = referenceElement.Attribute(CsProj.IncludeAttribute)?.Value;
-            if (string.IsNullOrEmpty(includeString))
-            {
-                return null;
-            }
-            var version = includeString.Replace($"{_nugetName},", string.Empty).Replace("Version=", string.Empty)
-                .Replace("Culture=neutral", string.Empty).Replace("processorArchitecture=MSIL", string.Empty)
-                .Replace(",", string.Empty).Trim();
+        private ReplacedFileRecord GetNugetReferenceInfo(XElement referenceElement, int referenceLineOrder)
+        {
+            var nugetInfo = CsProj.GetNugetInfo(referenceElement);
+            var version = nugetInfo.Version;
             var replacedFileRecord = new ReplacedFileRecord()
             {
                 NugetName = _nugetName,
                 FileName = File,
-                ModifiedLineIndex = references.IndexOf(referenceElement),
+                ModifiedLineIndex = referenceLineOrder,
                 Version = version,
                 NugetDllPath = referenceElement.Value
             };
-            //删除Nuget的引用
-            referenceElement.Remove();
-            //添加源项目的引用
+
+            return replacedFileRecord;
+        }
+
+        private void AddSourceReference()
+        {
             var xElement = new XElement("ProjectReference");
             xElement.SetAttributeValue("Include", _sourceProjectFile);
             xElement.Add(new XElement("Project", $"{{{_newProjectId}}}"));
@@ -63,26 +82,24 @@ namespace NugetEfficientTool.Business
             }
             else
             {
-                var itemGroup = Document.Root.Elements().Where(i => i.Name.LocalName == CsProj.ItemGroupName).ToList()[0];
+                var documentRoot = Document.Root;
+                if (documentRoot == null)
+                {
+                    throw new InvalidOperationException($"document.Root是空的,{XmlFile}");
+                }
+                var itemGroup = documentRoot.Elements().Where(i => i.Name.LocalName == CsProjConst.ItemGroupName).ToList()[0];
                 itemGroup.Add(xElement);
             }
-            SaveFile();
-            return replacedFileRecord;
         }
+
+        #endregion
 
         public void RevertNuget()
         {
-            var references = CsProj.GetReferences(Document).ToList();
-            //添加package引用
-            var referenceElement = new XElement(CsProj.ReferenceName);
-            referenceElement.SetAttributeValue(CsProj.IncludeAttribute, $"{_lastReplacedRecord.NugetName}, Version={_lastReplacedRecord.Version}, Culture=neutral, processorArchitecture=MSIL");
-            var hintPathElement = new XElement(CsProj.HintPathElementName);
-            hintPathElement.SetValue(_lastReplacedRecord.NugetDllPath);
-            referenceElement.Add(hintPathElement);
-            references[_lastReplacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
+            CsProj.RevertReference(Document, _lastReplacedRecord);
             //删除源代码引用
             var projectReferences = CsProj.GetProjectReferences(Document);
-            var sourceProjectReferences = projectReferences.Where(i => i.Attribute(CsProj.IncludeAttribute).Value.Contains(_sourceProjectFile)).ToList();
+            var sourceProjectReferences = projectReferences.Where(i => i.Attribute(CsProjConst.IncludeAttribute).Value.Contains(_sourceProjectFile)).ToList();
             foreach (var sourceProjectReference in sourceProjectReferences)
             {
                 sourceProjectReference.Remove();

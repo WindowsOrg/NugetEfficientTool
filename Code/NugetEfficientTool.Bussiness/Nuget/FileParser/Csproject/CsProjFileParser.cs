@@ -35,26 +35,26 @@ namespace NugetEfficientTool.Business
 
             _isGoodFormat = false;
             var root = _xDocument.Root;
-            if (root.Name.LocalName != CsProj.RootName)
+            if (root.Name.LocalName != CsProjConst.RootName)
             {
-                ExceptionMessage = $".csproj 文件根节点名称不为 ${CsProj.RootName}";
+                ExceptionMessage = $".csproj 文件根节点名称不为 ${CsProjConst.RootName}";
                 return false;
             }
 
-            foreach (var packageReference in CsProj.GetPackageReferences(_xDocument))
+            foreach (var packageReference in CsProj.GetReferences(_xDocument))
             {
-                if (packageReference.Attribute(CsProj.IncludeAttribute) == null &&
-                    packageReference.Attribute(CsProj.UpdateAttribute) == null)
+                if (packageReference.Attribute(CsProjConst.IncludeAttribute) == null &&
+                    packageReference.Attribute(CsProjConst.UpdateAttribute) == null)
                 {
-                    ExceptionMessage = $"{CsProj.PackageReferenceName} 缺少 {CsProj.IncludeAttribute} 属性。";
+                    ExceptionMessage = $"{CsProjConst.PackageReferenceName} 缺少 {CsProjConst.IncludeAttribute} 属性。";
                     return false;
                 }
 
-                if (packageReference.Attribute(CsProj.VersionAttribute) == null
-                    && packageReference.Elements().FirstOrDefault(x => x.Name.LocalName == CsProj.VersionElementName) ==
+                if (packageReference.Attribute(CsProjConst.VersionAttribute) == null
+                    && packageReference.Elements().FirstOrDefault(x => x.Name.LocalName == CsProjConst.VersionElementName) ==
                     null)
                 {
-                    ExceptionMessage = $"{CsProj.PackageReferenceName} 缺少必要的版本信息。";
+                    ExceptionMessage = $"{CsProjConst.PackageReferenceName} 缺少必要的版本信息。";
                     return false;
                 }
             }
@@ -75,7 +75,7 @@ namespace NugetEfficientTool.Business
             }
 
             var nugetInfoList = new List<NugetInfo>();
-            var packageReferences = CsProj.GetPackageReferences(_xDocument);
+            var packageReferences = CsProj.GetReferences(_xDocument);
             foreach (var packageReference in packageReferences)
             {
                 var nugetName = GetNugetName(packageReference);
@@ -90,7 +90,7 @@ namespace NugetEfficientTool.Business
 
             foreach (var nugetInfoReference in CsProj.GetNugetInfoReferences(_xDocument))
             {
-                var nugetInfo = CsProj.GetNugetInfoFromNugetInfoReference(nugetInfoReference, _csProjPath);
+                var nugetInfo = CsProj.GetNugetInfo(nugetInfoReference, _csProjPath);
                 nugetInfoList.Add(nugetInfo);
             }
 
@@ -99,13 +99,13 @@ namespace NugetEfficientTool.Business
 
         private string GetNugetName(XElement xElement)
         {
-            var includeAttribute = xElement.Attribute(CsProj.IncludeAttribute);
+            var includeAttribute = xElement.Attribute(CsProjConst.IncludeAttribute);
             if (includeAttribute != null)
             {
                 return includeAttribute.Value;
             }
 
-            var updateAttribute = xElement.Attribute(CsProj.UpdateAttribute);
+            var updateAttribute = xElement.Attribute(CsProjConst.UpdateAttribute);
             if (updateAttribute != null)
             {
                 return updateAttribute.Value;
@@ -117,14 +117,14 @@ namespace NugetEfficientTool.Business
 
         private string GetNugetVersion(XElement xElement)
         {
-            var versionAttribute = xElement.Attribute(CsProj.VersionAttribute);
+            var versionAttribute = xElement.Attribute(CsProjConst.VersionAttribute);
             if (versionAttribute != null)
             {
                 return versionAttribute.Value;
             }
 
             var childElements = xElement.Elements();
-            var firstVersionAttribute = childElements.FirstOrDefault(x => x.Name.LocalName == CsProj.VersionAttribute);
+            var firstVersionAttribute = childElements.FirstOrDefault(x => x.Name.LocalName == CsProjConst.VersionAttribute);
             if (firstVersionAttribute == null)
             {
                 ShowExceptionMessageBox(xElement);
