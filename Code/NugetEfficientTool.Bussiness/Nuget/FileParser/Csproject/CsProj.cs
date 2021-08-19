@@ -79,12 +79,16 @@ namespace NugetEfficientTool.Business
             {
                 return nugetInfo;
             }
+            var includeAttribute = xElement.Attribute(CsProjConst.IncludeAttribute);
+            if (includeAttribute == null)
+            {
+                return nugetInfo;
+            }
             var dllPath = GetDllPath(xElement, Path.GetDirectoryName(sourceFilePath));
-            var nugetDllInfo = new NugetDllInfo(dllPath, xElement.Attribute(CsProjConst.IncludeAttribute).Value);
+            var nugetDllInfo = new NugetDllInfo(dllPath, includeAttribute.Value);
             nugetInfo.NugetDllInfo = nugetDllInfo;
             return nugetInfo;
         }
-
         /// <summary>
         /// 获取DLL的绝对路径
         /// </summary>
@@ -97,18 +101,17 @@ namespace NugetEfficientTool.Business
             {
                 throw new ArgumentNullException(nameof(xElement));
             }
-
-            if (csProjDirectory == null)
+            if (string.IsNullOrWhiteSpace(csProjDirectory) || !Directory.Exists(csProjDirectory))
             {
-                throw new ArgumentNullException(nameof(csProjDirectory));
+                return string.Empty;
             }
 
-            if (!Directory.Exists(csProjDirectory))
+            var hintPathElement = xElement.Elements().FirstOrDefault(x => x.Name.LocalName == CsProjConst.HintPathElementName);
+            if (hintPathElement == null)
             {
-                throw new DirectoryNotFoundException(csProjDirectory);
+                return string.Empty;
             }
-
-            var dllRelativePath = xElement.Elements().First(x => x.Name.LocalName == CsProjConst.HintPathElementName).Value;
+            var dllRelativePath = hintPathElement.Value;
             var dllAbsolutePath = Path.GetFullPath(Path.Combine(csProjDirectory, dllRelativePath));
             return dllAbsolutePath;
         }
@@ -122,6 +125,10 @@ namespace NugetEfficientTool.Business
             var matchCollection = NugetTargetFrameworkRegex.Matches(dllFilePath);
             return matchCollection[matchCollection.Count - 1].Value;
         }
+        public static void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
+        {
+            CsProjService.RevertReference(document, replacedRecord);
+        }
 
         #endregion
 
@@ -132,10 +139,5 @@ namespace NugetEfficientTool.Business
         private static readonly Regex NugetTargetFrameworkRegex = new Regex(@"(?<=lib\\).*(?=\\)");
 
         #endregion
-
-        public static void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
-        {
-            CsProjService.RevertReference(document, replacedRecord);
-        }
     }
 }

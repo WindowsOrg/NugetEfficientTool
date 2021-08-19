@@ -89,7 +89,7 @@
     <Compile Include="Nuget\Utils\NugetConfigReader.cs" />
     <Compile Include="Nuget\NugetFixHelper\NugetConfigRepairer.cs" />
     <Compile Include="Nuget\Utils\NugetConfigType.cs" />
-    <Compile Include="Nuget\Utils\NugetFixStrategy.cs" />
+    <Compile Include="Nuget\NugetFixHelper\NugetFixStrategy.cs" />
     <Compile Include="Nuget\Utils\NugetInfo.cs" />
     <Compile Include="Nuget\Utils\FileNugetInfo.cs" />
     <Compile Include="Nuget\Utils\NugetVersion.cs" />

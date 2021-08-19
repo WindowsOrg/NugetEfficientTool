@@ -41,20 +41,28 @@ namespace NugetEfficientTool.Business
                 return false;
             }
 
-            foreach (var packageReference in CsProj.GetReferences(_xDocument))
+            foreach (var packageReference in CsProj.GetNugetInfoReferences(_xDocument))
             {
-                if (packageReference.Attribute(CsProjConst.IncludeAttribute) == null &&
-                    packageReference.Attribute(CsProjConst.UpdateAttribute) == null)
+                if (packageReference.Attribute(CsProjConst.IncludeAttribute) == null)
                 {
                     ExceptionMessage = $"{CsProjConst.PackageReferenceName} 缺少 {CsProjConst.IncludeAttribute} 属性。";
                     return false;
                 }
 
-                if (packageReference.Attribute(CsProjConst.VersionAttribute) == null
-                    && packageReference.Elements().FirstOrDefault(x => x.Name.LocalName == CsProjConst.VersionElementName) ==
-                    null)
+                var nugetInfo = CsProj.GetNugetInfo(packageReference);
+                if (nugetInfo == null)
                 {
-                    ExceptionMessage = $"{CsProjConst.PackageReferenceName} 缺少必要的版本信息。";
+                    ExceptionMessage = $"{packageReference.Name}，不包含nuget信息。{packageReference.Value}。";
+                    return false;
+                }
+                if (string.IsNullOrWhiteSpace(nugetInfo.Name))
+                {
+                    ExceptionMessage = $"{packageReference.Name}，不包含nuget名称。";
+                    return false;
+                }
+                if (string.IsNullOrWhiteSpace(nugetInfo.Version))
+                {
+                    ExceptionMessage = $"{packageReference.Name}，版本信息缺失。";
                     return false;
                 }
             }
@@ -75,68 +83,17 @@ namespace NugetEfficientTool.Business
             }
 
             var nugetInfoList = new List<NugetInfo>();
-            var packageReferences = CsProj.GetReferences(_xDocument);
-            foreach (var packageReference in packageReferences)
+            var references = CsProj.GetReferences(_xDocument);
+            foreach (var reference in references)
             {
-                var nugetName = GetNugetName(packageReference);
-                var nugetVersion = GetNugetVersion(packageReference);
-                if (string.IsNullOrWhiteSpace(nugetName) || string.IsNullOrWhiteSpace(nugetVersion))
+                var nugetInfo = CsProj.GetNugetInfo(reference, _csProjPath);
+                if (nugetInfo == null||string.IsNullOrWhiteSpace(nugetInfo.Name)||string.IsNullOrWhiteSpace(nugetInfo.Version))
                 {
                     continue;
                 }
-
-                nugetInfoList.Add(new NugetInfo(nugetName, nugetVersion));
-            }
-
-            foreach (var nugetInfoReference in CsProj.GetNugetInfoReferences(_xDocument))
-            {
-                var nugetInfo = CsProj.GetNugetInfo(nugetInfoReference, _csProjPath);
                 nugetInfoList.Add(nugetInfo);
             }
-
             return nugetInfoList;
-        }
-
-        private string GetNugetName(XElement xElement)
-        {
-            var includeAttribute = xElement.Attribute(CsProjConst.IncludeAttribute);
-            if (includeAttribute != null)
-            {
-                return includeAttribute.Value;
-            }
-
-            var updateAttribute = xElement.Attribute(CsProjConst.UpdateAttribute);
-            if (updateAttribute != null)
-            {
-                return updateAttribute.Value;
-            }
-
-            ShowExceptionMessageBox(xElement);
-            return string.Empty;
-        }
-
-        private string GetNugetVersion(XElement xElement)
-        {
-            var versionAttribute = xElement.Attribute(CsProjConst.VersionAttribute);
-            if (versionAttribute != null)
-            {
-                return versionAttribute.Value;
-            }
-
-            var childElements = xElement.Elements();
-            var firstVersionAttribute = childElements.FirstOrDefault(x => x.Name.LocalName == CsProjConst.VersionAttribute);
-            if (firstVersionAttribute == null)
-            {
-                ShowExceptionMessageBox(xElement);
-                return string.Empty;
-            }
-
-            return firstVersionAttribute.Value;
-        }
-
-        private void ShowExceptionMessageBox(XElement xElement)
-        {
-            throw new ArgumentException($"发现一个无法解析的键，请保留现场，联系开发者。{Environment.NewLine}{xElement}");
         }
 
         #region 私有变量
