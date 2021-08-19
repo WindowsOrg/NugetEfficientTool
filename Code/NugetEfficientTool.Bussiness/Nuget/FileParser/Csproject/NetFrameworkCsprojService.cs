@@ -84,11 +84,11 @@ namespace NugetEfficientTool.Business
             var referenceElement = new XElement(CsProjConst.ReferenceName);
             var version = replacedRecord.Version;
             //补充.0
-            if (version.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries).Length == 2)
+            if (version.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
             {
                 version = $"{version}.0";
             }
-            referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute, $"{replacedRecord.NugetName}, Version={replacedRecord.Version}, Culture=neutral, processorArchitecture=MSIL");
+            referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute, $"{replacedRecord.NugetName}, Version={version}, Culture=neutral, processorArchitecture=MSIL");
             var hintPathElement = new XElement(CsProjConst.HintPathElementName);
             hintPathElement.SetValue(replacedRecord.NugetDllPath);
             referenceElement.Add(hintPathElement);
