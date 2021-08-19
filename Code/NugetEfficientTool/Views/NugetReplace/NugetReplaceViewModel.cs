@@ -17,6 +17,7 @@ namespace NugetEfficientTool
             ReplaceNugetItemsCommand = new ActionCommand(ReplaceNugetItems);
             RevertNugetItemsCommand = new ActionCommand(RevertNugetItems);
             DeleteNugetItemCommand = new ActionCommand<NugetReplaceItem>(DeleteNugetItem);
+            SortUpNugetItemCommand = new ActionCommand<NugetReplaceItem>(SortUpNugetItem);
             UserOperationConfigHelper.SolutionFileUpdated += UserOperationConfigHelper_SolutionFileUpdated;
         }
 
@@ -62,6 +63,28 @@ namespace NugetEfficientTool
         {
             NugetReplaceItems.Add(new NugetReplaceItem());
             UpdateOperationStatus();
+        }
+
+        #endregion
+
+        #region 顺序
+
+        public ICommand SortUpNugetItemCommand { get; }
+
+        private void SortUpNugetItem(NugetReplaceItem obj)
+        {
+            var currentOrder = NugetReplaceItems.IndexOf(obj);
+            if (currentOrder == 0)
+            {
+                return;
+            }
+            if (NugetReplaceItems.Any(i => i.HasReplaced))
+            {
+                CustomText.Notification.ShowAsync(_view.Window, "当前有Nuget源已替换，不支持排序！");
+                return;
+            }
+            NugetReplaceItems.Remove(obj);
+            NugetReplaceItems.Insert(currentOrder - 1, obj);
         }
 
         #endregion
@@ -228,6 +251,7 @@ namespace NugetEfficientTool
                 OnPropertyChanged();
             }
         }
+
         private bool _canSelectedItemRevert;
 
         #endregion

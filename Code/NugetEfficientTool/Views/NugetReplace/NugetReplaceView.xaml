@@ -64,14 +64,22 @@
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Center"
                                                                 Background="Transparent">
+                                                <Button Name="UpButton" Margin="0 0 16 0" 
+                                                        Style="{StaticResource Style.Button.Image}"
+                                                        ToolTip="上调" VerticalAlignment="Center"
+                                                        utils:ControlHelper.Image="{StaticResource Image.Up.Gray}"
+                                                        utils:ControlHelper.ImageHover="{StaticResource Image.Up.Green}"
+                                                        utils:ControlHelper.ImagePressed="{StaticResource Image.Up.Green}"
+                                                        Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.SortUpNugetItemCommand}"
+                                                        CommandParameter="{Binding}"/>
                                                 <Button Name="DeleteButton" Margin="0 0 16 0" 
-                                                            Style="{StaticResource Style.Button.Image}"
-                                                            ToolTip="删除" VerticalAlignment="Center"
-                                                            utils:ControlHelper.Image="{StaticResource Image.Delete.Normal}"
-                                                            utils:ControlHelper.ImageHover="{StaticResource Image.Delete.Hover}"
-                                                            utils:ControlHelper.ImagePressed="{StaticResource Image.Delete.Hover}"
-                                                            Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.DeleteNugetItemCommand}"
-                                                            CommandParameter="{Binding}"/>
+                                                        Style="{StaticResource Style.Button.Image}"
+                                                        ToolTip="删除" VerticalAlignment="Center"
+                                                        utils:ControlHelper.Image="{StaticResource Image.Delete.Normal}"
+                                                        utils:ControlHelper.ImageHover="{StaticResource Image.Delete.Hover}"
+                                                        utils:ControlHelper.ImagePressed="{StaticResource Image.Delete.Hover}"
+                                                        Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.DeleteNugetItemCommand}"
+                                                        CommandParameter="{Binding}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Grid>

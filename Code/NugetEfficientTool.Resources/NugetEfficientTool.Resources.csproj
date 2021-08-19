@@ -296,5 +296,9 @@
   <ItemGroup>
     <Resource Include="Images\ImageFiles\restart_dark.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ImageFiles\up_gray.png" />
+    <Resource Include="Images\ImageFiles\up_green.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

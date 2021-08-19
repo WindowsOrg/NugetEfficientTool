@@ -28,4 +28,6 @@
     <BitmapImage x:Key="Image.Restart.Gray" UriSource="ImageFiles/restart_gray.png"></BitmapImage>
     <BitmapImage x:Key="Image.Restart.Green" UriSource="ImageFiles/restart_green.png"></BitmapImage>
 
+    <BitmapImage x:Key="Image.Up.Gray" UriSource="ImageFiles/up_gray.png"></BitmapImage>
+    <BitmapImage x:Key="Image.Up.Green" UriSource="ImageFiles/up_green.png"></BitmapImage>
 </ResourceDictionary>
