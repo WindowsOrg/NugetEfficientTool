@@ -124,8 +124,8 @@ namespace NugetEfficientTool
             {
                 //对nuget包列表进行重新排序，先替换的先恢复
                 var replacedNugetInfos = NugetReplaceCacheManager.GetReplacedNugetInfos();
-                nugetItems=nugetItems.OrderBy(i => replacedNugetInfos.FindIndex(replacedInfo =>
-                    replacedInfo.Name == i.NugetName && replacedInfo.SourceCsprojPath == i.SourceCsprojFile)).ToList();
+                nugetItems = nugetItems.OrderBy(i => replacedNugetInfos.FindIndex(replacedInfo =>
+                      replacedInfo.Name == i.NugetName && replacedInfo.SourceCsprojPath == i.SourceCsprojFile)).ToList();
                 foreach (var nugetReplaceItem in nugetItems)
                 {
                     _nugetReplaceService.Revert(solutionFile, nugetReplaceItem.NugetName, nugetReplaceItem.SourceCsprojFile);
