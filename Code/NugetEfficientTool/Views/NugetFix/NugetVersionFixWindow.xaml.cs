@@ -42,26 +42,33 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void ButtonFix_OnClick(object sender, RoutedEventArgs e)
         {
-            _nugetFixStrategyList.Clear();
-            foreach (var child in PanelNugetVersionSelectors.Children)
+            try
             {
-                if (!(child is NugetVersionSelectorUserControl nugetVersionSelectorUserControl))
+                _nugetFixStrategyList.Clear();
+                foreach (var child in PanelNugetVersionSelectors.Children)
                 {
-                    continue;
+                    if (!(child is NugetVersionSelectorUserControl nugetVersionSelectorUserControl))
+                    {
+                        continue;
+                    }
+
+                    var nugetName = nugetVersionSelectorUserControl.NugetName;
+                    var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
+                    var fixNugetStrategy = FixNugetVersion(nugetName, selectedVersion);
+                    _nugetFixStrategyList.Add(fixNugetStrategy);
                 }
 
-                var nugetName = nugetVersionSelectorUserControl.NugetName;
-                var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
-                var fixNugetStrategy = FixNugetVersion(nugetName, selectedVersion);
-                _nugetFixStrategyList.Add(fixNugetStrategy);
-            }
+                if (!_nugetFixStrategyList.Any())
+                {
+                    return;
+                }
 
-            if (!_nugetFixStrategyList.Any())
+                NugetFixStrategiesSelected?.Invoke(this, new NugetFixStrategiesEventArgs(_nugetFixStrategyList));
+            }
+            catch (Exception exception)
             {
-                return;
+                MessageBox.Show(exception.Message);
             }
-
-            NugetFixStrategiesSelected?.Invoke(this, new NugetFixStrategiesEventArgs(_nugetFixStrategyList));
         }
         /// <summary>
         /// 修复一个Nuget版本问题
