@@ -55,10 +55,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\ReplacedNugetInfo.cs" />
-    <Compile Include="Config\NugetReplaceCacheManager.cs" />
+    <Compile Include="Config\Replace\ProjectSolution.cs" />
+    <Compile Include="Config\Replace\ReplaceNugetConfig.cs" />
+    <Compile Include="Config\Replace\ReplacedNugetInfo.cs" />
+    <Compile Include="Config\Replace\NugetReplaceCacheManager.cs" />
     <Compile Include="Config\UIHabitsConfigHelper.cs" />
-    <Compile Include="Config\UserOperationConfigHelper.cs" />
+    <Compile Include="Config\Replace\UserOperationConfigHelper.cs" />
     <Compile Include="Config\WindowLocationSizeMode.cs" />
     <Compile Include="CustomText.cs" />
     <Compile Include="Notification\NotificationProvider.cs" />

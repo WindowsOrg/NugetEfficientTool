@@ -1,9 +1,20 @@
-﻿using NugetEfficientTool.Utils;
+﻿using System.IO;
+using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool
 {
     public class NugetReplaceItem : BindingPropertyBase
     {
+        public NugetReplaceItem(string argName, string argSourceCsprojPath)
+        {
+            _nugetName = argName;
+            _sourceCsprojFile = argSourceCsprojPath;
+        }
+
+        public NugetReplaceItem()
+        {
+           
+        }
         /// <summary>
         /// Nuget名称
         /// </summary>
@@ -27,6 +38,10 @@ namespace NugetEfficientTool
             set
             {
                 _sourceCsprojFile = value;
+                if (!string.IsNullOrEmpty(_sourceCsprojFile) && File.Exists(value))
+                {
+                    NugetName = Path.GetFileNameWithoutExtension(value);
+                }
                 OnPropertyChanged();
             }
         }

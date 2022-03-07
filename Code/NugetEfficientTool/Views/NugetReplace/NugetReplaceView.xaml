@@ -129,7 +129,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="12 5">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -156,7 +156,7 @@
                                               ItemsSource="{Binding NugetReplaceItems,Mode=TwoWay}"/>
             </ScrollViewer>
         </Grid>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 12 0 24">
             <Button x:Name="ReplaceButton" Content="替换" Command="{Binding ReplaceNugetItemsCommand}" 
                     VerticalAlignment="Center" Style="{StaticResource Style.Button.AccentBackground.Text}"
                     IsEnabled="{Binding CanSelectedItemsReplace}"/>

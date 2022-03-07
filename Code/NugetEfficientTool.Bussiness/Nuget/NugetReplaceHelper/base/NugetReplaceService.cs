@@ -9,11 +9,17 @@ namespace NugetEfficientTool.Business
     /// </summary>
     public class NugetReplaceService
     {
+        private readonly string _projectId;
+
+        public NugetReplaceService(string projectId)
+        {
+            _projectId = projectId;
+        }
+
         /// <summary>
         /// 是否完成了替换操作
         /// </summary>
         /// <param name="solutionFile"></param>
-        /// <param name="nugetName"></param>
         /// <param name="sourceProjectFile"></param>
         /// <returns></returns>
         public bool HasReplaced(string solutionFile, string sourceProjectFile)
@@ -29,11 +35,11 @@ namespace NugetEfficientTool.Business
         /// <param name="solutionFile">解决方案</param>
         /// <param name="nugetName">Nuget包</param>
         /// <param name="sourceProjectFile">源代码csProject</param>
-        public bool Replace(string solutionFile, string nugetName, string sourceProjectFile)
+        public ReplacedNugetInfo Replace(string solutionFile, string nugetName, string sourceProjectFile)
         {
             if (HasReplaced(solutionFile, sourceProjectFile))
             {
-                return false;
+                return null;
             }
             var replacedNugetInfo = new ReplacedNugetInfo()
             {
@@ -74,8 +80,7 @@ namespace NugetEfficientTool.Business
                         break;
                 }
             }
-            NugetReplaceCacheManager.SaveReplacedNugetInfo(replacedNugetInfo);
-            return true;
+            return replacedNugetInfo;
         }
         /// <summary>
         /// 替换为原Nuget包
@@ -87,7 +92,7 @@ namespace NugetEfficientTool.Business
                 return false;
             }
 
-            var replacedNugetInfo = NugetReplaceCacheManager.GetReplacedNugetInfo(solutionFile, nugetName);
+            var replacedNugetInfo = NugetReplaceCacheManager.GetReplacedNugetInfo(_projectId, solutionFile, nugetName);
             if (replacedNugetInfo == null)
             {
                 throw new InvalidOperationException($"没有{solutionFile}的Nuget替换记录，不能恢复");
@@ -124,7 +129,7 @@ namespace NugetEfficientTool.Business
             }
 
             replacedNugetInfo.Records.Clear();
-            NugetReplaceCacheManager.ClearReplacedNugetInfo(replacedNugetInfo.SolutionFile, replacedNugetInfo.Name);
+            NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, replacedNugetInfo.SolutionFile, replacedNugetInfo.Name);
             return true;
         }
     }

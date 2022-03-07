@@ -19,18 +19,15 @@ namespace NugetEfficientTool
         {
             InitializeComponent();
             Loaded += NugetFixView_Loaded;
-            UserOperationConfigHelper.SolutionFileUpdated += UserOperationConfigHelper_SolutionFileUpdated;
-        }
-
-        private void UserOperationConfigHelper_SolutionFileUpdated(object sender, string currentSolution)
-        {
-            SolutionTextBox.Text = currentSolution;
         }
 
         private void NugetFixView_Loaded(object sender, RoutedEventArgs e)
         {
-            Loaded -= NugetFixView_Loaded;
-            SolutionTextBox.Text = UserOperationConfigHelper.GetSolutionFile();
+            var firstSolution = UserOperationConfigHelper.GetSolutions().FirstOrDefault();
+            if (firstSolution != null)
+            {
+                SolutionTextBox.Text = firstSolution.SolutionFile;
+            }
         }
         private async void SolutionTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -68,7 +65,6 @@ namespace NugetEfficientTool
                 CustomText.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
                 return false;
             }
-            UserOperationConfigHelper.SaveSolutionFile(solutionFile);
             return true;
         }
         /// <summary>

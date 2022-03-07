@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="NugetEfficientTool.ReplaceViewContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+             xmlns:nugetEfficientTool="clr-namespace:NugetEfficientTool"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" WindowChrome.IsHitTestVisibleInChrome="True">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="SettingBorderBrush" Color="#FFEEEEEE"></SolidColorBrush>
+        <SolidColorBrush x:Key="TabMenuBackground" Color="#F8F8F8"/>
+        <Style x:Key="Style.TabControl.Horizontal" TargetType="TabControl">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Background" Value="{StaticResource TabMenuBackground}"></Setter>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid KeyboardNavigation.TabNavigation="Cycle">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" BorderThickness="0" BorderBrush="{StaticResource SettingBorderBrush}">
+                                <StackPanel Orientation="Horizontal" IsItemsHost="True" Background="{TemplateBinding Background}"/>
+                            </Border>
+                            <Border Grid.Row="1" BorderThickness="0">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TabItem">
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TabItem_OnPreviewMouseLeftButtonDown"></EventSetter>
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Background" Value="{StaticResource TabMenuBackground}"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="MinWidth" Value="100"></Setter>
+            <Setter Property="MaxWidth" Value="160"></Setter>
+            <Setter Property="Padding" Value="6 0"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid x:Name="Root">
+                            <d:Grid.DataContext>
+                                <nugetEfficientTool:ReplaceProjectMode/>
+                            </d:Grid.DataContext>
+                            <Border x:Name="Border" Background="White" Margin="0"
+                                    BorderBrush="#E4E4E4"  Height="{TemplateBinding Height}" BorderThickness="0 0 0 1"/>
+                            <TextBlock x:Name="ContentTextBlock" Text="{Binding SolutionName}" FontSize="14"
+                                       Foreground="#666666" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Margin="{TemplateBinding Padding}" TextTrimming="CharacterEllipsis"/>
+                            <Button x:Name="DeleteButton" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    Style="{StaticResource Style.Button.Geometry}" Visibility="Collapsed"
+                                    utils:ControlHelper.Geometry="{StaticResource Geometry.Delete}" 
+                                    utils:ControlHelper.ForegroundNormal="{StaticResource Brush.Icon.Delete.Normal}"
+                                    utils:ControlHelper.ForegroundHover="{StaticResource Brush.Icon.Delete.Light}"
+                                    utils:ControlHelper.ForegroundPressed="{StaticResource Brush.Icon.Delete.Dark}"
+                                    Click="DeleteButton_OnClick" ToolTip="删除"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Brush.Accent.Normal}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="0 0 0 2"/>
+                                <Setter TargetName="ContentTextBlock" Property="FontWeight" Value="Bold"/>
+                                <Setter TargetName="ContentTextBlock" Property="Foreground" Value="{StaticResource Brush.Accent.Normal}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="DeleteButton" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="DeleteButton" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 -48 0 0">
+            <TabControl x:Name="ProjectTabs" Style="{StaticResource Style.TabControl.Horizontal}"
+                        VerticalAlignment="Center" SelectedIndex="0">
+            </TabControl>
+            <Button x:Name="AddProjectButton" Style="{StaticResource Style.Button.Geometry}" 
+                    VerticalAlignment="Center" Margin="0 2 0 0" Padding="6"
+                    utils:ControlHelper.Geometry="{StaticResource Geometry.NewDoc}" 
+                    utils:ControlHelper.ForegroundNormal="{StaticResource Brush.Accent.Normal}"
+                    utils:ControlHelper.ForegroundHover="{StaticResource Brush.Accent.Light}"
+                    utils:ControlHelper.ForegroundPressed="{StaticResource Brush.Accent.Dark}"
+                    ToolTip="添加项目" Click="AddProjectButton_OnClick"/>
+        </StackPanel>
+        <Border Grid.Row="1" x:Name="ProjectContent">
+        </Border>
+    </Grid>
+</UserControl>

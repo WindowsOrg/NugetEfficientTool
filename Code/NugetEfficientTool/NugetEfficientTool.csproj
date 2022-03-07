@@ -66,11 +66,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Views\NugetReplace\ReplaceProjectMode.cs" />
     <Compile Include="Views\NugetReplace\NugetReplaceItem.cs" />
     <Compile Include="Views\NugetReplace\NugetReplaceView.xaml.cs">
       <DependentUpon>NugetReplaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NugetReplace\NugetReplaceViewModel.cs" />
+    <Compile Include="Views\NugetReplace\ReplaceViewContainer.xaml.cs">
+      <DependentUpon>ReplaceViewContainer.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +111,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NugetReplace\NugetReplaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NugetReplace\ReplaceViewContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

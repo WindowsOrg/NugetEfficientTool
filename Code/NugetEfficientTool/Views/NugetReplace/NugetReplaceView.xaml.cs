@@ -18,34 +18,40 @@ namespace NugetEfficientTool
         {
             InitializeComponent();
             Loaded += NugetFixView_Loaded;
-            UserOperationConfigHelper.SolutionFileUpdated += UserOperationConfigHelper_SolutionFileUpdated;
             SolutionTextBox.TextChanged += SolutionTextBox_OnTextChanged;
         }
 
-        private void UserOperationConfigHelper_SolutionFileUpdated(object sender, string currentSolution)
+        public void Init(string id, string solutionFile)
         {
-            SolutionTextBox.Text = currentSolution;
+            _id = id;
+            SolutionTextBox.Text = solutionFile;
         }
 
         private void NugetFixView_Loaded(object sender, RoutedEventArgs e)
         {
             Loaded -= NugetFixView_Loaded;
-            ViewModel.Initialize(this);
+            ViewModel.Initialize(this, _id, SolutionTextBox.Text);
         }
 
         private NugetReplaceViewModel ViewModel => DataContext as NugetReplaceViewModel;
 
         private async void SourceProjectTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox textBox)
+            if (sender is TextBox textBox && textBox.DataContext is NugetReplaceItem replaceItem)
             {
                 if (!textBox.Text.Contains('"'))
                 {
                     return;
                 }
                 await Task.Delay(TimeSpan.FromMilliseconds(10));
-                textBox.Text = textBox.Text.Trim('"');
+                var sourceCsprojFile = textBox.Text.Trim('"');
+                textBox.Text = sourceCsprojFile;
                 textBox.SelectionStart = textBox.Text.Length;
+                //填充显示
+                if (!string.IsNullOrEmpty(sourceCsprojFile) && File.Exists(sourceCsprojFile))
+                {
+                    replaceItem.NugetName = Path.GetFileNameWithoutExtension(sourceCsprojFile);
+                }
             }
         }
 
@@ -91,6 +97,12 @@ namespace NugetEfficientTool
                 SolutionTextBox.TextChanged += SolutionTextBox_OnTextChanged;
                 SolutionTextBox.SelectionStart = solutionFile.Length;
             }
+            //保存
+            if (!string.IsNullOrEmpty(solutionFile))
+            {
+                NugetReplaceCacheManager.SaveOrUpdateSolution(_id, solutionFile);
+                SolutionFileUpdated?.Invoke(this, solutionFile);
+            }
         }
 
         private void ReplacingItem_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -110,6 +122,8 @@ namespace NugetEfficientTool
         {
             ViewModel.UpdateOperationStatus();
         }
+        private string _id = string.Empty;
+        public event EventHandler<string> SolutionFileUpdated;
     }
 
     public interface INugetReplaceView
