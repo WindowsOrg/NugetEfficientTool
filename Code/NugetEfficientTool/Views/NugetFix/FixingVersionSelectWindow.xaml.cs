@@ -54,7 +54,7 @@ namespace NugetEfficientTool
 
                     var nugetName = nugetVersionSelectorUserControl.NugetName;
                     var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
-                    var fixNugetStrategy = FixNugetVersion(nugetName, selectedVersion);
+                    var fixNugetStrategy = CreateVersionFixStrategy(nugetName, selectedVersion);
                     _nugetFixStrategyList.Add(fixNugetStrategy);
                 }
 
@@ -71,11 +71,11 @@ namespace NugetEfficientTool
             }
         }
         /// <summary>
-        /// 修复一个Nuget版本问题
+        /// 创建修复策略
         /// </summary>
         /// <param name="nugetName"></param>
         /// <param name="selectedVersion"></param>
-        private NugetFixStrategy FixNugetVersion(string nugetName, string selectedVersion)
+        private NugetFixStrategy CreateVersionFixStrategy(string nugetName, string selectedVersion)
         {
             var nugetInfoExGroup = _mismatchVersionNugetInfoExs.FirstOrDefault(x => x.NugetName == nugetName);
             if (nugetInfoExGroup == null) return null;
@@ -109,18 +109,12 @@ namespace NugetEfficientTool
             {
                 return new NugetFixStrategy(nugetName, selectedVersion, nugetDllInfo);
             }
-            else
+            var targetFramework = targetFrameworks.FirstOrDefault();
+            if (targetFramework == null)
             {
-                var targetFramework = targetFrameworks.FirstOrDefault();
-                if (targetFramework == null)
-                {
-                    return new NugetFixStrategy(nugetName, selectedVersion, new NugetDllInfo("", ""));
-                }
-                else
-                {
-                    return new NugetFixStrategy(nugetName, selectedVersion, targetFramework);
-                }
+                return new NugetFixStrategy(nugetName, selectedVersion, new NugetDllInfo("", ""));
             }
+            return new NugetFixStrategy(nugetName, selectedVersion, targetFramework);
         }
     }
 }
