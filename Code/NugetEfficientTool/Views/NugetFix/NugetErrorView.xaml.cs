@@ -143,8 +143,8 @@ namespace NugetEfficientTool
             };
             nugetVersionFixWindow.NugetFixStrategiesSelected += (o, args) =>
             {
-                var nugetFixStrategies = args.NugetFixStrategies;
-                if (nugetFixStrategies == null || !nugetFixStrategies.Any())
+                var nugetFixStrategies = args.NugetFixStrategies.ToList();
+                if (!nugetFixStrategies.Any())
                 {
                     return;
                 }
@@ -154,9 +154,13 @@ namespace NugetEfficientTool
                 {
                     foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
                     {
+                        if (nugetFixStrategies.All(i => i.NugetName != fileNugetInfo.Name))
+                        {
+                            continue;
+                        }
                         //如果文件已经满足当前修复策略，则跳过
-                        if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}_{i.TargetFramework}" ==
-                                                      $"{fileNugetInfo.Name}_{fileNugetInfo.Version}_{fileNugetInfo.TargetFramework}"))
+                        if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
+                                                      $"{fileNugetInfo.Name}_{fileNugetInfo.Version}"))
                         {
                             continue;
                         }

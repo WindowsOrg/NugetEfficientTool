@@ -76,7 +76,7 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <GroupBox Header="错误信息" Margin="10 6" Padding="0" Style="{StaticResource Style.GroupBox}"
+            <GroupBox Header="修复信息" Margin="10 6" Padding="0" Style="{StaticResource Style.GroupBox}"
                       utils:ControlHelper.IsFocused="{Binding ElementName=TextBoxErrorMessage,Path=IsFocused}">
                 <TextBox Name="TextBoxErrorMessage" IsReadOnly="True" Padding="6 6 6 6" Margin="0 0 -4 0"
                          Style="{StaticResource Style.MultiLineTextBox}" BorderThickness="0"
