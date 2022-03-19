@@ -137,7 +137,7 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void FixNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var nugetVersionFixWindow = new NugetVersionFixWindow(_nugetVersionChecker.MismatchVersionNugetInfoExs)
+            var nugetVersionFixWindow = new FixingVersionSelectWindow(_nugetVersionChecker.MismatchVersionNugetInfoExs)
             {
                 Owner = Window.GetWindow(this)
             };

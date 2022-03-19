@@ -7,11 +7,11 @@ using NugetEfficientTool.Business;
 namespace NugetEfficientTool
 {
     /// <summary>
-    /// NugetVersionFixWindow.xaml 的交互逻辑
+    /// nuget修复版本选择窗口
     /// </summary>
-    public partial class NugetVersionFixWindow : Window
+    public partial class FixingVersionSelectWindow : Window
     {
-        public NugetVersionFixWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetInfoExs)
+        public FixingVersionSelectWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetInfoExs)
         {
             if (ReferenceEquals(mismatchVersionNugetInfoExs, null))
                 throw new ArgumentNullException(nameof(mismatchVersionNugetInfoExs));
