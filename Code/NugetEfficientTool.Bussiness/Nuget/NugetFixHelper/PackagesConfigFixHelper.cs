@@ -21,20 +21,28 @@ namespace NugetEfficientTool.Business
         {
             if (ReferenceEquals(nugetFixStrategy, null)) throw new ArgumentNullException(nameof(nugetFixStrategy));
             var rootElement = Document.Root;
+            if (rootElement==null)
+            {
+                return false;
+            }
             var packageElementList = rootElement.Elements()
-                .Where(x => x.Attribute(PackagesConfig.IdAttribute).Value == nugetFixStrategy.NugetName).ToList();
+                .Where(x => x.Attribute(PackagesConfig.IdAttribute)?.Value == nugetFixStrategy.NugetName).ToList();
             if (!packageElementList.Any())
             {
                 return false;
             }
-
+            //package中，如果只有一条nuget引用且版本一致，则不用修复
+            if (packageElementList.Count == 1 && packageElementList[0].Attribute(PackagesConfig.VersionAttribute)?.Value == nugetFixStrategy.NugetVersion)
+            {
+                return false;
+            }
             if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
             {
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 根据策略，忽略 {nugetFixStrategy.NugetName} 存在的问题");
                 return true;
             }
 
-            var targetFramework = packageElementList.First().Attribute(PackagesConfig.TargetFrameworkAttribute).Value;
+            var targetFramework = packageElementList.First().Attribute(PackagesConfig.TargetFrameworkAttribute)?.Value;
             for (var i = 0; i < packageElementList.Count; i++)
             {
                 if (i == 0)

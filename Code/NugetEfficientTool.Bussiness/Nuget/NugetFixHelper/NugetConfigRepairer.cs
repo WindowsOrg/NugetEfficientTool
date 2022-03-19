@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
@@ -12,7 +13,8 @@ namespace NugetEfficientTool.Business
         /// 构造一个 Nuget 配置文件修复器
         /// </summary>
         /// <param name="configPath">Nuget 配置文件路径</param>
-        public NugetConfigRepairer( string configPath,
+        /// <param name="nugetFixStrategies">修复策略</param>
+        public NugetConfigRepairer(string configPath,
              IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             _nugetFixStrategies = nugetFixStrategies ?? throw new ArgumentNullException(nameof(nugetFixStrategies));
@@ -56,8 +58,11 @@ namespace NugetEfficientTool.Business
             try
             {
                 _xDocument = _nugetConfigFixHelper.Fix();
-                var headerMessage = $"对 {_configPath} 执行了以下修复操作：";
-                Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixHelper.Log);
+                if (_nugetConfigFixHelper.SucceedStrategies.Any())
+                {
+                    var headerMessage = $"对 {_configPath} 执行了以下修复操作：";
+                    Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixHelper.Log);
+                }
                 _xDocument.Save(_configPath);
                 return true;
             }

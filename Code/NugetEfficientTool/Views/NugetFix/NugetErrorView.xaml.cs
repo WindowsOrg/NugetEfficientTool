@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using NugetEfficientTool.Business;
 
 namespace NugetEfficientTool
@@ -105,6 +106,7 @@ namespace NugetEfficientTool
                 }
 
                 var repairLog = string.Empty;
+                var toReparingFiles = new List<string>();
                 foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugetInfoExs)
                 {
                     foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
@@ -119,12 +121,24 @@ namespace NugetEfficientTool
                         {
                             continue;
                         }
-                        var nugetConfigRepairer = new NugetConfigRepairer(fileNugetInfo.ConfigPath, nugetFixStrategies);
-                        nugetConfigRepairer.Repair();
+
+                        if (toReparingFiles.Any(i=>i==fileNugetInfo.ConfigPath))
+                        {
+                            continue;
+                        }
+                        toReparingFiles.Add(fileNugetInfo.ConfigPath);
+                    }
+                }
+                //对文件进行修复
+                foreach (var configFile in toReparingFiles)
+                {
+                    var nugetConfigRepairer = new NugetConfigRepairer(configFile, nugetFixStrategies);
+                    nugetConfigRepairer.Repair();
+                    if (!string.IsNullOrEmpty(nugetConfigRepairer.Log))
+                    {
                         repairLog = StringSplicer.SpliceWithDoubleNewLine(repairLog, nugetConfigRepairer.Log);
                     }
                 }
-
                 TextBoxErrorMessage.Text = repairLog;
                 ButtonFixVersion.IsEnabled = false;
                 nugetVersionFixWindow.Close();
