@@ -14,49 +14,13 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="nugetName">名称</param>
         /// <param name="nugetVersion">版本号</param>
-        public NugetFixStrategy(string nugetName, string nugetVersion, string targetFramework) : this(nugetName,
+        /// <param name="targetFramework"></param>
+        /// <param name="dllFilePath"></param>
+        public NugetFixStrategy(string nugetName, string nugetVersion, string targetFramework, string dllFilePath) : this(nugetName,
             nugetVersion)
         {
             TargetFramework = targetFramework;
-            var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var folder = Path.Combine(userProfileFolder, ".nuget", "packages", nugetName, nugetVersion, "lib",
-                TargetFramework);
-            var dllFilePath = Path.Combine(folder, $"{nugetName}.dll");
-            // 不一定使用 nuget name 命名
-            if (!File.Exists(dllFilePath))
-            {
-                string[] dllFileList;
-                if (!Directory.Exists(folder))
-                {
-                    dllFileList = new string[0];
-                }
-                else
-                {
-                    dllFileList = Directory.GetFiles(folder, "*.dll");
-                }
-                if (dllFileList.Length == 0)
-                {
-                    throw new ArgumentException($"找不到 {dllFilePath}，无法进行修复。要不您老人家先试着编译一下，还原下 Nuget 包，然后再来看看？");
-                }
-                if (dllFileList.Length == 1)
-                {
-                    dllFilePath = dllFileList[0];
-                }
-                else
-                {
-                    var file = dllFileList.FirstOrDefault(temp => temp.ToLower().Contains(nugetName.ToLower()));
-                    if (file != null)
-                    {
-                        dllFilePath = file;
-                    }
-                    else
-                    {
-                        dllFilePath = dllFileList[0];
-                    }
-                }
-            }
-
-            NugetDllInfo = new NugetDllInfo(dllFilePath, null);
+            NugetDllInfo = string.IsNullOrEmpty(dllFilePath) ? null : new NugetDllInfo(dllFilePath, null);
         }
 
         /// <summary>

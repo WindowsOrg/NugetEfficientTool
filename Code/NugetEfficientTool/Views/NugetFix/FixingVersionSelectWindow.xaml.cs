@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using NugetEfficientTool.Business;
@@ -55,6 +57,10 @@ namespace NugetEfficientTool
                     var nugetName = nugetVersionSelectorUserControl.NugetName;
                     var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
                     var fixNugetStrategy = CreateVersionFixStrategy(nugetName, selectedVersion);
+                    if (fixNugetStrategy==null)
+                    {
+                        continue;
+                    }
                     _nugetFixStrategyList.Add(fixNugetStrategy);
                 }
 
@@ -114,7 +120,49 @@ namespace NugetEfficientTool
             {
                 return new NugetFixStrategy(nugetName, selectedVersion, new NugetDllInfo("", ""));
             }
-            return new NugetFixStrategy(nugetName, selectedVersion, targetFramework);
+
+            string nugetDllPath = string.Empty;
+            if (FindReplacingDllPath(nugetName, selectedVersion, targetFramework,out var dllFilePath))
+            {
+                nugetDllPath = dllFilePath;
+            }
+            return new NugetFixStrategy(nugetName, selectedVersion, targetFramework, nugetDllPath);
+        }
+
+        private bool FindReplacingDllPath(string nugetName, string nugetVersion, string targetFramework,out string dllFilePath)
+        {
+            var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var folder = Path.Combine(userProfileFolder, ".nuget", "packages", nugetName, nugetVersion, "lib",
+                targetFramework);
+            dllFilePath = Path.Combine(folder, $"{nugetName}.dll");
+            // 不一定使用 nuget name 命名
+            if (!File.Exists(dllFilePath))
+            {
+                string[] dllFileList;
+                if (!Directory.Exists(folder))
+                {
+                    dllFileList = new string[0];
+                }
+                else
+                {
+                    dllFileList = Directory.GetFiles(folder, "*.dll");
+                }
+                if (dllFileList.Length == 0)
+                {
+                    Console.Error.WriteLine($"找不到 {dllFilePath}，可能无法进行正常修复。先试着编译一下，还原下 Nuget 包");
+                    return false;
+                }
+                if (dllFileList.Length == 1)
+                {
+                    dllFilePath = dllFileList[0];
+                }
+                else
+                {
+                    var file = dllFileList.FirstOrDefault(temp => temp.ToLower().Contains(nugetName.ToLower()));
+                    dllFilePath = file ?? dllFileList[0];
+                }
+            }
+            return true;
         }
     }
 }
