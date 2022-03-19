@@ -12,21 +12,16 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
-            <Style TargetType="{x:Type ComboBox}">
-                <Setter Property="MinHeight" Value="24" />
-                <Setter Property="MinWidth" Value="80" />
-                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="10 5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" MinWidth="100" />
+            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="Auto" MinWidth="108" />
         </Grid.ColumnDefinitions>
-        <TextBlock Name="TextBlockNugetName" Grid.Column="0" Margin="5" HorizontalAlignment="Right"
-                   VerticalAlignment="Center" />
-        <ComboBox Name="ComboBoxNugetVersion" Grid.Column="1" Margin="5" VerticalAlignment="Center" />
+        <TextBlock Name="TextBlockNugetName" Grid.Column="0" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+        <ComboBox Name="ComboBoxNugetVersion" Grid.Column="1" Margin="5" VerticalAlignment="Center" 
+                  Style="{StaticResource Style.ComboBox}"/>
     </Grid>
 </UserControl>
