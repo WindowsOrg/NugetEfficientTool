@@ -41,6 +41,7 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="utils:ControlHelper.ContentPading" Value="11 0 0 0" />
             <Setter Property="Foreground" Value="{StaticResource Brush.Text.Normal}"/>
+        <Setter Property="Background" Value="{StaticResource Brush.Background.Lighter}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
