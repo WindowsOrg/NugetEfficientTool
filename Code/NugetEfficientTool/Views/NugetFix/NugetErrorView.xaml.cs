@@ -85,51 +85,6 @@ namespace NugetEfficientTool
             ButtonFixVersion.IsEnabled = _nugetVersionChecker.MismatchVersionNugetInfoExs.Any() &&
                                          !_nugetVersionChecker.ErrorFormatNugetConfigs.Any();
         }
-
-        //private void ButtonFixFormat_OnClick(object sender, RoutedEventArgs e)
-        //{
-        //    var idePath = TextBoxIdePath.Text;
-        //    if (string.IsNullOrWhiteSpace(idePath))
-        //    {
-        //        CustomText.Notification.ShowInfo(Window.GetWindow(this),"大佬，IDE 路径都还没配置，你这样我很难帮你办事啊……");
-        //        return;
-        //    }
-
-        //    if (!File.Exists(idePath))
-        //    {
-        //        CustomText.Notification.ShowInfo(Window.GetWindow(this),"找不到配置的 IDE，可能离家出走了吧……");
-        //        return;
-        //    }
-
-        //    OpenFilesByIde(idePath, _nugetVersionChecker.ErrorFormatNugetConfigs.Select(x => x.FilePath).Distinct());
-        //}
-
-        private void OpenFilesByIde(string idePath, IEnumerable<string> filePaths)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo("cmd.exe")
-                {
-                    UseShellExecute = false,
-                    RedirectStandardInput = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
-            };
-            try
-            {
-                process.Start();
-                foreach (var filePath in filePaths)
-                {
-                    process.StandardInput.WriteLine($"\"{idePath}\" \"{filePath}\"");
-                }
-            }
-            finally
-            {
-                process.Close();
-            }
-        }
         /// <summary>
         /// 修复Nuget版本问题
         /// </summary>
