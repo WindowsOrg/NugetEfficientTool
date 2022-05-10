@@ -108,8 +108,8 @@ namespace NugetEfficientTool
                 if (solution != null)
                 {
                     solutions.Remove(solution);
+                    UserOperationConfigHelper.SaveSolutions(solutions);
                 }
-                UserOperationConfigHelper.SaveSolutions(solutions);
             }
             //显示下一个
             var projectTabsItem = ProjectTabs.Items[ProjectTabs.Items.Count - 1];
