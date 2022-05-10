@@ -48,7 +48,7 @@ namespace NugetEfficientTool
                     var solutionFile = projectSolution.SolutionFile;
                     var nugetReplaceView = new NugetReplaceView();
                     var replaceViewItem = new ReplaceProjectMode(solutionFile, projectSolution.Id, nugetReplaceView);
-                    var tabItem = new TabItem() {DataContext = replaceViewItem };
+                    var tabItem = new TabItem() { DataContext = replaceViewItem };
                     ProjectTabs.Items.Add(tabItem);
                 }
 
@@ -98,9 +98,20 @@ namespace NugetEfficientTool
             {
                 return;
             }
+            //删除
             var tabItem = button.VisualAncestorByInterface<TabItem>();
             ProjectTabs.Items.Remove(tabItem);
-
+            if (tabItem.DataContext is ReplaceProjectMode projectMode)
+            {
+                var solutions = UserOperationConfigHelper.GetSolutions();
+                var solution = solutions.FirstOrDefault(i => i.Id == projectMode.Id);
+                if (solution != null)
+                {
+                    solutions.Remove(solution);
+                    UserOperationConfigHelper.SaveSolutions(solutions);
+                }
+            }
+            //显示下一个
             var projectTabsItem = ProjectTabs.Items[ProjectTabs.Items.Count - 1];
             if (projectTabsItem is FrameworkElement element && element.DataContext is ReplaceProjectMode lastView)
             {
