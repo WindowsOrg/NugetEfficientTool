@@ -18,7 +18,6 @@ namespace NugetEfficientTool
         {
             InitializeComponent();
             Loaded += NugetFixView_Loaded;
-            SolutionTextBox.TextChanged += SolutionTextBox_OnTextChanged;
         }
 
         public void Init(string id, string solutionFile)
@@ -31,6 +30,7 @@ namespace NugetEfficientTool
         {
             Loaded -= NugetFixView_Loaded;
             ViewModel.Initialize(this, _id, SolutionTextBox.Text);
+            SolutionTextBox.TextChanged += SolutionTextBox_OnTextChanged;
         }
 
         private NugetReplaceViewModel ViewModel => DataContext as NugetReplaceViewModel;
@@ -89,6 +89,14 @@ namespace NugetEfficientTool
             catch (Exception exception)
             {
                 CustomText.Log.Error(exception);
+            }
+            //判断输入的解决方案，是否已添加
+            var projectSolutions = UserOperationConfigHelper.GetSolutions();
+            if (projectSolutions.Any(i => i.SolutionFile == solutionFile))
+            {
+                //已存在解决方案，则置空
+                solutionFile = string.Empty;
+                CustomText.Notification.ShowInfo(Window.GetWindow(this), "此解决方案已添加");
             }
             if (sourceText != solutionFile)
             {
