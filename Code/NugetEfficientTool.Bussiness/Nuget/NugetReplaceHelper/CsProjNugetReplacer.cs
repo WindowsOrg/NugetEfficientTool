@@ -20,14 +20,12 @@ namespace NugetEfficientTool.Business
             _newProjectId = newProjectId;
             _nugetName = nugetName;
             _sourceProjectFile = sourceProjectFile;
-            CsProj.SetXDocument(Document); 
         }
 
         public CsProjNugetReplacer(string projectFile, ReplacedFileRecord lastReplacedRecord, string sourceProjectFile) : base(projectFile)
         {
             _lastReplacedRecord = lastReplacedRecord;
             _sourceProjectFile = sourceProjectFile;
-            CsProj.SetXDocument(Document);
         }
 
         #region 替换Nuget

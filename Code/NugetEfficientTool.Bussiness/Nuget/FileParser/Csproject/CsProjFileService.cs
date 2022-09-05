@@ -9,8 +9,6 @@ namespace NugetEfficientTool.Business
 {
     class CsProjFileService : CsProjFileBase, ICsProjFileService
     {
-        public static XDocument XDocument { get; set; }
-
         /// <summary>
         /// 获取Reference节点
         /// </summary>
@@ -31,11 +29,11 @@ namespace NugetEfficientTool.Business
         }
         public bool IsNugetReference(XElement xElement)
         {
-            return GetCsProjService(XDocument).IsNugetReference(xElement);
+            return GetCsProjService(xElement.Document).IsNugetReference(xElement);
         }
         public NugetInfo GetNugetInfo(XElement xElement)
         {
-            return GetCsProjService(XDocument).GetNugetInfo(xElement);
+            return GetCsProjService(xElement.Document).GetNugetInfo(xElement);
         }
 
         public void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
