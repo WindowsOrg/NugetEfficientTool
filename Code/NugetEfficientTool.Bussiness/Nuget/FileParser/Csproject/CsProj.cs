@@ -12,6 +12,11 @@ namespace NugetEfficientTool.Business
     /// </summary>
     public class CsProj
     {
+        public static void SetXDocument(XDocument xDocument)
+        {
+           CsProjFileService.XDocument = xDocument;
+        }
+
         #region 获取节点
 
         /// <summary>

@@ -20,12 +20,14 @@ namespace NugetEfficientTool.Business
             _newProjectId = newProjectId;
             _nugetName = nugetName;
             _sourceProjectFile = sourceProjectFile;
+            CsProj.SetXDocument(Document); 
         }
 
         public CsProjNugetReplacer(string projectFile, ReplacedFileRecord lastReplacedRecord, string sourceProjectFile) : base(projectFile)
         {
             _lastReplacedRecord = lastReplacedRecord;
             _sourceProjectFile = sourceProjectFile;
+            CsProj.SetXDocument(Document);
         }
 
         #region 替换Nuget
@@ -36,15 +38,14 @@ namespace NugetEfficientTool.Business
         /// <returns></returns>
         public ReplacedFileRecord ReplaceNuget()
         {
-            var references = CsProj.GetReferences(Document).ToList();
-            var nugetInfoReferences = references.Where(CsProj.IsNugetReference).ToList();
+            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).ToList();
             var referenceElement = nugetInfoReferences.FirstOrDefault(x => CsProj.GetNugetInfo(x).Name == _nugetName);
             if (referenceElement == null)
             {
                 return null;
             }
             //获取Nuget引用信息
-            var replacedFileRecord = GetNugetReferenceInfo(referenceElement, references.IndexOf(referenceElement));
+            var replacedFileRecord = GetNugetReferenceInfo(referenceElement, nugetInfoReferences.IndexOf(referenceElement));
             //删除Nuget的引用
             referenceElement.Remove();
             //添加源项目的引用
@@ -63,7 +64,8 @@ namespace NugetEfficientTool.Business
                 FileName = File,
                 ModifiedLineIndex = referenceLineOrder,
                 Version = version,
-                NugetDllPath = referenceElement.Value
+                NugetDllPath = referenceElement.Value,
+                ReferenceType = referenceElement.Name.LocalName
             };
 
             return replacedFileRecord;

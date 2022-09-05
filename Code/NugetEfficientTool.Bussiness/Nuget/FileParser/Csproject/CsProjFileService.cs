@@ -9,6 +9,8 @@ namespace NugetEfficientTool.Business
 {
     class CsProjFileService : CsProjFileBase, ICsProjFileService
     {
+        public static XDocument XDocument { get; set; }
+
         /// <summary>
         /// 获取Reference节点
         /// </summary>
@@ -29,11 +31,11 @@ namespace NugetEfficientTool.Business
         }
         public bool IsNugetReference(XElement xElement)
         {
-            return GetCsProjService(xElement).IsNugetReference(xElement);
+            return GetCsProjService(XDocument).IsNugetReference(xElement);
         }
         public NugetInfo GetNugetInfo(XElement xElement)
         {
-            return GetCsProjService(xElement).GetNugetInfo(xElement);
+            return GetCsProjService(XDocument).GetNugetInfo(xElement);
         }
 
         public void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
@@ -84,44 +86,6 @@ namespace NugetEfficientTool.Business
                 return CsprojFileType.NetCore;
             }
             return CsprojFileType.NetFramework;
-        }
-        /// <summary>
-        /// todo 临时处理
-        /// </summary>
-        /// <param name="xElement"></param>
-        /// <returns></returns>
-        private static ICsProjFileService GetCsProjService(XElement xElement)
-        {
-            var csprojFileType = GetCsprojFileType(xElement);
-            switch (csprojFileType)
-            {
-                case CsprojFileType.NetFramework:
-                    {
-                        return NetFrameworkCsProj;
-                    }
-                case CsprojFileType.NetCore:
-                    {
-                        return NetCoreCsProj;
-                    }
-            }
-            return null;
-        }
-        private static CsprojFileType GetCsprojFileType(XElement xElement)
-        {
-            if (xElement == null)
-            {
-                throw new ArgumentNullException(nameof(xElement));
-            }
-            var xElementName = xElement.Name.LocalName;
-            if (xElementName == ReferenceName)
-            {
-                return CsprojFileType.NetFramework;
-            }
-            if (xElementName == PackageReferenceName)
-            {
-                return CsprojFileType.NetCore;
-            }
-            throw new InvalidOperationException($"未知Csproj引用类型：{xElementName}");
         }
 
         #endregion
