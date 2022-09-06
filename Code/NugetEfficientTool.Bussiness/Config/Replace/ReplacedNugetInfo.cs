@@ -60,5 +60,11 @@ namespace NugetEfficientTool.Business
         [CanBeNull]
         [DataMember]
         public string NugetDllPath { get; set; }
+
+        /// <summary>
+        /// Nuget引用方式
+        /// </summary>
+        [DataMember]
+        public string ReferenceType { get; set; }
     }
 }

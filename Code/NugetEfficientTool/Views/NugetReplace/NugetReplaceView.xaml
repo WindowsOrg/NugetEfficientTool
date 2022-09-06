@@ -53,18 +53,20 @@
                                                      Text="{Binding NugetName}" TextChanged="NugetNameTextBox_OnTextChanged"
                                                      IsEnabled="{Binding HasReplaced,Converter={x:Static resources:BooleanToBoolean.ReverseBoolean}}"/>
                                             <TextBlock Grid.Row="1" Grid.Column="0" Text="源代码.csproj：" VerticalAlignment="Center" TextAlignment="Right"
-                                                       Style="{StaticResource Style.TextBlock.Dark}"/>
+                                                       Style="{StaticResource Style.TextBlock.Dark}"/> 
                                             <TextBox Grid.Row="1" Grid.Column="1" x:Name="SourceProjectTextBox" Style="{StaticResource Style.DefaultTextBox}" 
                                                      VerticalAlignment="Center" Height="32"
                                                      Text="{Binding SourceCsprojFile}" TextChanged="SourceProjectTextBox_OnTextChanged"
                                                      IsEnabled="{Binding HasReplaced,Converter={x:Static resources:BooleanToBoolean.ReverseBoolean}}"/>
                                         </Grid>
-                                        <Grid Grid.Column="2" Margin="12 0 0 0">
-                                            <StackPanel x:Name="OperationPanel" Orientation="Horizontal"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Center"
-                                                                Background="Transparent">
-                                                <Button Name="UpButton" Margin="0 0 16 0" 
+                                        <Grid Grid.Column="2">
+                                            <StackPanel VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <StackPanel x:Name="OperationPanel" Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center"
+                                                            Background="Transparent">
+                                                    <Button Name="UpButton" Margin="0 0 16 0" 
                                                         Style="{StaticResource Style.Button.Image}"
                                                         ToolTip="上调" VerticalAlignment="Center"
                                                         utils:ControlHelper.Image="{StaticResource Image.Up.Gray}"
@@ -72,7 +74,7 @@
                                                         utils:ControlHelper.ImagePressed="{StaticResource Image.Up.Green}"
                                                         Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.SortUpNugetItemCommand}"
                                                         CommandParameter="{Binding}"/>
-                                                <Button Name="DeleteButton" Margin="0 0 16 0" 
+                                                    <Button Name="DeleteButton"
                                                         Style="{StaticResource Style.Button.Image}"
                                                         ToolTip="删除" VerticalAlignment="Center"
                                                         utils:ControlHelper.Image="{StaticResource Image.Delete.Normal}"
@@ -80,6 +82,18 @@
                                                         utils:ControlHelper.ImagePressed="{StaticResource Image.Delete.Hover}"
                                                         Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.DeleteNugetItemCommand}"
                                                         CommandParameter="{Binding}"/>
+                                                </StackPanel>
+                                                <Button Name="SelectProjButton"
+                                                        Margin="0 12 0 0"
+                                                        Width="24"
+                                                        Height="24"
+                                                        Click="SelectProjButton_OnClick"
+                                                        ToolTip="打开"
+                                                        Style="{StaticResource Style.Button.Image}"
+                                                        utils:ControlHelper.ImageSize ="24"
+                                                        utils:ControlHelper.Image="{StaticResource Image.Folder.Yellow}"
+                                                        utils:ControlHelper.ImageHover="{StaticResource Image.NewFolder.Gray}"
+                                                        utils:ControlHelper.ImagePressed="{StaticResource Image.NewFolder.Gray}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Grid>
@@ -134,8 +148,19 @@
         <Grid Grid.Row="0" Margin="12 5">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="项目路径：" VerticalAlignment="Center" TextAlignment="Right" Style="{StaticResource Style.TextBlock.Dark}"/>
-                <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" Text="{Binding SolutionFileUrl}"
+                <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" Text="{Binding SolutionFileUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Width="400" Height="32" HorizontalAlignment="Right"/>
+                <Button x:Name="SelectSlnButton" 
+                        Margin="4 0 0 0" 
+                        Width="24"
+                        Height="24"
+                        Click="SelectSlnButton_OnClick"
+                        ToolTip="打开"
+                        Style="{StaticResource Style.Button.Image}"
+                        utils:ControlHelper.ImageSize ="24"
+                        utils:ControlHelper.Image="{StaticResource Image.Folder.Yellow}"
+                        utils:ControlHelper.ImageHover="{StaticResource Image.NewFolder.Gray}"
+                        utils:ControlHelper.ImagePressed="{StaticResource Image.NewFolder.Gray}"/>
             </StackPanel>
         </Grid>
         <!--Nuget列表-->
