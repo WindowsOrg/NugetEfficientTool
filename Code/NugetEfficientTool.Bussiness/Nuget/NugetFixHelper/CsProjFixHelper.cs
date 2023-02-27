@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
@@ -28,7 +29,7 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
 
-                var removeAttributeList = new[] {"Private", "HintPath"};
+                var removeAttributeList = new[] { "Private", "HintPath" };
 
                 var firstPackageReference = packageReferenceList[i];
                 if (firstPackageReference.Elements().Any())
@@ -37,7 +38,7 @@ namespace NugetEfficientTool.Business
                     {
                         firstPackageReference.Element(attribute)?.Remove();
                     }
-                   
+
                     Log = StringSplicer.SpliceWithNewLine(Log, $"    - 更新了 {nugetFixStrategy.NugetName} 的版本声明格式");
                 }
 
@@ -82,38 +83,64 @@ namespace NugetEfficientTool.Business
                 var firstNugetInfoReference = nugetInfoReferenceList[i];
                 if (nugetFixStrategy.NugetDllInfo == null)
                 {
-                    ;
+                    continue;
                 }
 
-                firstNugetInfoReference.SetAttributeValue(CsProjConst.IncludeAttribute,
-                    nugetFixStrategy.NugetDllInfo.DllFullName);
-                Log = StringSplicer.SpliceWithNewLine(Log,
-                    $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
-                var hintPathElementList = firstNugetInfoReference.Elements()
-                    .Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
-                for (var j = 0; j < hintPathElementList.Count; j++)
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
+                if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
-                    if (j != 0)
+                    var xElement = new XElement(CsProjConst.PackageReferenceName);
+                    xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetDllInfo.DllFullName);
+                    xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
+
+                    if (firstNugetInfoReference.NextNode is XElement nextElement)
                     {
-                        hintPathElementList[i].Remove();
-                        continue;
+                        firstNugetInfoReference.Remove();
+                        nextElement.AddBeforeSelf(xElement);
+                    }
+                    else if (firstNugetInfoReference.PreviousNode is XElement previousElement)
+                    {
+                        firstNugetInfoReference.Remove();
+                        previousElement.AddAfterSelf(xElement);
+                    }
+                    else if (firstNugetInfoReference.Parent is XElement parentElement)
+                    {
+                        firstNugetInfoReference.Remove();
+                        parentElement.AddFirst(xElement);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"{firstNugetInfoReference}未能完成替换到目标{nugetFixStrategy.NugetName}-{nugetFixStrategy.NugetVersion}");
+                    }
+                }
+                else
+                {
+                    firstNugetInfoReference.SetAttributeValue(CsProjConst.IncludeAttribute,
+                        nugetFixStrategy.NugetDllInfo.DllFullName);
+                    var hintPathElementList = firstNugetInfoReference.Elements()
+                        .Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
+                    for (var j = 0; j < hintPathElementList.Count; j++)
+                    {
+                        if (j != 0)
+                        {
+                            hintPathElementList[i].Remove();
+                            continue;
+                        }
+
+                        hintPathElementList[i].Value = MakeRelativePath(Path.GetDirectoryName(_csProjPath),
+                            nugetFixStrategy.NugetDllInfo.DllPath);
                     }
 
-                    hintPathElementList[i].Value = MakeRelativePath(Path.GetDirectoryName(_csProjPath),
-                        nugetFixStrategy.NugetDllInfo.DllPath);
-                }
-
-                if (hintPathElementList.Count > 1)
-                {
-                    Log = StringSplicer.SpliceWithNewLine(Log,
-                        $"    - 删除了 {nugetFixStrategy.NugetName} 的 {hintPathElementList.Count - 1} 个子健冲突");
+                    if (hintPathElementList.Count > 1)
+                    {
+                        Log = StringSplicer.SpliceWithNewLine(Log, $"    - 删除了 {nugetFixStrategy.NugetName} 的 {hintPathElementList.Count - 1} 个子健冲突");
+                    }
                 }
             }
 
             if (nugetInfoReferenceList.Count > 1)
             {
-                Log = StringSplicer.SpliceWithNewLine(Log,
-                    $"    - 删除了 {nugetFixStrategy.NugetName} 的 {nugetInfoReferenceList.Count - 1} 个冲突引用");
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 删除了 {nugetFixStrategy.NugetName} 的 {nugetInfoReferenceList.Count - 1} 个冲突引用");
             }
         }
 
@@ -123,7 +150,7 @@ namespace NugetEfficientTool.Business
         /// <param name="fromPath"></param>
         /// <param name="toPath"></param>
         /// <returns></returns>
-        private static string MakeRelativePath( string fromPath,  string toPath)
+        private static string MakeRelativePath(string fromPath, string toPath)
         {
             if (string.IsNullOrEmpty(fromPath))
             {

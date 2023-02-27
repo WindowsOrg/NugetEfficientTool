@@ -45,19 +45,26 @@ namespace NugetEfficientTool.Business
             var targetFramework = packageElementList.First().Attribute(PackagesConfig.TargetFrameworkAttribute)?.Value;
             for (var i = 0; i < packageElementList.Count; i++)
             {
-                if (i == 0)
+                //没有DLLPath，说明目标引用是PackageReference，则Package中的对应reference可以删除
+                var packageElement = packageElementList[i];
+                if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
-                    var firstPackageElement = packageElementList[i];
-                    firstPackageElement.SetAttributeValue(PackagesConfig.IdAttribute, nugetFixStrategy.NugetName);
-                    firstPackageElement.SetAttributeValue(PackagesConfig.VersionAttribute,
-                        nugetFixStrategy.NugetVersion);
-                    firstPackageElement.SetAttributeValue(PackagesConfig.TargetFrameworkAttribute, targetFramework);
-                    Log = StringSplicer.SpliceWithNewLine(Log,
-                        $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
+                    var packageContent = packageElement.ToString();
+                    packageElement.Remove();
+                    Log = StringSplicer.SpliceWithNewLine(Log, $"    - 因目标为PackageReference，删除{packageContent}");
                     continue;
                 }
-
-                packageElementList[i].Remove();
+                //保留一个Reference即可
+                if (i == 0)
+                {
+                    packageElement.SetAttributeValue(PackagesConfig.IdAttribute, nugetFixStrategy.NugetName);
+                    packageElement.SetAttributeValue(PackagesConfig.VersionAttribute,
+                        nugetFixStrategy.NugetVersion);
+                    packageElement.SetAttributeValue(PackagesConfig.TargetFrameworkAttribute, targetFramework);
+                    Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
+                    continue;
+                }
+                packageElement.Remove();
             }
 
             if (packageElementList.Count > 1)
