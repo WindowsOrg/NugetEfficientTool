@@ -83,12 +83,21 @@ namespace NugetEfficientTool.Business
             if (PackageReferenceName.Equals(xElement.Name.LocalName))
             {
                 var versionElements = xElement.Elements().Where(x => x.Name.LocalName == VersionElementName).ToList();
-                nugetVersion = versionElements.First().Value;
-                return new NugetInfo(includeValue, nugetVersion);
+                if (versionElements.Count != 0)
+                {
+                    nugetVersion = versionElements.First().Value;
+                    return new NugetInfo(includeValue, nugetVersion);
+                }
+                //PackageReference的Version,可能是以属性形式存在
+                var versionAttribute = xElement.Attributes(VersionElementName).FirstOrDefault();
+                if (versionAttribute != null)
+                {
+                    return new NugetInfo(includeValue, versionAttribute.Value);
+                }
             }
-            
+
             var nugetName = NugetNameRegex.Match(includeValue).Value;
-             nugetVersion = NugetVersionRegex.Match(includeValue).Value;
+            nugetVersion = NugetVersionRegex.Match(includeValue).Value;
             return new NugetInfo(nugetName, nugetVersion);
         }
         public void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
