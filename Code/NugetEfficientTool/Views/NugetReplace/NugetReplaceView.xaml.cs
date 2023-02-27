@@ -91,7 +91,7 @@ namespace NugetEfficientTool
                 CustomText.Log.Error(exception);
             }
             //判断输入的解决方案，是否已添加
-            var projectSolutions = UserOperationConfigHelper.GetSolutions();
+            var projectSolutions = NugetReplaceConfigs.GetSolutions();
             if (projectSolutions.Any(i => i.SolutionFile == solutionFile))
             {
                 //已存在解决方案，则置空

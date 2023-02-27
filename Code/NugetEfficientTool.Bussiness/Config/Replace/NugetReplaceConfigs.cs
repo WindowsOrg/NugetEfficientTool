@@ -6,7 +6,10 @@ using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool.Business
 {
-    public static class UserOperationConfigHelper
+    /// <summary>
+    /// Nuget替换配置
+    /// </summary>
+    public static class NugetReplaceConfigs
     {
         private const string UserOperationSection = "UserOperation";
 

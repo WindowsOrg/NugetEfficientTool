@@ -33,7 +33,7 @@ namespace NugetEfficientTool
         {
             Loaded -= ReplaceViewContainer_Loaded;
             //加载初始化
-            var projectSolutions = UserOperationConfigHelper.GetSolutions();
+            var projectSolutions = NugetReplaceConfigs.GetSolutions();
             if (projectSolutions.Count == 0)
             {
                 var nugetReplaceView = new NugetReplaceView();
@@ -103,12 +103,12 @@ namespace NugetEfficientTool
             ProjectTabs.Items.Remove(tabItem);
             if (tabItem.DataContext is ReplaceProjectMode projectMode)
             {
-                var solutions = UserOperationConfigHelper.GetSolutions();
+                var solutions = NugetReplaceConfigs.GetSolutions();
                 var solution = solutions.FirstOrDefault(i => i.Id == projectMode.Id);
                 if (solution != null)
                 {
                     solutions.Remove(solution);
-                    UserOperationConfigHelper.SaveSolutions(solutions);
+                    NugetReplaceConfigs.SaveSolutions(solutions);
                 }
             }
             //显示下一个

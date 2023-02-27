@@ -16,16 +16,6 @@ namespace NugetEfficientTool.Business
         /// <param name="solutionFilePath">解决方案路径</param>
         public NugetVersionChecker(string solutionFilePath)
         {
-            if (solutionFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(solutionFilePath));
-            }
-
-            if (!File.Exists(solutionFilePath))
-            {
-                throw new FileNotFoundException(solutionFilePath);
-            }
-
             _solutionFilePath = solutionFilePath;
         }
 
@@ -36,7 +26,13 @@ namespace NugetEfficientTool.Business
         /// </summary>
         public void Check()
         {
-            var projectFiles = SolutionFileHelper.GetProjectFiles(_solutionFilePath);
+            var solutionFilePath = _solutionFilePath;
+            if (string.IsNullOrEmpty(solutionFilePath))
+            {
+                throw new ArgumentNullException(nameof(solutionFilePath));
+            }
+
+            var projectFiles = GetProjectFiles(solutionFilePath);
             var projectDirectories = projectFiles.Select(Path.GetDirectoryName);
             var nugetConfigFiles = new List<string>();
             foreach (var projectDirectory in projectDirectories)
@@ -72,6 +68,23 @@ namespace NugetEfficientTool.Business
             {
                 Message = "完美无瑕！";
             }
+        }
+
+        private List<string> GetProjectFiles(string solutionFilePath)
+        {
+            List<string> solutionFiles = new List<string>();
+            if (File.Exists(solutionFilePath))
+            {
+                solutionFiles.Add(solutionFilePath);
+            }
+            else if (Directory.Exists(solutionFilePath) &&
+                     SolutionFileHelper.TryGetSlnFiles(solutionFilePath, out var slnFiles))
+            {
+                solutionFiles.AddRange(slnFiles);
+            }
+            //获取所有解决方案的项目列表
+            var projectFiles = solutionFiles.SelectMany(SolutionFileHelper.GetProjectFiles).ToList();
+            return projectFiles;
         }
 
         /// <summary>
@@ -129,6 +142,13 @@ namespace NugetEfficientTool.Business
                 }
                 var csProjNugetInfoEx = nugetInfoExsInGroup.First(i => Path.GetExtension(i.ConfigPath) == ".csproj");
                 var packageNugetInfoEx = nugetInfoExsInGroup.First(i => Path.GetExtension(i.ConfigPath) == ".config");
+
+                //var csProjNugetInfoEx = nugetInfoExsInGroup.FirstOrDefault(i => Path.GetExtension(i.ConfigPath) == ".csproj");
+                //var packageNugetInfoEx = nugetInfoExsInGroup.FirstOrDefault(i => Path.GetExtension(i.ConfigPath) == ".config");
+                //if (csProjNugetInfoEx == null || packageNugetInfoEx == null)
+                //{
+                //    continue;
+                //}
                 csProjNugetInfoEx.TargetFramework = packageNugetInfoEx.TargetFramework;
                 csProjNugetInfoEx.Version = packageNugetInfoEx.Version;
                 packageNugetInfoEx.NugetDllInfo = csProjNugetInfoEx.NugetDllInfo;

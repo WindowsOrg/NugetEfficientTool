@@ -29,7 +29,7 @@ namespace NugetEfficientTool
             _nugetReplaceService = new NugetReplaceService(projectId);
 
             var nugetReplaceItems = new List<NugetReplaceItem>();
-            var replaceNugetConfigs = UserOperationConfigHelper.GetNugetReplaceConfig(projectId);
+            var replaceNugetConfigs = NugetReplaceConfigs.GetNugetReplaceConfig(projectId);
             if (replaceNugetConfigs.Any())
             {
                 nugetReplaceItems = replaceNugetConfigs.Select(i => new NugetReplaceItem(i.Name, i.SourceCsprojPath)
@@ -188,7 +188,7 @@ namespace NugetEfficientTool
             }
 
             SolutionUrlUpdated?.Invoke(null, solutionFile);
-            UserOperationConfigHelper.SaveNugetReplaceConfig(_projectId, nugetItems.Select(i => new ReplaceNugetConfig(i.NugetName, i.SourceCsprojFile)).ToList());
+            NugetReplaceConfigs.SaveNugetReplaceConfig(_projectId, nugetItems.Select(i => new ReplaceNugetConfig(i.NugetName, i.SourceCsprojFile)).ToList());
             return true;
         }
 

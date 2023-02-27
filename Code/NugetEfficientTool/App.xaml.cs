@@ -90,6 +90,7 @@ namespace NugetEfficientTool
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             CustomText.Log.Error(e.Exception);
+            CustomText.Notification.ShowInfo(_mainWindow, e.Exception.Message);
             //表示补救成功
             e.Handled = true;
         }

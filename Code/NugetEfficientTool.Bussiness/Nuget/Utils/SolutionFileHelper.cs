@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,25 +21,44 @@ namespace NugetEfficientTool.Business
         public static bool TryGetSlnFile(string folder, out string slnFile)
         {
             slnFile = null;
+            if (!TryGetSlnFiles(folder, out var files))
+            {
+                return false;
+            }
+            slnFile = files[0];
+            return true;
+        }
+
+        /// <summary>
+        /// 获取sln文件
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="slnFiles"></param>
+        /// <returns></returns>
+        public static bool TryGetSlnFiles(string folder, out List<string> slnFiles)
+        {
+            slnFiles = new List<string>();
 
             if (!Directory.Exists(folder))
             {
                 return false;
             }
 
-            var slnFileList = Directory.GetFiles(folder, "*.sln");
+            var slnFileList = Directory.GetFiles(folder, "*.sln", SearchOption.AllDirectories);
             if (slnFileList.Length > 0)
-            // || Directory.GetFiles(Environment.CurrentDirectory, "*.csproj").Length > 0)
             {
-                slnFile = slnFileList[0];
+                slnFiles = slnFileList.ToList();
                 return true;
             }
-
             return false;
         }
 
         public static IEnumerable<string> GetProjectFiles(string solutionFile)
         {
+            if (!File.Exists(solutionFile))
+            {
+                throw new ArgumentException($"解决方案{nameof(solutionFile)},不能为空");
+            }
             var directory = Path.GetDirectoryName(Path.GetFullPath(solutionFile));
             var text = File.ReadAllText(solutionFile);
 
@@ -100,7 +120,7 @@ namespace NugetEfficientTool.Business
         public static IEnumerable<string> GetConfigFileInSln(string solutionFile, string nugetName)
         {
             var nugetConfigFiles = GetConfigFileInSln(solutionFile);
-            var csProjConfigFiles = nugetConfigFiles.Where(i=> NugetConfig.GetNugetConfigType(i)==NugetConfigType.CsProj).ToList();
+            var csProjConfigFiles = nugetConfigFiles.Where(i => NugetConfig.GetNugetConfigType(i) == NugetConfigType.CsProj).ToList();
             foreach (var csProjConfigFile in csProjConfigFiles)
             {
                 //筛除所有不相关的配置文件
