@@ -140,15 +140,13 @@ namespace NugetEfficientTool.Business
                 {
                     continue;
                 }
-                var csProjNugetInfoEx = nugetInfoExsInGroup.First(i => Path.GetExtension(i.ConfigPath) == ".csproj");
-                var packageNugetInfoEx = nugetInfoExsInGroup.First(i => Path.GetExtension(i.ConfigPath) == ".config");
 
-                //var csProjNugetInfoEx = nugetInfoExsInGroup.FirstOrDefault(i => Path.GetExtension(i.ConfigPath) == ".csproj");
-                //var packageNugetInfoEx = nugetInfoExsInGroup.FirstOrDefault(i => Path.GetExtension(i.ConfigPath) == ".config");
-                //if (csProjNugetInfoEx == null || packageNugetInfoEx == null)
-                //{
-                //    continue;
-                //}
+                var csProjNugetInfoEx = nugetInfoExsInGroup.FirstOrDefault(i => Path.GetExtension(i.ConfigPath) == ".csproj");
+                var packageNugetInfoEx = nugetInfoExsInGroup.FirstOrDefault(i => Path.GetExtension(i.ConfigPath) == ".config");
+                if (csProjNugetInfoEx == null || packageNugetInfoEx == null)
+                {
+                    continue;
+                }
                 csProjNugetInfoEx.TargetFramework = packageNugetInfoEx.TargetFramework;
                 csProjNugetInfoEx.Version = packageNugetInfoEx.Version;
                 packageNugetInfoEx.NugetDllInfo = csProjNugetInfoEx.NugetDllInfo;
