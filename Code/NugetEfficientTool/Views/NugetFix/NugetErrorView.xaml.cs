@@ -57,7 +57,7 @@ namespace NugetEfficientTool
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CheckNugetButton_OnClick(object sender, RoutedEventArgs e)
+        private async void CheckNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
             var solutionText = SolutionTextBox.Text;
             if (!CheckInputText(solutionText, out var solutionFile))
@@ -65,8 +65,19 @@ namespace NugetEfficientTool
                 return;
             }
             //检测Nuget版本
-            _nugetVersionChecker = new NugetVersionChecker(solutionFile);
-            _nugetVersionChecker.Check();
+            try
+            {
+                IsChecking = true;
+                await Task.Run(() =>
+                {
+                    _nugetVersionChecker = new NugetVersionChecker(solutionFile);
+                    _nugetVersionChecker.Check();
+                });
+            }
+            finally
+            {
+                IsChecking = false;
+            }
             //设置检测结果
             TextBoxErrorMessage.Text = _nugetVersionChecker.Message;
             ButtonFixVersion.IsEnabled = _nugetVersionChecker.MismatchVersionNugetInfoExs.Any() &&
@@ -141,6 +152,17 @@ namespace NugetEfficientTool
                 CustomText.Notification.ShowInfo(Window.GetWindow(this), exception.Message);
                 CustomText.Log.Error(exception);
             }
+        }
+
+        public static readonly DependencyProperty IsCheckingProperty = DependencyProperty.Register(
+            "IsChecking", typeof(bool), typeof(NugetErrorView), new PropertyMetadata(default(bool)));
+        /// <summary>
+        /// 检查中
+        /// </summary>
+        public bool IsChecking
+        {
+            get => (bool)GetValue(IsCheckingProperty);
+            set => SetValue(IsCheckingProperty, value);
         }
 
         #region private fields

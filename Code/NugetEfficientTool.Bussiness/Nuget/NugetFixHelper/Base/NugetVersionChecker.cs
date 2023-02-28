@@ -113,9 +113,7 @@ namespace NugetEfficientTool.Business
                 //因为CsProj与package获取nuget信息，都有一定缺陷，所以需要彼此信息进行补偿。
                 CompensateNugetInfos(nugetPackageInfoGroup.ToList());
                 //筛选掉没问题的数据
-                var groupByConfigPath = nugetPackageInfoGroup.GroupBy(x => x.ConfigPath);
-                if (groupByConfigPath.All(x => x.Count() == 1) &&
-                    nugetPackageInfoGroup.Select(x => x.Version).Distinct().Count() == 1)
+                if (nugetPackageInfoGroup.Select(x => x.Version).Distinct().Count() == 1)
                 {
                     continue;
                 }

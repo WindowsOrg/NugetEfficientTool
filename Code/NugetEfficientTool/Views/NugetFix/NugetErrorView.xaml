@@ -5,10 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NugetEfficientTool"
              xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+             xmlns:resources="clr-namespace:NugetEfficientTool.Resources;assembly=NugetEfficientTool.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="TheErrorFixView">
     <UserControl.Resources>
         <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
+        <utils:BoolToVisibility x:Key="BoolToVisibility"/>
         <Style x:Key="Style.GroupBox" TargetType="GroupBox">
             <Setter Property="Template">
                 <Setter.Value>
@@ -87,6 +90,10 @@
             <Button Name="ButtonFixVersion" Margin="24 20" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     Content="修复版本冲突" IsEnabled="False" Click="FixNugetButton_OnClick" 
                     Style="{StaticResource Style.Button.AccentBackground.Text}"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.RowSpan="2" Background="#08D3D3D3"
+              Visibility="{Binding ElementName=TheErrorFixView,Path=IsChecking,Converter={StaticResource BoolToVisibility}}">
+            <resources:LoadingControl IsSearching="{Binding ElementName=TheErrorFixView,Path=IsChecking}"/>
         </Grid>
     </Grid>
 </UserControl>

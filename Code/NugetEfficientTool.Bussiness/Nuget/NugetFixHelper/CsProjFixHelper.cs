@@ -198,9 +198,8 @@ namespace NugetEfficientTool.Business
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
             var packageReferences = CsProj.GetReferences(Document).Where(x => CheckIncludeAttributeContainsName(x, nugetFixStrategy.NugetName)).ToList();
-            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).Where(x =>
-                CsProj.GetNugetInfo(x).Name == nugetFixStrategy.NugetName).ToList();
-            if (!packageReferences.Any() && !nugetInfoReferences.Any())
+            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).Where(x => CsProj.GetNugetInfo(x).Name == nugetFixStrategy.NugetName).ToList();
+            if (!nugetInfoReferences.Any())
             {
                 return false;
             }

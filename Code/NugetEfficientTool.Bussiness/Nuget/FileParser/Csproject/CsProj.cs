@@ -123,6 +123,10 @@ namespace NugetEfficientTool.Business
         public static string GetTargetFrameworkOfDll(string dllFilePath)
         {
             var matchCollection = NugetTargetFrameworkRegex.Matches(dllFilePath);
+            if (matchCollection.Count == 0)
+            {
+                return string.Empty;
+            }
             return matchCollection[matchCollection.Count - 1].Value;
         }
         public static void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)

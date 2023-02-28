@@ -73,7 +73,7 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                CustomText.Notification.ShowInfo(null,exception.Message);
             }
         }
         /// <summary>
@@ -88,8 +88,8 @@ namespace NugetEfficientTool
 
             var selectedVersionNugetInfos = nugetInfoExGroup.FileNugetInfos.Where(x => x.Version == selectedVersion).ToList();
             var nugetDllInfos = GetNugetDllInfos(selectedVersionNugetInfos);
-            //检测DllPath是否存在多个
-            if (!CheckMultiDllError(nugetDllInfos)) return null;
+            ////检测DllPath是否存在多个
+            //if (!CheckMultiDllError(nugetDllInfos)) return null;
             //选择一个nugetDll路径，创建修复策略
             var nugetDllInfo = nugetDllInfos.Any(i => string.IsNullOrEmpty(i.DllPath)) ? nugetDllInfos.FirstOrDefault(i => string.IsNullOrEmpty(i.DllPath)) :
                 nugetDllInfos.FirstOrDefault();
@@ -114,22 +114,26 @@ namespace NugetEfficientTool
 
         private bool CheckMultiDllError(List<NugetDllInfo> nugetDllInfos)
         {
-            var dllPaths = nugetDllInfos.Select(x => x.DllPath).ToList();
-            if (dllPaths.Count > 1)
+            if (nugetDllInfos.Count > 1)
             {
                 //如果是2个DLL路径，且其中有一个空值（空值一般是PackageReference），可以继续修复
-                if (dllPaths.Count == 2 && dllPaths.Any(string.IsNullOrEmpty))
+                if (nugetDllInfos.Count == 2 && nugetDllInfos.Any(i => string.IsNullOrEmpty(i.DllPath)))
                 {
                     return true;
                 }
                 //检测异常
-                var errorMessage = "指定的修复策略存在多个 Dll 路径，修复工具无法确定应该使用哪一个。请保留现场并联系开发者。";
-                var dllPathMessage = string.Empty;
-                foreach (var dllPath in dllPaths)
+                var multiDllReferenceError = string.Empty;
+                foreach (var nugetDllInfo in nugetDllInfos)
                 {
-                    dllPathMessage = StringSplicer.SpliceWithNewLine(dllPathMessage, dllPath);
+                    var lineMessage = nugetDllInfo.DllPath;
+                    if (string.IsNullOrEmpty(lineMessage))
+                    {
+                        lineMessage = $"PackageReference {nugetDllInfo.DllFullName}";
+                    }
+                    multiDllReferenceError = StringSplicer.SpliceWithNewLine(multiDllReferenceError, lineMessage);
                 }
-                errorMessage = StringSplicer.SpliceWithDoubleNewLine(errorMessage, dllPathMessage);
+                var errorMessage = "指定的修复策略存在多个 Dll 路径，修复工具无法确定应该使用哪一个。请保留现场并联系开发者。";
+                errorMessage = StringSplicer.SpliceWithDoubleNewLine(errorMessage, multiDllReferenceError);
                 CustomText.Notification.ShowInfo(null, errorMessage);
                 return false;
             }
@@ -157,7 +161,16 @@ namespace NugetEfficientTool
                     continue;
                 }
 
-                if (nugetDllInfos.Any(i => i.DllPath == versionNugetInfo.NugetDllInfo.DllPath))
+                var dllPath = versionNugetInfo.NugetDllInfo.DllPath ?? string.Empty;
+                if (dllPath.Contains("packages"))
+                {
+                    var list = dllPath.Split(new[] { "\\packages\\" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    if (list.Count > 1)
+                    {
+                        dllPath = $"\\packages\\{list.Last()}";
+                    }
+                }
+                if (nugetDllInfos.Any(i => i.DllPath == dllPath || i.DllPath.EndsWith(dllPath)))
                 {
                     continue;
                 }
