@@ -131,10 +131,10 @@ namespace NugetEfficientTool
                 }
                 errorMessage = StringSplicer.SpliceWithDoubleNewLine(errorMessage, dllPathMessage);
                 CustomText.Notification.ShowInfo(null, errorMessage);
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         private static string GetTargetFramework(List<FileNugetInfo> selectedVersionNugetInfos)

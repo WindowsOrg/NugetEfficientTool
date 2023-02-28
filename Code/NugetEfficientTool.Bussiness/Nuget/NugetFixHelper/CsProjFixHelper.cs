@@ -53,7 +53,7 @@ namespace NugetEfficientTool.Business
 
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
                 firstPackageReference.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetName);
-                var versionElement = firstPackageReference.Elements().FirstOrDefault(element => element.Name.LocalName==CsProjConst.VersionElementName);
+                var versionElement = firstPackageReference.Elements().FirstOrDefault(element => element.Name.LocalName == CsProjConst.VersionElementName);
                 if (versionElement != null)
                 {
                     versionElement.SetValue(nugetFixStrategy.NugetVersion);
@@ -197,8 +197,7 @@ namespace NugetEfficientTool.Business
 
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
-            var packageReferences = CsProj.GetReferences(Document).Where(x =>
-                x.Attribute(CsProjConst.IncludeAttribute)?.Value == nugetFixStrategy.NugetName).ToList();
+            var packageReferences = CsProj.GetReferences(Document).Where(x => CheckIncludeAttributeContainsName(x, nugetFixStrategy.NugetName)).ToList();
             var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).Where(x =>
                 CsProj.GetNugetInfo(x).Name == nugetFixStrategy.NugetName).ToList();
             if (!packageReferences.Any() && !nugetInfoReferences.Any())
@@ -223,6 +222,17 @@ namespace NugetEfficientTool.Business
             }
 
             return true;
+        }
+
+        private bool CheckIncludeAttributeContainsName(XElement x, string nugetName)
+        {
+            var xAttribute = x.Attribute(CsProjConst.IncludeAttribute);
+            if (!(xAttribute?.Value is string includeAttributeValue && !string.IsNullOrEmpty(includeAttributeValue)))
+            {
+                return false;
+            }
+
+            return includeAttributeValue.StartsWith(nugetName);
         }
     }
 }

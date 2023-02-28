@@ -90,7 +90,7 @@ namespace NugetEfficientTool
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             CustomText.Log.Error(e.Exception);
-            CustomText.Notification.ShowInfo(_mainWindow, e.Exception.Message);
+            CustomText.Notification.ShowInfo(null,e.Exception.Message);
             //表示补救成功
             e.Handled = true;
         }
@@ -101,6 +101,8 @@ namespace NugetEfficientTool
                 CustomText.Log.Error(exception);
                 //通过配置legacyUnhandledExceptionPolicy防止后台线程抛出的异常让程序崩溃退出，
                 //e.IsTerminating经过配置，才会变成false
+
+                CustomText.Notification.ShowInfo(null, exception.Message);
             }
         }
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -111,6 +113,7 @@ namespace NugetEfficientTool
             }
             //设置该异常已察觉（这样处理后就不会引起程序崩溃）
             e.SetObserved();
+            CustomText.Notification.ShowInfo(null, e.Exception.Message);
         }
 
         #endregion
