@@ -30,7 +30,7 @@ namespace NugetEfficientTool.Business
                     Directory.CreateDirectory(folder);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
