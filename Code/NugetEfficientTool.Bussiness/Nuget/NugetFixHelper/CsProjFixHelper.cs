@@ -232,6 +232,11 @@ namespace NugetEfficientTool.Business
                 return false;
             }
 
+            if (includeAttributeValue.Contains(","))
+            {
+                var includeValues = includeAttributeValue.Split(new []{","},StringSplitOptions.RemoveEmptyEntries);
+                includeAttributeValue = includeAttributeValue[0].ToString();
+            }
             return includeAttributeValue.StartsWith(nugetName);
         }
     }
