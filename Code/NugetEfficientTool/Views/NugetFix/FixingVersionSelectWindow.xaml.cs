@@ -160,7 +160,7 @@ namespace NugetEfficientTool
                 {
                     continue;
                 }
-
+                
                 var dllPath = versionNugetInfo.NugetDllInfo.DllPath ?? string.Empty;
                 if (dllPath.Contains("packages"))
                 {
