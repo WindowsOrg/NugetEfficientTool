@@ -14,9 +14,9 @@ namespace NugetEfficientTool
     /// <summary>
     /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class NugetErrorView : UserControl
+    public partial class NugetFixView : UserControl
     {
-        public NugetErrorView()
+        public NugetFixView()
         {
             InitializeComponent();
             Loaded += NugetFixView_Loaded;
@@ -155,7 +155,7 @@ namespace NugetEfficientTool
         }
 
         public static readonly DependencyProperty IsCheckingProperty = DependencyProperty.Register(
-            "IsChecking", typeof(bool), typeof(NugetErrorView), new PropertyMetadata(default(bool)));
+            "IsChecking", typeof(bool), typeof(NugetFixView), new PropertyMetadata(default(bool)));
         /// <summary>
         /// 检查中
         /// </summary>

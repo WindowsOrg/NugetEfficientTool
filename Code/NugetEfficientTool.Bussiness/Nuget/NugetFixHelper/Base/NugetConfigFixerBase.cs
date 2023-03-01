@@ -4,11 +4,11 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    public abstract class NugetConfigFixHelperBase : INugetConfigFixHelper
+    public abstract class NugetConfigFixerBase : INugetConfigFixHelper
     {
         #region 构造函数
 
-        protected NugetConfigFixHelperBase( XDocument xDocument,
+        protected NugetConfigFixerBase( XDocument xDocument,
              IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             Document = xDocument;

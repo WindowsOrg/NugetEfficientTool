@@ -84,10 +84,10 @@
     <Compile Include="Nuget\Utils\DllInfo.cs" />
     <Compile Include="Nuget\Utils\HintPathElements.cs" />
     <Compile Include="Nuget\Utils\NugetConfig.cs" />
-    <Compile Include="Nuget\NugetFixHelper\CsProjFixHelper.cs" />
+    <Compile Include="Nuget\NugetFixHelper\CsProjFixer.cs" />
     <Compile Include="Nuget\NugetFixHelper\Base\INugetConfigFixHelper.cs" />
-    <Compile Include="Nuget\NugetFixHelper\Base\NugetConfigFixHelperBase.cs" />
-    <Compile Include="Nuget\NugetFixHelper\PackagesConfigFixHelper.cs" />
+    <Compile Include="Nuget\NugetFixHelper\Base\NugetConfigFixerBase.cs" />
+    <Compile Include="Nuget\NugetFixHelper\PackagesConfigFixer.cs" />
     <Compile Include="Nuget\FileParser\Csproject\CsProjFileParser.cs" />
     <Compile Include="Nuget\FileParser\INugetFileParser.cs" />
     <Compile Include="Nuget\Utils\NugetConfigReader.cs" />

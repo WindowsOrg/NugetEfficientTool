@@ -23,10 +23,10 @@ namespace NugetEfficientTool.Business
             switch (NugetConfig.GetNugetConfigType(configPath))
             {
                 case NugetConfigType.PackagesConfig:
-                    _nugetConfigFixHelper = new PackagesConfigFixHelper(_xDocument, _nugetFixStrategies);
+                    _nugetConfigFixHelper = new PackagesConfigFixer(_xDocument, _nugetFixStrategies);
                     break;
                 case NugetConfigType.CsProj:
-                    _nugetConfigFixHelper = new CsProjFixHelper(_xDocument, configPath, _nugetFixStrategies);
+                    _nugetConfigFixHelper = new CsProjFixer(_xDocument, configPath, _nugetFixStrategies);
                     break;
                 case NugetConfigType.Unknown:
                     Log = $"无法判断 {configPath} 是哪种类型的 Nuget 配置文件";

@@ -5,9 +5,9 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    public class PackagesConfigFixHelper : NugetConfigFixHelperBase
+    public class PackagesConfigFixer : NugetConfigFixerBase
     {
-        public PackagesConfigFixHelper(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
+        public PackagesConfigFixer(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
             xDocument, nugetFixStrategies)
         {
         }

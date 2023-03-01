@@ -7,9 +7,9 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    public class CsProjFixHelper : NugetConfigFixHelperBase
+    public class CsProjFixer : NugetConfigFixerBase
     {
-        public CsProjFixHelper(XDocument xDocument, string csProjPath, IEnumerable<NugetFixStrategy> nugetFixStrategies)
+        public CsProjFixer(XDocument xDocument, string csProjPath, IEnumerable<NugetFixStrategy> nugetFixStrategies)
             : base(xDocument, nugetFixStrategies)
         {
             _csProjPath = csProjPath;
@@ -95,7 +95,7 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
                 //system引用，会被替换并修改
-                //todo 2.System.Runtime.Cache会被删除
+                //todo 2.System.Runtime.Serialization会被删除 3.会被改为System.Runtime.Caching
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
                 if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
