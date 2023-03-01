@@ -95,7 +95,7 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
                 //system引用，会被替换并修改
-                //todo 1. System.ValueTuple版本问题 2.System.Runtime.Cache会被删除
+                //todo 2.System.Runtime.Cache会被删除
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
                 if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
