@@ -195,18 +195,18 @@ namespace NugetEfficientTool.Business
             {
                 throw new ArgumentNullException(nameof(toPath));
             }
-            //不同解决方案间的引用，不能跨解决方案，还是要在本解决方案内解决。
-            //所以除了改为相对路径，还需要复制nuget文件到当前解决方案路径下 todo
-            var dllPath = toPath;
-            if (dllPath.Contains("packages"))
-            {
-                var list = dllPath.Split(new[] { "\\packages\\" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                if (list.Count > 1)
-                {
-                    dllPath = $"..\\packages\\{list.Last()}";
-                }
-            }
-            return dllPath;
+            ////不同解决方案间的引用，不能跨解决方案，还是要在本解决方案内解决。
+            ////所以除了改为相对路径，还需要复制nuget文件到当前解决方案路径下 todo
+            //var dllPath = toPath;
+            //if (dllPath.Contains("packages"))
+            //{
+            //    var list = dllPath.Split(new[] { "\\packages\\" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            //    if (list.Count > 1)
+            //    {
+            //        dllPath = $"..\\packages\\{list.Last()}";
+            //    }
+            //}
+            //return dllPath;
 
             //获取相对路径
             var fromUri = new Uri(fromPath);

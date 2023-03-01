@@ -82,6 +82,7 @@
     <Compile Include="Nuget\NugetReplaceHelper\SlnFileNugetReplacer.cs" />
     <Compile Include="Nuget\FileParser\Csproject\CsProj.cs" />
     <Compile Include="Nuget\Utils\DllInfo.cs" />
+    <Compile Include="Nuget\Utils\HintPathElements.cs" />
     <Compile Include="Nuget\Utils\NugetConfig.cs" />
     <Compile Include="Nuget\NugetFixHelper\CsProjFixHelper.cs" />
     <Compile Include="Nuget\NugetFixHelper\Base\INugetConfigFixHelper.cs" />

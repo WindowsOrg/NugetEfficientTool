@@ -47,7 +47,7 @@ namespace NugetEfficientTool.Business
             {
                 //没有DLLPath，说明目标引用是PackageReference，则Package中的对应reference可以删除
                 var packageElement = packageElementList[i];
-                if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
+                if (nugetFixStrategy.NugetDllInfo==null||string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
                     var packageContent = packageElement.ToString();
                     packageElement.Remove();

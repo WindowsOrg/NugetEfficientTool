@@ -80,6 +80,7 @@ namespace NugetEfficientTool.Business
         {
             var includeValue = xElement.Attribute(IncludeAttribute).Value;
             string nugetVersion;
+            //PackageReference
             if (PackageReferenceName.Equals(xElement.Name.LocalName))
             {
                 var versionElements = xElement.Elements().Where(x => x.Name.LocalName == VersionElementName).ToList();
@@ -95,9 +96,20 @@ namespace NugetEfficientTool.Business
                     return new NugetInfo(includeValue, versionAttribute.Value);
                 }
             }
-
+            //Reference
             var nugetName = NugetNameRegex.Match(includeValue).Value;
             nugetVersion = NugetVersionRegex.Match(includeValue).Value;
+            //如果内部有HintPath，则获取DLL路径信息中的Nuget名称和版本号。HintPath下的信息才是准确的
+            if (xElement.Elements().FirstOrDefault(x => x.Name.LocalName == CsProjConst.HintPathElementName) is XElement hintPathElement)
+            {
+                var nugetInfo = HintPathElements.GetNugetInfo(hintPathElement);
+                if (nugetInfo != null)
+                {
+                    nugetName = nugetInfo.Name;
+                    nugetVersion = nugetInfo.Version;
+                }
+            }
+
             return new NugetInfo(nugetName, nugetVersion);
         }
         public void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
