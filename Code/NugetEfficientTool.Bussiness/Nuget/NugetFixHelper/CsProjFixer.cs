@@ -236,7 +236,7 @@ namespace NugetEfficientTool.Business
 
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
-            var packageReferences = CsProj.GetReferences(Document).Where(x => CheckIncludeAttributeContainsName(x, nugetFixStrategy.NugetName)).ToList();
+            var packageReferences = CsProj.GetProjectReferences(Document).Where(x => CheckIncludeName(x, nugetFixStrategy.NugetName)).ToList();
             var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).Where(x =>
                 CsProj.GetNugetInfo(x).Name == nugetFixStrategy.NugetName).ToList();
             if (!packageReferences.Any() && !nugetInfoReferences.Any())
@@ -263,20 +263,14 @@ namespace NugetEfficientTool.Business
             return true;
         }
 
-        private bool CheckIncludeAttributeContainsName(XElement x, string nugetName)
+        private bool CheckIncludeName(XElement x, string nugetName)
         {
             var xAttribute = x.Attribute(CsProjConst.IncludeAttribute);
             if (!(xAttribute?.Value is string includeAttributeValue && !string.IsNullOrEmpty(includeAttributeValue)))
             {
                 return false;
             }
-
-            if (includeAttributeValue.Contains(","))
-            {
-                var includeValues = includeAttributeValue.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                includeAttributeValue = includeAttributeValue[0].ToString();
-            }
-            return includeAttributeValue.StartsWith(nugetName);
+            return includeAttributeValue == nugetName;
         }
     }
 }
