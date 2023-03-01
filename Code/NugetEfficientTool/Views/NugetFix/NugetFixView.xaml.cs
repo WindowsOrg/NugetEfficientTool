@@ -104,8 +104,6 @@ namespace NugetEfficientTool
                     return;
                 }
 
-                nugetFixStrategies=nugetFixStrategies.Where(i => i.NugetName.Contains("System.Runtime.CompilerServices.Unsafe")).ToList();
-
                 var repairLog = string.Empty;
                 var toReparingFiles = new List<string>();
                 foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugetInfoExs)
