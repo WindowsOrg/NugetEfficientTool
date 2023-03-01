@@ -71,12 +71,6 @@ namespace NugetEfficientTool.Business
             }
         }
 
-        private void DeleteNugetInfoReferences(IEnumerable<XElement> nugetInfoReferences)
-        {
-            var nugetInfoReferenceList = nugetInfoReferences.ToList();
-            nugetInfoReferenceList.ForEach(x => x.Remove());
-        }
-
         private void FixNugetInfoReferences(IEnumerable<XElement> nugetInfoReferences,
             NugetFixStrategy nugetFixStrategy)
         {
@@ -148,33 +142,6 @@ namespace NugetEfficientTool.Business
             if (nugetInfoReferenceList.Count > 1)
             {
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 删除了 {nugetFixStrategy.NugetName} 的 {nugetInfoReferenceList.Count - 1} 个冲突引用");
-            }
-        }
-
-        private static void AddPackageReference(NugetFixStrategy nugetFixStrategy, XElement firstNugetInfoReference)
-        {
-            var xElement = new XElement(CsProjConst.PackageReferenceName);
-            xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetDllInfo.DllFullName);
-            xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
-            if (firstNugetInfoReference.NextNode is XElement nextElement)
-            {
-                firstNugetInfoReference.Remove();
-                nextElement.AddBeforeSelf(xElement);
-            }
-            else if (firstNugetInfoReference.PreviousNode is XElement previousElement)
-            {
-                firstNugetInfoReference.Remove();
-                previousElement.AddAfterSelf(xElement);
-            }
-            else if (firstNugetInfoReference.Parent is XElement parentElement)
-            {
-                firstNugetInfoReference.Remove();
-                parentElement.AddFirst(xElement);
-            }
-            else
-            {
-                throw new InvalidOperationException(
-                    $"{firstNugetInfoReference}未能完成替换到目标{nugetFixStrategy.NugetName}-{nugetFixStrategy.NugetVersion}");
             }
         }
 
