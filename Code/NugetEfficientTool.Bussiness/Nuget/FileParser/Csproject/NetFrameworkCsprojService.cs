@@ -22,6 +22,14 @@ namespace NugetEfficientTool.Business
             xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, PackageReferenceName));
             return xElements;
         }
+
+        public List<XElement> GetPackageReferences(XDocument xDocument)
+        {
+            var xElements = new List<XElement>();
+            xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, PackageReferenceName));
+            return xElements;
+        }
+
         /// <summary>
         /// 获取所有Nuget-Reference节点
         /// </summary>

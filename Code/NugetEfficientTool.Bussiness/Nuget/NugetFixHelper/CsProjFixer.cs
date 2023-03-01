@@ -87,6 +87,7 @@ namespace NugetEfficientTool.Business
                 {
                     continue;
                 }
+
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
                 //if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 //{
@@ -204,9 +205,19 @@ namespace NugetEfficientTool.Business
 
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
-            var packageReferences = CsProj.GetProjectReferences(Document).Where(x => CheckIncludeName(x, nugetFixStrategy.NugetName)).ToList();
-            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).Where(x =>
-                CsProj.GetNugetInfo(x).Name == nugetFixStrategy.NugetName).ToList();
+            //以PackageReference为主
+            var packageReferences = CsProj.GetPackageReferences(Document).Where(x =>
+            {
+                var nugetInfo = CsProj.GetNugetInfo(x);
+                return nugetInfo.Name == nugetFixStrategy.NugetName &&
+                       nugetInfo.Version != nugetFixStrategy.NugetVersion;
+            }).ToList();
+            var nugetInfoReferences = CsProj.GetReferences(Document).Where(x =>
+            {
+                var nugetInfo = CsProj.GetNugetInfo(x);
+                return nugetInfo.Name == nugetFixStrategy.NugetName &&
+                       nugetInfo.Version != nugetFixStrategy.NugetVersion;
+            }).ToList();
             if (!packageReferences.Any() && !nugetInfoReferences.Any())
             {
                 return false;
@@ -229,16 +240,6 @@ namespace NugetEfficientTool.Business
             }
 
             return true;
-        }
-
-        private bool CheckIncludeName(XElement x, string nugetName)
-        {
-            var xAttribute = x.Attribute(CsProjConst.IncludeAttribute);
-            if (!(xAttribute?.Value is string includeAttributeValue && !string.IsNullOrEmpty(includeAttributeValue)))
-            {
-                return false;
-            }
-            return includeAttributeValue == nugetName;
         }
     }
 }

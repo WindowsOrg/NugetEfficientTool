@@ -10,6 +10,7 @@ namespace NugetEfficientTool.Business
     internal interface ICsProjFileService
     {
         List<XElement> GetProjectReferences(XDocument xDocument);
+        List<XElement> GetPackageReferences(XDocument xDocument);
         List<XElement> GetNugetReferences(XDocument xDocument);
         List<XElement> GetReferences(XDocument xDocument);
         void RevertReference(XDocument document, ReplacedFileRecord replacedRecord);

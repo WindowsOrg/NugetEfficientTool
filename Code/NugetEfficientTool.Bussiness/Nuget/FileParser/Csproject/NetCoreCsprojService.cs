@@ -18,6 +18,12 @@ namespace NugetEfficientTool.Business
         {
             return GetXElementsByNameInItemGroups(xDocument, PackageReferenceName);
         }
+
+        public List<XElement> GetPackageReferences(XDocument xDocument)
+        {
+            return GetReferences(xDocument);
+        }
+
         public List<XElement> GetNugetReferences(XDocument xDocument)
         {
             var references = GetReferences(xDocument);

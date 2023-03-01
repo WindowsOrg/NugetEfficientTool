@@ -24,6 +24,15 @@ namespace NugetEfficientTool.Business
             return CsProjService.GetReferences(xDocument);
         }
         /// <summary>
+        /// 获取Reference节点
+        /// </summary>
+        /// <param name="xDocument"></param>
+        /// <returns></returns>
+        public static IEnumerable<XElement> GetPackageReferences(XDocument xDocument)
+        {
+            return CsProjService.GetPackageReferences(xDocument);
+        }
+        /// <summary>
         /// 获取所有Nuget-Reference节点
         /// </summary>
         /// <param name="xDocument"></param>

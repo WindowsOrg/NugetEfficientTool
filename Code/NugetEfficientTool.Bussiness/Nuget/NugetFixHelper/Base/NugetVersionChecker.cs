@@ -54,6 +54,8 @@ namespace NugetEfficientTool.Business
                     badFormatNugetConfigList.Add(nugetConfigReader);
                 }
             }
+
+            goodFormatNugetInfoExList = FilterFormatNugets(goodFormatNugetInfoExList);
             //格式问题及版本问题
             ErrorFormatNugetConfigs = badFormatNugetConfigList;
             MismatchVersionNugetInfoExs = GetMismatchVersionNugets(goodFormatNugetInfoExList);
@@ -68,6 +70,18 @@ namespace NugetEfficientTool.Business
             {
                 Message = "完美无瑕！";
             }
+        }
+        /// <summary>
+        /// 筛选Nuget版本冲突列表
+        /// </summary>
+        /// <param name="fileNugetInfos"></param>
+        /// <returns></returns>
+        private List<FileNugetInfo> FilterFormatNugets(List<FileNugetInfo> fileNugetInfos)
+        {
+            //不需要关心System、Microsoft等系统相关版本
+            var nugetInfos = fileNugetInfos.Where(i => !i.Name.StartsWith("System.")&&
+                                                       !i.Name.StartsWith("Microsoft.")).ToList();
+            return nugetInfos;
         }
 
         private List<string> GetProjectFiles(string solutionFilePath)
