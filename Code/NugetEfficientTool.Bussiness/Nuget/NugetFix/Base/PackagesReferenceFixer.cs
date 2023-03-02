@@ -10,9 +10,10 @@ namespace NugetEfficientTool.Business
     /// </summary>
     public class PackagesReferenceFixer : NugetReferenceFixerBase
     {
-        public PackagesReferenceFixer(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
+        public PackagesReferenceFixer(XDocument xDocument, string packageFile, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
             xDocument, nugetFixStrategies)
         {
+            _packageFile = packageFile;
         }
 
         /// <summary>
@@ -70,5 +71,7 @@ namespace NugetEfficientTool.Business
             }
             return true;
         }
+
+        private readonly string _packageFile;
     }
 }

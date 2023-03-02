@@ -29,7 +29,7 @@ namespace NugetEfficientTool.Business
             switch (NugetConfig.GetNugetConfigType(configPath))
             {
                 case NugetConfigType.PackagesConfig:
-                    _nugetConfigFixer = new PackagesReferenceFixer(_xDocument, nugetFixStrategies);
+                    _nugetConfigFixer = new PackagesReferenceFixer(_xDocument, configPath, nugetFixStrategies);
                     break;
                 case NugetConfigType.CsProj:
                     _nugetConfigFixer = new CsProjReferenceFixer(_xDocument, configPath, nugetFixStrategies);
