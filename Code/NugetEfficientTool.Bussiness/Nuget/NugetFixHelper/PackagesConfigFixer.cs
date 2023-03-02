@@ -21,7 +21,7 @@ namespace NugetEfficientTool.Business
         {
             if (ReferenceEquals(nugetFixStrategy, null)) throw new ArgumentNullException(nameof(nugetFixStrategy));
             var rootElement = Document.Root;
-            if (rootElement==null)
+            if (rootElement == null)
             {
                 return false;
             }
@@ -38,7 +38,6 @@ namespace NugetEfficientTool.Business
             }
             if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
             {
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 根据策略，忽略 {nugetFixStrategy.NugetName} 存在的问题");
                 return true;
             }
 
@@ -47,7 +46,7 @@ namespace NugetEfficientTool.Business
             {
                 //没有DLLPath，说明目标引用是PackageReference，则Package中的对应reference可以删除
                 var packageElement = packageElementList[i];
-                if (nugetFixStrategy.NugetDllInfo==null||string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
+                if (nugetFixStrategy.NugetDllInfo == null || string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
                     var packageContent = packageElement.ToString();
                     packageElement.Remove();

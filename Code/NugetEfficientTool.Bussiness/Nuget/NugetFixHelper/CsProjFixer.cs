@@ -34,7 +34,7 @@ namespace NugetEfficientTool.Business
                 }
 
                 var removeAttributeList = new[] { "Private", "HintPath" };
-
+                //删除元素
                 var firstPackageReference = packageReferenceList[i];
                 if (firstPackageReference.Elements().Any())
                 {
@@ -42,9 +42,8 @@ namespace NugetEfficientTool.Business
                     {
                         firstPackageReference.Element(attribute)?.Remove();
                     }
-
-                    Log = StringSplicer.SpliceWithNewLine(Log, $"    - 更新了 {nugetFixStrategy.NugetName} 的版本声明格式");
                 }
+                //删除属性
                 foreach (var attribute in removeAttributeList)
                 {
                     // 设置为 null 将删除属性
@@ -225,7 +224,6 @@ namespace NugetEfficientTool.Business
 
             if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
             {
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 根据策略，忽略 {nugetFixStrategy.NugetName} 存在的问题");
                 return true;
             }
 

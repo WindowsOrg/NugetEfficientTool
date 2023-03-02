@@ -56,6 +56,11 @@ namespace NugetEfficientTool
 
                     var nugetName = nugetVersionSelectorUserControl.NugetName;
                     var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
+                    //过滤掉“忽略修复”
+                    if (selectedVersion== NugetVersion.IgnoreFix)
+                    {
+                        continue;
+                    }
                     var fixNugetStrategy = CreateVersionFixStrategy(nugetName, selectedVersion);
                     if (fixNugetStrategy == null)
                     {
