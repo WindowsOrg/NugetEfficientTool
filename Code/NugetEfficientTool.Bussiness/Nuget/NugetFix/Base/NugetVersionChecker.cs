@@ -13,20 +13,20 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// 构造一个 Nuget 版本检查器
         /// </summary>
-        /// <param name="solutionFilePath">解决方案路径</param>
-        public NugetVersionChecker(string solutionFilePath)
+        /// <param name="solutionFile">解决方案路径</param>
+        public NugetVersionChecker(string solutionFile)
         {
-            _solutionFilePath = solutionFilePath;
+            _solutionFile = solutionFile;
         }
 
         #region 对外字段 & 方法
 
         /// <summary>
-        /// 检测Nuget问题
+        /// 检测Nuget引用问题
         /// </summary>
         public void Check()
         {
-            var solutionFilePath = _solutionFilePath;
+            var solutionFilePath = _solutionFile;
             if (string.IsNullOrEmpty(solutionFilePath))
             {
                 throw new ArgumentNullException(nameof(solutionFilePath));
@@ -40,28 +40,28 @@ namespace NugetEfficientTool.Business
                 nugetConfigFiles.AddRange(SolutionFileHelper.GetNugetConfigFiles(projectDirectory));
             }
             //获取nuget相关信息
-            var badFormatNugetConfigList = new List<NugetConfigReader>();
-            var goodFormatNugetInfoExList = new List<FileNugetInfo>();
+            var badFormatNugetFiles = new List<NugetConfigReader>();
+            var mismatchVersionNugetFiles = new List<FileNugetInfo>();
             foreach (var nugetConfigFile in nugetConfigFiles)
             {
                 var nugetConfigReader = new NugetConfigReader(nugetConfigFile);
                 if (nugetConfigReader.IsGoodFormat())
                 {
-                    goodFormatNugetInfoExList.AddRange(nugetConfigReader.PackageInfoExs);
+                    mismatchVersionNugetFiles.AddRange(nugetConfigReader.PackageInfoExs);
                 }
                 else
                 {
-                    badFormatNugetConfigList.Add(nugetConfigReader);
+                    badFormatNugetFiles.Add(nugetConfigReader);
                 }
             }
 
-            goodFormatNugetInfoExList = FilterFormatNugets(goodFormatNugetInfoExList);
+            mismatchVersionNugetFiles = FilterFormatNugets(mismatchVersionNugetFiles);
             //格式问题及版本问题
-            ErrorFormatNugetConfigs = badFormatNugetConfigList;
-            MismatchVersionNugetInfoExs = GetMismatchVersionNugets(goodFormatNugetInfoExList);
+            ErrorFormatNugetFiles = badFormatNugetFiles;
+            MismatchVersionNugets = GetMismatchVersionNugets(mismatchVersionNugetFiles);
             //设置nuget问题异常显示
-            var nugetMismatchVersionMessage = CreateNugetMismatchVersionMessage(MismatchVersionNugetInfoExs);
-            foreach (var errorFormatNugetConfig in ErrorFormatNugetConfigs)
+            var nugetMismatchVersionMessage = CreateNugetMismatchVersionMessage(MismatchVersionNugets);
+            foreach (var errorFormatNugetConfig in ErrorFormatNugetFiles)
             {
                 Message = StringSplicer.SpliceWithDoubleNewLine(Message, errorFormatNugetConfig.ErrorMessage);
             }
@@ -104,9 +104,9 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// 异常 Nuget 配置文件列表
         /// </summary>
-        public IEnumerable<NugetConfigReader> ErrorFormatNugetConfigs { get; private set; }
+        public IEnumerable<NugetConfigReader> ErrorFormatNugetFiles { get; private set; }
 
-        public IEnumerable<FileNugetInfoGroup> MismatchVersionNugetInfoExs { get; private set; }
+        public IEnumerable<FileNugetInfoGroup> MismatchVersionNugets { get; private set; }
 
         /// <summary>
         /// 检测信息
@@ -117,6 +117,11 @@ namespace NugetEfficientTool.Business
 
         #region 私有方法
 
+        /// <summary>
+        /// 获取版本不匹配Nuget列表
+        /// </summary>
+        /// <param name="nugetPackageInfoExs"></param>
+        /// <returns></returns>
         private IEnumerable<FileNugetInfoGroup> GetMismatchVersionNugets(
              IEnumerable<FileNugetInfo> nugetPackageInfoExs)
         {
@@ -137,6 +142,7 @@ namespace NugetEfficientTool.Business
 
             return mismatchVersionNugetGroupList;
         }
+
         /// <summary>
         /// 对Nuget信息进行补偿
         /// </summary>
@@ -191,7 +197,7 @@ namespace NugetEfficientTool.Business
 
         #region private fields
 
-        private readonly string _solutionFilePath;
+        private readonly string _solutionFile;
 
         #endregion
     }

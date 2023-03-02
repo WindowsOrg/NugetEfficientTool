@@ -5,9 +5,12 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    public class PackagesConfigFixer : NugetConfigFixerBase
+    /// <summary>
+    /// Packages文件版本修复器
+    /// </summary>
+    public class PackagesReferenceFixer : NugetReferenceFixerBase
     {
-        public PackagesConfigFixer(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
+        public PackagesReferenceFixer(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
             xDocument, nugetFixStrategies)
         {
         }

@@ -80,8 +80,8 @@ namespace NugetEfficientTool
             }
             //设置检测结果
             TextBoxErrorMessage.Text = _nugetVersionChecker.Message;
-            ButtonFixVersion.IsEnabled = _nugetVersionChecker.MismatchVersionNugetInfoExs.Any() &&
-                                         !_nugetVersionChecker.ErrorFormatNugetConfigs.Any();
+            ButtonFixVersion.IsEnabled = _nugetVersionChecker.MismatchVersionNugets.Any() &&
+                                         !_nugetVersionChecker.ErrorFormatNugetFiles.Any();
             //更新到配置文件
             NugetFixConfigs.SaveNugetFixPath(solutionText);
         }
@@ -92,7 +92,7 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void FixNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var nugetVersionFixWindow = new FixingVersionSelectWindow(_nugetVersionChecker.MismatchVersionNugetInfoExs)
+            var nugetVersionFixWindow = new FixingVersionSelectWindow(_nugetVersionChecker.MismatchVersionNugets)
             {
                 Owner = Window.GetWindow(this)
             };
@@ -106,7 +106,7 @@ namespace NugetEfficientTool
 
                 var repairLog = string.Empty;
                 var toReparingFiles = new List<string>();
-                foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugetInfoExs)
+                foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugets)
                 {
                     foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
                     {

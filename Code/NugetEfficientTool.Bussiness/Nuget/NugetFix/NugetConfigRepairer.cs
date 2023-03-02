@@ -5,6 +5,9 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
+    /// <summary>
+    /// Nuget文件修复器
+    /// </summary>
     public class NugetConfigRepairer
     {
         #region 构造函数
@@ -17,16 +20,19 @@ namespace NugetEfficientTool.Business
         public NugetConfigRepairer(string configPath,
              IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
-            _nugetFixStrategies = nugetFixStrategies ?? throw new ArgumentNullException(nameof(nugetFixStrategies));
+            if (nugetFixStrategies == null)
+            {
+                throw new ArgumentNullException(nameof(nugetFixStrategies));
+            }
             _xDocument = new XmlReader(configPath).Document;
             _configPath = configPath;
             switch (NugetConfig.GetNugetConfigType(configPath))
             {
                 case NugetConfigType.PackagesConfig:
-                    _nugetConfigFixHelper = new PackagesConfigFixer(_xDocument, _nugetFixStrategies);
+                    _nugetConfigFixer = new PackagesReferenceFixer(_xDocument, nugetFixStrategies);
                     break;
                 case NugetConfigType.CsProj:
-                    _nugetConfigFixHelper = new CsProjFixer(_xDocument, configPath, _nugetFixStrategies);
+                    _nugetConfigFixer = new CsProjReferenceFixer(_xDocument, configPath, nugetFixStrategies);
                     break;
                 case NugetConfigType.Unknown:
                     Log = $"无法判断 {configPath} 是哪种类型的 Nuget 配置文件";
@@ -57,11 +63,11 @@ namespace NugetEfficientTool.Business
         {
             try
             {
-                _xDocument = _nugetConfigFixHelper.Fix();
-                if (_nugetConfigFixHelper.SucceedStrategies.Any())
+                _xDocument = _nugetConfigFixer.Fix();
+                if (_nugetConfigFixer.SucceedStrategies.Any())
                 {
                     var headerMessage = $"对 {_configPath} 执行了以下修复操作：";
-                    Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixHelper.Log);
+                    Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixer.Log);
                 }
                 _xDocument.Save(_configPath);
                 return true;
@@ -81,9 +87,7 @@ namespace NugetEfficientTool.Business
 
         private XDocument _xDocument;
 
-        private readonly INugetConfigFixHelper _nugetConfigFixHelper;
-
-        private readonly IEnumerable<NugetFixStrategy> _nugetFixStrategies;
+        private readonly NugetReferenceFixerBase _nugetConfigFixer;
 
         #endregion
     }

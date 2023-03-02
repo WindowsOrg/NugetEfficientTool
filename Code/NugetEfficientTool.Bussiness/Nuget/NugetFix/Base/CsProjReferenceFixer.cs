@@ -7,9 +7,12 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    public class CsProjFixer : NugetConfigFixerBase
+    /// <summary>
+    /// CsProj文件版本修复器
+    /// </summary>
+    public class CsProjReferenceFixer : NugetReferenceFixerBase
     {
-        public CsProjFixer(XDocument xDocument, string csProjPath, IEnumerable<NugetFixStrategy> nugetFixStrategies)
+        public CsProjReferenceFixer(XDocument xDocument, string csProjPath, IEnumerable<NugetFixStrategy> nugetFixStrategies)
             : base(xDocument, nugetFixStrategies)
         {
             _csProjPath = csProjPath;

@@ -4,12 +4,14 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    public abstract class NugetConfigFixerBase : INugetConfigFixHelper
+    /// <summary>
+    /// Nuget引用修复器抽象类
+    /// </summary>
+    public abstract class NugetReferenceFixerBase
     {
         #region 构造函数
 
-        protected NugetConfigFixerBase( XDocument xDocument,
-             IEnumerable<NugetFixStrategy> nugetFixStrategies)
+        protected NugetReferenceFixerBase(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             Document = xDocument;
             NugetFixStrategies = nugetFixStrategies ?? throw new ArgumentNullException(nameof(nugetFixStrategies));
@@ -29,11 +31,11 @@ namespace NugetEfficientTool.Business
             {
                 if (FixDocumentByStrategy(nugetFixStrategy))
                 {
-                    _succeedNugetFixStrategyList.Add(nugetFixStrategy);
+                    _succeedNugetFixStrategies.Add(nugetFixStrategy);
                 }
                 else
                 {
-                    _ignoredNugetFixStrategyList.Add(nugetFixStrategy);
+                    _failedNugetFixStrategies.Add(nugetFixStrategy);
                 }
             }
 
@@ -55,11 +57,20 @@ namespace NugetEfficientTool.Business
 
         #region 公共字段
 
+        /// <summary>
+        /// 修复日志
+        /// </summary>
         public string Log { get; protected set; }
 
-        public IEnumerable<NugetFixStrategy> SucceedStrategies => _succeedNugetFixStrategyList;
+        /// <summary>
+        /// 执行成功的策略
+        /// </summary>
+        public IEnumerable<NugetFixStrategy> SucceedStrategies => _succeedNugetFixStrategies;
 
-        public IEnumerable<NugetFixStrategy> IgnoredStrategies => _ignoredNugetFixStrategyList;
+        /// <summary>
+        /// 执行失败的策略
+        /// </summary>
+        public IEnumerable<NugetFixStrategy> FailedStrategies => _failedNugetFixStrategies;
 
         #endregion
 
@@ -69,9 +80,9 @@ namespace NugetEfficientTool.Business
 
         protected readonly IEnumerable<NugetFixStrategy> NugetFixStrategies;
 
-        private readonly List<NugetFixStrategy> _succeedNugetFixStrategyList = new List<NugetFixStrategy>();
+        private readonly List<NugetFixStrategy> _succeedNugetFixStrategies = new List<NugetFixStrategy>();
 
-        private readonly List<NugetFixStrategy> _ignoredNugetFixStrategyList = new List<NugetFixStrategy>();
+        private readonly List<NugetFixStrategy> _failedNugetFixStrategies = new List<NugetFixStrategy>();
 
         #endregion
     }
