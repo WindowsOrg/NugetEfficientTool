@@ -95,8 +95,6 @@ namespace NugetEfficientTool
 
             var selectedVersionNugetInfos = nugetInfoExGroup.FileNugetInfos.Where(x => x.Version == selectedVersion).ToList();
             var nugetDllInfos = GetNugetDllInfos(selectedVersionNugetInfos);
-            ////检测DllPath是否存在多个
-            //if (!CheckMultiDllError(nugetDllInfos)) return null;
             //选择一个nugetDll路径，创建修复策略
             var nugetDllInfo = nugetDllInfos.Any(i => string.IsNullOrEmpty(i.DllPath)) ? nugetDllInfos.FirstOrDefault(i => string.IsNullOrEmpty(i.DllPath)) :
                 nugetDllInfos.FirstOrDefault();
@@ -117,35 +115,6 @@ namespace NugetEfficientTool
                 nugetDllPath = dllFilePath;
             }
             return new NugetFixStrategy(nugetName, selectedVersion, targetFramework, nugetDllPath);
-        }
-
-        private bool CheckMultiDllError(List<NugetDllInfo> nugetDllInfos)
-        {
-            if (nugetDllInfos.Count > 1)
-            {
-                //如果是2个DLL路径，且其中有一个空值（空值一般是PackageReference），可以继续修复
-                if (nugetDllInfos.Count == 2 && nugetDllInfos.Any(i => string.IsNullOrEmpty(i.DllPath)))
-                {
-                    return true;
-                }
-                //检测异常
-                var multiDllReferenceError = string.Empty;
-                foreach (var nugetDllInfo in nugetDllInfos)
-                {
-                    var lineMessage = nugetDllInfo.DllPath;
-                    if (string.IsNullOrEmpty(lineMessage))
-                    {
-                        lineMessage = $"PackageReference {nugetDllInfo.DllFullName}";
-                    }
-                    multiDllReferenceError = StringSplicer.SpliceWithNewLine(multiDllReferenceError, lineMessage);
-                }
-                var errorMessage = "指定的修复策略存在多个 Dll 路径，修复工具无法确定应该使用哪一个。请保留现场并联系开发者。";
-                errorMessage = StringSplicer.SpliceWithDoubleNewLine(errorMessage, multiDllReferenceError);
-                CustomText.Notification.ShowInfo(null, errorMessage);
-                return false;
-            }
-
-            return true;
         }
 
         private static string GetTargetFramework(List<FileNugetInfo> selectedVersionNugetInfos)
