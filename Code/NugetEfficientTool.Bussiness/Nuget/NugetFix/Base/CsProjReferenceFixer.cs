@@ -65,12 +65,6 @@ namespace NugetEfficientTool.Business
                     firstPackageReference.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
                 }
             }
-
-            if (packageReferenceList.Count > 1)
-            {
-                Log = StringSplicer.SpliceWithNewLine(Log,
-                    $"    - 删除了 {nugetFixStrategy.NugetName} 的 {packageReferenceList.Count - 1} 个冲突引用");
-            }
         }
 
         private void FixNugetInfoReferences(IEnumerable<XElement> nugetInfoReferences, NugetFixStrategy nugetFixStrategy)
@@ -137,11 +131,6 @@ namespace NugetEfficientTool.Business
                 //        Log = StringSplicer.SpliceWithNewLine(Log, $"    - 删除了 {nugetFixStrategy.NugetName} 的 {hintPathElementList.Count - 1} 个子健冲突");
                 //    }
                 //}
-            }
-
-            if (nugetInfoReferenceList.Count > 1)
-            {
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 删除了 {nugetFixStrategy.NugetName} 的 {nugetInfoReferenceList.Count - 1} 个冲突引用");
             }
         }
 

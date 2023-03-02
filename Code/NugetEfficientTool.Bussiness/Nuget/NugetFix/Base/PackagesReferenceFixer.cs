@@ -68,13 +68,6 @@ namespace NugetEfficientTool.Business
                 }
                 packageElement.Remove();
             }
-
-            if (packageElementList.Count > 1)
-            {
-                Log = StringSplicer.SpliceWithNewLine(Log,
-                    $"    - 删除了 {nugetFixStrategy.NugetName} 的 {packageElementList.Count - 1} 个冲突引用");
-            }
-
             return true;
         }
     }
