@@ -7,7 +7,7 @@
         Title="请选择 Nuget 版本" Height="300" Width="600" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <WrapPanel Name="PanelNugetVersionSelectors" FlowDirection="LeftToRight" HorizontalAlignment="Left"/>
+            <WrapPanel Name="NugetVersionsPanel" FlowDirection="LeftToRight" HorizontalAlignment="Left"/>
         </ScrollViewer>
         <Button Name="ButtonFix" Margin="10" Height="26" Content="执行修复" HorizontalAlignment="Center"
                 VerticalAlignment="Bottom" Click="ButtonFix_OnClick"

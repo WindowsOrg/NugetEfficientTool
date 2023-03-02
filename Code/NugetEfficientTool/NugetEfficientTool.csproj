@@ -121,7 +121,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NugetFix\NugetVersionSelectorUserControl.xaml">
+    <Page Include="Views\NugetFix\NugetVersionSelectorControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -139,8 +139,8 @@
     <Compile Include="Views\NugetFix\FixingVersionSelectWindow.xaml.cs">
       <DependentUpon>FixingVersionSelectWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetFix\NugetVersionSelectorUserControl.xaml.cs">
-      <DependentUpon>NugetVersionSelectorUserControl.xaml</DependentUpon>
+    <Compile Include="Views\NugetFix\NugetVersionSelectorControl.xaml.cs">
+      <DependentUpon>NugetVersionSelectorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

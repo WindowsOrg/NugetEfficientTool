@@ -10,9 +10,9 @@ namespace NugetEfficientTool
     /// <summary>
     /// NugetVersionSelectorUserControl.xaml 的交互逻辑
     /// </summary>
-    public partial class NugetVersionSelectorUserControl : UserControl
+    public partial class NugetVersionSelectorControl : UserControl
     {
-        public NugetVersionSelectorUserControl(string nugetName, IEnumerable<string> nugetVersions)
+        public NugetVersionSelectorControl(string nugetName, IEnumerable<string> nugetVersions)
         {
             InitializeComponent();
             NugetName = nugetName;

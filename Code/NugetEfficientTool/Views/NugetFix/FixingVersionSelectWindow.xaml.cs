@@ -13,21 +13,23 @@ namespace NugetEfficientTool
     /// </summary>
     public partial class FixingVersionSelectWindow : Window
     {
-        public FixingVersionSelectWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetInfoExs)
+        /// <summary>
+        /// nuget修复版本选择窗口
+        /// </summary>
+        /// <param name="mismatchVersionNugetGroups">存在版本不匹配的Nuget列表</param>
+        public FixingVersionSelectWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetGroups)
         {
-            if (ReferenceEquals(mismatchVersionNugetInfoExs, null))
-                throw new ArgumentNullException(nameof(mismatchVersionNugetInfoExs));
+            if (ReferenceEquals(mismatchVersionNugetGroups, null))
+                throw new ArgumentNullException(nameof(mismatchVersionNugetGroups));
 
             InitializeComponent();
-            _mismatchVersionNugetInfoExs = mismatchVersionNugetInfoExs;
+            _mismatchVersionNugetInfoExs = mismatchVersionNugetGroups.OrderBy(i=>i.NugetName);
             foreach (var mismatchVersionNugetInfoEx in _mismatchVersionNugetInfoExs)
             {
                 var nugetName = mismatchVersionNugetInfoEx.NugetName;
-                var repeatNugetVersions = mismatchVersionNugetInfoEx.FileNugetInfos.Select(x => x.Version)
-                    .Distinct();
-                var nugetVersionSelectorUserControl =
-                    new NugetVersionSelectorUserControl(nugetName, repeatNugetVersions);
-                PanelNugetVersionSelectors.Children.Add(nugetVersionSelectorUserControl);
+                var repeatNugetVersions = mismatchVersionNugetInfoEx.FileNugetInfos.Select(x => x.Version).Distinct();
+                var versionSelectControl = new NugetVersionSelectorControl(nugetName, repeatNugetVersions);
+                NugetVersionsPanel.Children.Add(versionSelectControl);
             }
         }
 
@@ -47,9 +49,9 @@ namespace NugetEfficientTool
             try
             {
                 _nugetFixStrategyList.Clear();
-                foreach (var child in PanelNugetVersionSelectors.Children)
+                foreach (var child in NugetVersionsPanel.Children)
                 {
-                    if (!(child is NugetVersionSelectorUserControl nugetVersionSelectorUserControl))
+                    if (!(child is NugetVersionSelectorControl nugetVersionSelectorUserControl))
                     {
                         continue;
                     }
