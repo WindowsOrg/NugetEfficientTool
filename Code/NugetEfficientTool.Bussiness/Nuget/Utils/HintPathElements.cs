@@ -46,6 +46,6 @@ namespace NugetEfficientTool.Business
 
         private static readonly Regex NugetNameVersionRegex = new Regex(@"(?<=packages\\).+(?=\\lib)");
 
-        private static readonly Regex VersionRegex = new Regex(@"(?=.*)(.[0-9]+){3}");
+        private static readonly Regex VersionRegex = new Regex(@"(?=.*)(.[0-9]+){2}.[0-9a-zA-Z]+");
     }
 }
