@@ -133,46 +133,6 @@ namespace NugetEfficientTool
         }
         private string _id = string.Empty;
         public event EventHandler<string> SolutionFileUpdated;
-
-        private void SelectProjButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var path = OpenDialog("CsProj|*.csproj");
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                if (sender is FrameworkElement element && element.DataContext is NugetReplaceItem nugetReplaceItem)
-                {
-                    nugetReplaceItem.SourceCsprojFile = path;
-                }
-            }
-        }
-
-        private void SelectSlnButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var path = OpenDialog("解决方案|*.sln");
-           
-            if (!string.IsNullOrEmpty(path))
-            {
-                SolutionTextBox.Text = path;
-            }
-        }
-
-        private string OpenDialog(string filter)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Title = "选择文件",
-                FilterIndex = 1,
-                RestoreDirectory = true,
-                DefaultExt = ".sln",
-                Filter = filter
-            };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                return openFileDialog.FileName;
-            }
-            return string.Empty;
-        }
     }
 
     public interface INugetReplaceView

@@ -83,32 +83,12 @@
                                                         Command="{Binding ElementName=TheNugetReplaceView,Path=DataContext.DeleteNugetItemCommand}"
                                                         CommandParameter="{Binding}"/>
                                                 </StackPanel>
-                                                <Button Name="SelectProjButton"
-                                                        Margin="0 12 0 0"
-                                                        Width="24"
-                                                        Height="24"
-                                                        Click="SelectProjButton_OnClick"
-                                                        ToolTip="打开"
-                                                        Style="{StaticResource Style.Button.Image}"
-                                                        utils:ControlHelper.ImageSize ="24"
-                                                        utils:ControlHelper.Image="{StaticResource Image.Folder.Yellow}"
-                                                        utils:ControlHelper.ImageHover="{StaticResource Image.NewFolder.Gray}"
-                                                        utils:ControlHelper.ImagePressed="{StaticResource Image.NewFolder.Gray}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Border>
                         </Grid>
-                        <!--<ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="OperationPanel" Property="Visibility" Value="Visible" />
-                                <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource Brush.BorderBrush.Marked.Light}" />
-                            </Trigger>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource Brush.BorderBrush.Accent.Light}" />
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>-->
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -150,17 +130,6 @@
                 <TextBlock Text="项目路径：" VerticalAlignment="Center" TextAlignment="Right" Style="{StaticResource Style.TextBlock.Dark}"/>
                 <TextBox Name="SolutionTextBox" Style="{StaticResource Style.DefaultTextBox}" Text="{Binding SolutionFileUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Width="400" Height="32" HorizontalAlignment="Right"/>
-                <Button x:Name="SelectSlnButton" 
-                        Margin="4 0 0 0" 
-                        Width="24"
-                        Height="24"
-                        Click="SelectSlnButton_OnClick"
-                        ToolTip="打开"
-                        Style="{StaticResource Style.Button.Image}"
-                        utils:ControlHelper.ImageSize ="24"
-                        utils:ControlHelper.Image="{StaticResource Image.Folder.Yellow}"
-                        utils:ControlHelper.ImageHover="{StaticResource Image.NewFolder.Gray}"
-                        utils:ControlHelper.ImagePressed="{StaticResource Image.NewFolder.Gray}"/>
             </StackPanel>
         </Grid>
         <!--Nuget列表-->
