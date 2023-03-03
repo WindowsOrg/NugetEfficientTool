@@ -52,15 +52,26 @@ namespace NugetEfficientTool.Business
         public NugetInfo GetNugetInfo(XElement xElement)
         {
             var nugetName = xElement.Attribute(IncludeAttribute).Value;
-            var nugetVersion = xElement.Attribute(VersionAttribute).Value;
-            return new NugetInfo(nugetName, nugetVersion);
+            var versionElements = xElement.Elements().Where(x => x.Name.LocalName == VersionElementName).ToList();
+            if (versionElements.Count != 0)
+            {
+                var nugetVersion = versionElements.First().Value;
+                return new NugetInfo(nugetName, nugetVersion);
+            }
+            //PackageReference的Version,可能是以属性形式存在
+            var versionAttribute = xElement.Attributes(VersionElementName).FirstOrDefault();
+            if (versionAttribute != null)
+            {
+                return new NugetInfo(nugetName, versionAttribute.Value);
+            }
+            return new NugetInfo(nugetName, string.Empty);
         }
         public void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
         {
             var references = GetReferences(document);
             //添加package引用
             var referenceElement = new XElement(CsProjConst.PackageReferenceName);
-            referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute,replacedRecord.NugetName);
+            referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute, replacedRecord.NugetName);
             referenceElement.SetAttributeValue(CsProjConst.VersionAttribute, replacedRecord.Version);
             references[replacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
         }
