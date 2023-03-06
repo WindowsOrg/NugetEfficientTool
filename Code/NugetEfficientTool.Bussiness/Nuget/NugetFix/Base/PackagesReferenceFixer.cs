@@ -52,9 +52,8 @@ namespace NugetEfficientTool.Business
                 var packageElement = packageElementList[i];
                 if (nugetFixStrategy.NugetDllInfo == null || string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 {
-                    var packageContent = packageElement.ToString();
                     packageElement.Remove();
-                    Log = StringSplicer.SpliceWithNewLine(Log, $"    - 因目标为PackageReference，删除{packageContent}");
+                    Log = StringSplicer.SpliceWithNewLine(Log, $"    - 因目标为PackageReference，删除{nugetFixStrategy.NugetName}{nugetFixStrategy.NugetVersion}");
                     continue;
                 }
                 //保留一个Reference即可
@@ -72,6 +71,10 @@ namespace NugetEfficientTool.Business
             return true;
         }
 
+        public override void UpgradeNugetReference()
+        {
+            
+        }
         private readonly string _packageFile;
     }
 }

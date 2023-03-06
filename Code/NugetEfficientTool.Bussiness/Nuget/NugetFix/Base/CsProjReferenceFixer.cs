@@ -83,32 +83,32 @@ namespace NugetEfficientTool.Business
                 {
                     continue;
                 }
-
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
+                ReplaceReferenceToPackageReference(currentNugetReference, nugetFixStrategy.NugetName, nugetFixStrategy.NugetVersion);
                 //if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
                 //{
-                var xElement = new XElement(CsProjConst.PackageReferenceName);
-                xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetName);
-                xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
-                if (currentNugetReference.NextNode is XElement nextElement)
-                {
-                    currentNugetReference.Remove();
-                    nextElement.AddBeforeSelf(xElement);
-                }
-                else if (currentNugetReference.PreviousNode is XElement previousElement)
-                {
-                    currentNugetReference.Remove();
-                    previousElement.AddAfterSelf(xElement);
-                }
-                else if (currentNugetReference.Parent is XElement parentElement)
-                {
-                    currentNugetReference.Remove();
-                    parentElement.AddFirst(xElement);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"{currentNugetReference}未能完成替换到目标{nugetFixStrategy.NugetName}-{nugetFixStrategy.NugetVersion}");
-                }
+                //var xElement = new XElement(CsProjConst.PackageReferenceName);
+                //xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetName);
+                //xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
+                //if (currentNugetReference.NextNode is XElement nextElement)
+                //{
+                //    currentNugetReference.Remove();
+                //    nextElement.AddBeforeSelf(xElement);
+                //}
+                //else if (currentNugetReference.PreviousNode is XElement previousElement)
+                //{
+                //    currentNugetReference.Remove();
+                //    previousElement.AddAfterSelf(xElement);
+                //}
+                //else if (currentNugetReference.Parent is XElement parentElement)
+                //{
+                //    currentNugetReference.Remove();
+                //    parentElement.AddFirst(xElement);
+                //}
+                //else
+                //{
+                //    throw new InvalidOperationException($"{currentNugetReference}未能完成替换到目标{nugetFixStrategy.NugetName}-{nugetFixStrategy.NugetVersion}");
+                //}
                 //}
                 //else
                 //{
@@ -134,64 +134,46 @@ namespace NugetEfficientTool.Business
             }
         }
 
-        /// <summary>
-        /// 根据绝对路径生成相对路径
-        /// </summary>
-        /// <param name="fromPath"></param>
-        /// <param name="toPath"></param>
-        /// <returns></returns>
-        private static string MakeRelativePath(string fromPath, string toPath)
+        private void ReplaceReferenceToPackageReference(XElement reference, string nugetName, string nugetVersion)
         {
-            if (string.IsNullOrEmpty(fromPath))
+            var xElement = new XElement(CsProjConst.PackageReferenceName);
+            xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetName);
+            xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetVersion);
+            if (reference.NextNode is XElement nextElement)
             {
-                throw new ArgumentNullException(nameof(fromPath));
+                reference.Remove();
+                nextElement.AddBeforeSelf(xElement);
             }
-            if (string.IsNullOrEmpty(toPath))
+            else if (reference.PreviousNode is XElement previousElement)
             {
-                throw new ArgumentNullException(nameof(toPath));
+                reference.Remove();
+                previousElement.AddAfterSelf(xElement);
             }
+            else if (reference.Parent is XElement parentElement)
+            {
+                reference.Remove();
+                parentElement.AddFirst(xElement);
+            }
+            else
+            {
+                throw new InvalidOperationException($"{reference}未能完成替换到目标{nugetName}-{nugetVersion}");
+            }
+        }
 
-            //获取相对路径
-            var fromUri = new Uri(fromPath);
-            var toUri = new Uri(toPath);
-            if (fromUri.Scheme != toUri.Scheme)
+        public override void UpgradeNugetReference()
+        {
+            var nugetInfoReferences = CsProj.GetReferences(Document).ToList();
+            foreach (var nugetReference in nugetInfoReferences)
             {
-                // 不是同一种路径，无法转换成相对路径。
-                return toPath;
-            }
-
-            if (fromUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase) && !fromPath.EndsWith("/") &&
-                !fromPath.EndsWith("\\"))
-            {
-                // 如果是文件系统，则视来源路径为文件夹。
-                fromUri = new Uri(fromPath + Path.DirectorySeparatorChar);
-            }
-
-            var relativeUri = fromUri.MakeRelativeUri(toUri);
-            var relativePath = Uri.UnescapeDataString(relativeUri.ToString());
-            if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
-            {
-                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-            }
-            //注：临时方案，用于判断新路径是否在原路径下
-            if (!relativePath.StartsWith("..\\packages"))
-            {
-                //不同解决方案间的引用，不能跨解决方案，还是要在本解决方案内解决。
-                //所以除了改为相对路径，还需要复制nuget文件到当前解决方案路径下
-                //注：这是一个很取巧的硬编码，如果后续有非packages场景，这里要优化下
-                var dllPath = toPath;
-                if (dllPath.Contains("packages"))
+                var isReferenceNuget = nugetReference.Elements().Any(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
+                if (!isReferenceNuget)
                 {
-                    var list = dllPath.Split(new[] { "\\packages\\" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    if (list.Count > 1)
-                    {
-                        //todo 这里需要处理下net版本
-                        relativePath = $"..\\packages\\{list.Last()}";
-                    }
+                    continue;
                 }
+                var nugetInfo = CsProj.GetNugetInfo(nugetReference);
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetInfo.Name} 改为 PackageReference");
+                ReplaceReferenceToPackageReference(nugetReference, nugetInfo.Name, nugetInfo.Version);
             }
-
-            return relativePath;
         }
 
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
