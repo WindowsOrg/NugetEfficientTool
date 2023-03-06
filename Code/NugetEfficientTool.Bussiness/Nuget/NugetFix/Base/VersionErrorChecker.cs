@@ -6,15 +6,15 @@ using System.Linq;
 namespace NugetEfficientTool.Business
 {
     /// <summary>
-    /// Nuget问题检查器
+    /// Nuget版本问题检查器
     /// </summary>
-    public class NugetVersionChecker
+    public class VersionErrorChecker
     {
         /// <summary>
         /// 构造一个 Nuget 版本检查器
         /// </summary>
         /// <param name="solutionFile">解决方案路径</param>
-        public NugetVersionChecker(string solutionFile)
+        public VersionErrorChecker(string solutionFile)
         {
             _solutionFile = solutionFile;
         }

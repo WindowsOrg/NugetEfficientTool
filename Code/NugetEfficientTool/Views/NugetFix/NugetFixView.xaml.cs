@@ -70,8 +70,8 @@ namespace NugetEfficientTool
                 IsChecking = true;
                 await Task.Run(() =>
                 {
-                    _nugetVersionChecker = new NugetVersionChecker(solutionFile);
-                    _nugetVersionChecker.Check();
+                    _versionChecker = new VersionErrorChecker(solutionFile);
+                    _versionChecker.Check();
                 });
             }
             finally
@@ -79,9 +79,9 @@ namespace NugetEfficientTool
                 IsChecking = false;
             }
             //设置检测结果
-            TextBoxErrorMessage.Text = _nugetVersionChecker.Message;
-            ButtonFixVersion.IsEnabled = _nugetVersionChecker.MismatchVersionNugets.Any() &&
-                                         !_nugetVersionChecker.ErrorFormatNugetFiles.Any();
+            TextBoxErrorMessage.Text = _versionChecker.Message;
+            ButtonFixVersion.IsEnabled = _versionChecker.MismatchVersionNugets.Any() &&
+                                         !_versionChecker.ErrorFormatNugetFiles.Any();
             //更新到配置文件
             NugetFixConfigs.SaveNugetFixPath(solutionText);
         }
@@ -92,7 +92,7 @@ namespace NugetEfficientTool
         /// <param name="e"></param>
         private void FixNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var nugetVersionFixWindow = new FixingVersionSelectWindow(_nugetVersionChecker.MismatchVersionNugets)
+            var nugetVersionFixWindow = new FixingVersionSelectWindow(_versionChecker.MismatchVersionNugets)
             {
                 Owner = Window.GetWindow(this)
             };
@@ -106,7 +106,7 @@ namespace NugetEfficientTool
 
                 var repairLog = string.Empty;
                 var toReparingFiles = new List<string>();
-                foreach (var mismatchVersionNugetInfoEx in _nugetVersionChecker.MismatchVersionNugets)
+                foreach (var mismatchVersionNugetInfoEx in _versionChecker.MismatchVersionNugets)
                 {
                     foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
                     {
@@ -167,7 +167,7 @@ namespace NugetEfficientTool
 
         #region private fields
 
-        private NugetVersionChecker _nugetVersionChecker;
+        private VersionErrorChecker _versionChecker;
 
         #endregion
     }

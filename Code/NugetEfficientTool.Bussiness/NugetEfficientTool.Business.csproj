@@ -96,7 +96,7 @@
     <Compile Include="Nuget\Utils\NugetInfo.cs" />
     <Compile Include="Nuget\Utils\FileNugetInfo.cs" />
     <Compile Include="Nuget\Utils\NugetVersion.cs" />
-    <Compile Include="Nuget\NugetFix\Base\NugetVersionChecker.cs" />
+    <Compile Include="Nuget\NugetFix\Base\VersionErrorChecker.cs" />
     <Compile Include="Nuget\Utils\PackagesConfig.cs" />
     <Compile Include="Nuget\Utils\SolutionFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

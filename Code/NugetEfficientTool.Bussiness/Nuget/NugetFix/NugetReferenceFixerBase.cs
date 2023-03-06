@@ -38,9 +38,14 @@ namespace NugetEfficientTool.Business
                     _failedNugetFixStrategies.Add(nugetFixStrategy);
                 }
             }
-
+            //升级nuget引用，改Reference为PackageReference
+            UpgradeNugetReference();
             return Document;
         }
+        /// <summary>
+        /// 升级nuget引用，改Reference为PackageReference
+        /// </summary>
+        public abstract void UpgradeNugetReference();
 
         #endregion
 
