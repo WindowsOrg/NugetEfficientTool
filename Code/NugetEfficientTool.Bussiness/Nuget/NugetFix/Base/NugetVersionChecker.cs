@@ -41,24 +41,22 @@ namespace NugetEfficientTool.Business
             }
             //获取nuget相关信息
             var badFormatNugetFiles = new List<NugetConfigReader>();
-            var mismatchVersionNugetFiles = new List<FileNugetInfo>();
+            var nugetFiles = new List<FileNugetInfo>();
             foreach (var nugetConfigFile in nugetConfigFiles)
             {
                 var nugetConfigReader = new NugetConfigReader(nugetConfigFile);
                 if (nugetConfigReader.IsGoodFormat())
                 {
-                    mismatchVersionNugetFiles.AddRange(nugetConfigReader.PackageInfoExs);
+                    nugetFiles.AddRange(nugetConfigReader.PackageInfoExs);
                 }
                 else
                 {
                     badFormatNugetFiles.Add(nugetConfigReader);
                 }
             }
-
-            mismatchVersionNugetFiles = FilterFormatNugets(mismatchVersionNugetFiles);
             //格式问题及版本问题
             ErrorFormatNugetFiles = badFormatNugetFiles;
-            MismatchVersionNugets = GetMismatchVersionNugets(mismatchVersionNugetFiles);
+            MismatchVersionNugets = GetMismatchVersionNugets(nugetFiles);
             //设置nuget问题异常显示
             var nugetMismatchVersionMessage = CreateNugetMismatchVersionMessage(MismatchVersionNugets);
             foreach (var errorFormatNugetConfig in ErrorFormatNugetFiles)
@@ -76,7 +74,7 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="fileNugetInfos"></param>
         /// <returns></returns>
-        private List<FileNugetInfo> FilterFormatNugets(List<FileNugetInfo> fileNugetInfos)
+        private List<FileNugetInfo> FilterFormatNugets(IEnumerable<FileNugetInfo> fileNugetInfos)
         {
             //不需要关心System、Microsoft等系统相关版本
             var nugetInfos = fileNugetInfos.Where(i => !i.Name.StartsWith("System.")&&
@@ -125,6 +123,8 @@ namespace NugetEfficientTool.Business
         private IEnumerable<FileNugetInfoGroup> GetMismatchVersionNugets(
              IEnumerable<FileNugetInfo> nugetPackageInfoExs)
         {
+            nugetPackageInfoExs = FilterFormatNugets(nugetPackageInfoExs);
+
             var mismatchVersionNugetGroupList = new List<FileNugetInfoGroup>();
             var nugetPackageInfoGroups = nugetPackageInfoExs.GroupBy(x => x.Name);
             foreach (var nugetPackageInfoGroup in nugetPackageInfoGroups)
