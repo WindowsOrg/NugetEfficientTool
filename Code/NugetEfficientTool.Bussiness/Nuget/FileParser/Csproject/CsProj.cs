@@ -51,6 +51,20 @@ namespace NugetEfficientTool.Business
             return CsProjService.GetProjectReferences(xDocument);
         }
 
+        /// <summary>
+        /// 获取Xmlns值
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static XNamespace GetXmlns(XDocument document)
+        {
+            var rootElement = document.Root;
+            var xmlnsAttribute = rootElement?.Attribute(CsProjConst.XmlnsAttribute);
+            //"http://schemas.microsoft.com/developer/msbuild/2003"
+            XNamespace xmlns = xmlnsAttribute?.Value;
+            return xmlns;
+        }
+
         #endregion
 
         #region Nuget相关
@@ -152,5 +166,6 @@ namespace NugetEfficientTool.Business
         private static readonly Regex NugetTargetFrameworkRegex = new Regex(@"(?<=lib\\).*(?=\\)");
 
         #endregion
+
     }
 }
