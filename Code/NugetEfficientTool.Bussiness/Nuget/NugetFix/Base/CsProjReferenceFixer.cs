@@ -112,8 +112,13 @@ namespace NugetEfficientTool.Business
             var nugetInfoReferences = CsProj.GetReferences(Document).ToList();
             foreach (var nugetReference in nugetInfoReferences)
             {
-                var isReferenceNuget = nugetReference.Elements().Any(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
-                if (!isReferenceNuget)
+                var hintPathElement = nugetReference.Elements().FirstOrDefault(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
+                if (hintPathElement == null)
+                {
+                    continue;
+                }
+                //规避本地引用dll
+                if (!hintPathElement.Value.Contains(@"\packages\") || !hintPathElement.Value.Contains(@"\lib\"))
                 {
                     continue;
                 }
