@@ -19,6 +19,44 @@ namespace NugetEfficientTool.Business
         }
 
         private readonly string _csProjPath;
+        
+        protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
+        {
+            //以PackageReference为主
+            var packageReferences = CsProj.GetPackageReferences(Document).Where(x =>
+            {
+                var nugetInfo = CsProj.GetNugetInfo(x);
+                return nugetInfo.Name == nugetFixStrategy.NugetName &&
+                       nugetInfo.Version != nugetFixStrategy.NugetVersion;
+            }).ToList();
+            var nugetInfoReferences = CsProj.GetReferences(Document).Where(x =>
+            {
+                var nugetInfo = CsProj.GetNugetInfo(x);
+                return nugetInfo.Name == nugetFixStrategy.NugetName &&
+                       nugetInfo.Version != nugetFixStrategy.NugetVersion;
+            }).ToList();
+            if (!packageReferences.Any() && !nugetInfoReferences.Any())
+            {
+                return false;
+            }
+
+            if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
+            {
+                return true;
+            }
+
+            if (packageReferences.Any())
+            {
+                FixPackageReferences(packageReferences, nugetFixStrategy);
+                nugetInfoReferences.RemoveAll(i => packageReferences.Any(package => package != i));
+            }
+            else
+            {
+                FixNugetInfoReferences(nugetInfoReferences, nugetFixStrategy);
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// 修复PackageReference
@@ -85,55 +123,24 @@ namespace NugetEfficientTool.Business
                 }
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
                 ReplaceReferenceToPackageReference(currentNugetReference, nugetFixStrategy.NugetName, nugetFixStrategy.NugetVersion);
-                //if (string.IsNullOrEmpty(nugetFixStrategy.NugetDllInfo.DllPath))
-                //{
-                //var xElement = new XElement(CsProjConst.PackageReferenceName);
-                //xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetFixStrategy.NugetName);
-                //xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetFixStrategy.NugetVersion);
-                //if (currentNugetReference.NextNode is XElement nextElement)
-                //{
-                //    currentNugetReference.Remove();
-                //    nextElement.AddBeforeSelf(xElement);
-                //}
-                //else if (currentNugetReference.PreviousNode is XElement previousElement)
-                //{
-                //    currentNugetReference.Remove();
-                //    previousElement.AddAfterSelf(xElement);
-                //}
-                //else if (currentNugetReference.Parent is XElement parentElement)
-                //{
-                //    currentNugetReference.Remove();
-                //    parentElement.AddFirst(xElement);
-                //}
-                //else
-                //{
-                //    throw new InvalidOperationException($"{currentNugetReference}未能完成替换到目标{nugetFixStrategy.NugetName}-{nugetFixStrategy.NugetVersion}");
-                //}
-                //}
-                //else
-                //{
-                //    currentNugetReference.SetAttributeValue(CsProjConst.IncludeAttribute,
-                //        nugetFixStrategy.NugetDllInfo.DllFullName);
-                //    var hintPathElementList = currentNugetReference.Elements()
-                //        .Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
-                //    for (var j = 0; j < hintPathElementList.Count; j++)
-                //    {
-                //        if (j != 0)
-                //        {
-                //            hintPathElementList[j].Remove();
-                //            continue;
-                //        }
-                //        hintPathElementList[j].Value = MakeRelativePath(Path.GetDirectoryName(_csProjPath),
-                //            nugetFixStrategy.NugetDllInfo.DllPath);
-                //    }
-                //    if (hintPathElementList.Count > 1)
-                //    {
-                //        Log = StringSplicer.SpliceWithNewLine(Log, $"    - 删除了 {nugetFixStrategy.NugetName} 的 {hintPathElementList.Count - 1} 个子健冲突");
-                //    }
-                //}
             }
         }
 
+        public override void UpgradeNugetReference()
+        {
+            var nugetInfoReferences = CsProj.GetReferences(Document).ToList();
+            foreach (var nugetReference in nugetInfoReferences)
+            {
+                var isReferenceNuget = nugetReference.Elements().Any(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
+                if (!isReferenceNuget)
+                {
+                    continue;
+                }
+                var nugetInfo = CsProj.GetNugetInfo(nugetReference);
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetInfo.Name} 改为 PackageReference");
+                ReplaceReferenceToPackageReference(nugetReference, nugetInfo.Name, nugetInfo.Version);
+            }
+        }
         private void ReplaceReferenceToPackageReference(XElement reference, string nugetName, string nugetVersion)
         {
             var xElement = new XElement(CsProjConst.PackageReferenceName);
@@ -160,58 +167,5 @@ namespace NugetEfficientTool.Business
             }
         }
 
-        public override void UpgradeNugetReference()
-        {
-            var nugetInfoReferences = CsProj.GetReferences(Document).ToList();
-            foreach (var nugetReference in nugetInfoReferences)
-            {
-                var isReferenceNuget = nugetReference.Elements().Any(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
-                if (!isReferenceNuget)
-                {
-                    continue;
-                }
-                var nugetInfo = CsProj.GetNugetInfo(nugetReference);
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetInfo.Name} 改为 PackageReference");
-                ReplaceReferenceToPackageReference(nugetReference, nugetInfo.Name, nugetInfo.Version);
-            }
-        }
-
-        protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
-        {
-            //以PackageReference为主
-            var packageReferences = CsProj.GetPackageReferences(Document).Where(x =>
-            {
-                var nugetInfo = CsProj.GetNugetInfo(x);
-                return nugetInfo.Name == nugetFixStrategy.NugetName &&
-                       nugetInfo.Version != nugetFixStrategy.NugetVersion;
-            }).ToList();
-            var nugetInfoReferences = CsProj.GetReferences(Document).Where(x =>
-            {
-                var nugetInfo = CsProj.GetNugetInfo(x);
-                return nugetInfo.Name == nugetFixStrategy.NugetName &&
-                       nugetInfo.Version != nugetFixStrategy.NugetVersion;
-            }).ToList();
-            if (!packageReferences.Any() && !nugetInfoReferences.Any())
-            {
-                return false;
-            }
-
-            if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
-            {
-                return true;
-            }
-
-            if (packageReferences.Any())
-            {
-                FixPackageReferences(packageReferences, nugetFixStrategy);
-                nugetInfoReferences.RemoveAll(i => packageReferences.Any(package => package != i));
-            }
-            else
-            {
-                FixNugetInfoReferences(nugetInfoReferences, nugetFixStrategy);
-            }
-
-            return true;
-        }
     }
 }
