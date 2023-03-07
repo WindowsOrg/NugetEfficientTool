@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -37,6 +38,12 @@ namespace NugetEfficientTool.Business
             }
             //.4.5.0
             var versionMatches = VersionRegex.Match(matchesValue).Value;
+            if (!versionMatches.StartsWith("."))
+            {
+                //修复类似Microsoft.Web.WebView2.1.0.1210.39的版本解析问题
+                var firstIndex = versionMatches.IndexOf(".", StringComparison.Ordinal);
+                versionMatches = versionMatches.Substring(firstIndex, versionMatches.Length - 1);
+            }
             //4.5.0
             var version = versionMatches.Substring(1, versionMatches.Length - 1);
             //System.ValueTuple
