@@ -16,7 +16,7 @@ namespace NugetEfficientTool.Business
         /// <returns></returns>
         public List<XElement> GetReferences(XDocument xDocument)
         {
-            return GetXElementsByNameInItemGroups(xDocument, PackageReferenceName);
+            return GetXElementsByNameInItemGroups(xDocument, CsProjConst.PackageReferenceName);
         }
 
         public List<XElement> GetPackageReferences(XDocument xDocument)
@@ -37,12 +37,12 @@ namespace NugetEfficientTool.Business
                 throw new ArgumentNullException(nameof(xElement));
             }
 
-            if (xElement.Name.LocalName != PackageReferenceName)
+            if (xElement.Name.LocalName != CsProjConst.PackageReferenceName)
             {
                 return false;
             }
 
-            var includeAttribute = xElement.Attribute(IncludeAttribute);
+            var includeAttribute = xElement.Attribute(CsProjConst.IncludeAttribute);
             if (includeAttribute == null)
             {
                 return false;
@@ -51,15 +51,15 @@ namespace NugetEfficientTool.Business
         }
         public NugetInfo GetNugetInfo(XElement xElement)
         {
-            var nugetName = xElement.Attribute(IncludeAttribute).Value;
-            var versionElements = xElement.Elements().Where(x => x.Name.LocalName == VersionElementName).ToList();
+            var nugetName = xElement.Attribute(CsProjConst.IncludeAttribute).Value;
+            var versionElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.VersionElementName).ToList();
             if (versionElements.Count != 0)
             {
                 var nugetVersion = versionElements.First().Value;
                 return new NugetInfo(nugetName, nugetVersion);
             }
             //PackageReference的Version,可能是以属性形式存在
-            var versionAttribute = xElement.Attributes(VersionElementName).FirstOrDefault();
+            var versionAttribute = xElement.Attributes(CsProjConst.VersionElementName).FirstOrDefault();
             if (versionAttribute != null)
             {
                 return new NugetInfo(nugetName, versionAttribute.Value);

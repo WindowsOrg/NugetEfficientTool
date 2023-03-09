@@ -8,7 +8,7 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// Packages文件版本修复器
     /// </summary>
-    public class PackagesReferenceFixer : NugetReferenceFixerBase
+    public class PackagesReferenceFixer : NugetReferenceFixer
     {
         public PackagesReferenceFixer(XDocument xDocument, string packageFile, IEnumerable<NugetFixStrategy> nugetFixStrategies) : base(
             xDocument, nugetFixStrategies)

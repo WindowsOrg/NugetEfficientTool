@@ -12,7 +12,6 @@ namespace NugetEfficientTool.Business
         List<XElement> GetProjectReferences(XDocument xDocument);
         List<XElement> GetPackageReferences(XDocument xDocument);
         List<XElement> GetNugetReferences(XDocument xDocument);
-        List<XElement> GetReferences(XDocument xDocument);
         void RevertReference(XDocument document, ReplacedFileRecord replacedRecord);
         bool IsNugetReference(XElement xElement);
         NugetInfo GetNugetInfo(XElement xElement);

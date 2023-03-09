@@ -7,7 +7,7 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// 解决方案Nuget替换类
     /// </summary>
-    class SlnFileNugetReplacer : INugetFileReplacer
+    class SlnFileNugetReplacer
     {
         private readonly string _solutionFile;
         private readonly string _nugetName;

@@ -7,7 +7,7 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// Package文件Nuget替换类
     /// </summary>
-    public class PackageFileNugetReplacer : XmlFileNugetReplacer, INugetFileReplacer
+    public class PackageFileNugetReplacer : XmlFileNugetReplacer
     {
         private readonly ReplacedFileRecord _replacedFileRecord;
         private readonly string _nugetName;

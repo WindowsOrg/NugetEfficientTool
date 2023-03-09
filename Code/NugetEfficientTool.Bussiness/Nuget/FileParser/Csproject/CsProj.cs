@@ -15,29 +15,11 @@ namespace NugetEfficientTool.Business
         #region 获取节点
 
         /// <summary>
-        /// 获取Reference节点
-        /// </summary>
-        /// <param name="xDocument"></param>
-        /// <returns></returns>
-        public static IEnumerable<XElement> GetReferences(XDocument xDocument)
-        {
-            return CsProjService.GetReferences(xDocument);
-        }
-        /// <summary>
-        /// 获取Reference节点
-        /// </summary>
-        /// <param name="xDocument"></param>
-        /// <returns></returns>
-        public static IEnumerable<XElement> GetPackageReferences(XDocument xDocument)
-        {
-            return CsProjService.GetPackageReferences(xDocument);
-        }
-        /// <summary>
         /// 获取所有Nuget-Reference节点
         /// </summary>
         /// <param name="xDocument"></param>
         /// <returns></returns>
-        public static IEnumerable<XElement> GetNugetInfoReferences(XDocument xDocument)
+        public static IEnumerable<XElement> GetNugetReferences(XDocument xDocument)
         {
             return CsProjService.GetNugetReferences(xDocument);
         }

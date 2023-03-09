@@ -87,7 +87,7 @@ namespace NugetEfficientTool.Business
 
         private XDocument _xDocument;
 
-        private readonly NugetReferenceFixerBase _nugetConfigFixer;
+        private readonly NugetReferenceFixer _nugetConfigFixer;
 
         #endregion
     }

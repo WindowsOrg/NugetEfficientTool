@@ -10,7 +10,7 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// CsProj文件版本修复器
     /// </summary>
-    public class CsProjReferenceFixer : NugetReferenceFixerBase
+    public class CsProjReferenceFixer : NugetReferenceFixer
     {
         public CsProjReferenceFixer(XDocument xDocument, string csProjPath, IEnumerable<NugetFixStrategy> nugetFixStrategies)
             : base(xDocument, nugetFixStrategies)
@@ -23,7 +23,7 @@ namespace NugetEfficientTool.Business
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
             //以PackageReference为主
-            var references = CsProj.GetReferences(Document).Where(x =>
+            var references = CsProj.GetNugetReferences(Document).Where(x =>
             {
                 var nugetInfo = CsProj.GetNugetInfo(x);
                 return nugetInfo.Name == nugetFixStrategy.NugetName &&
@@ -109,7 +109,7 @@ namespace NugetEfficientTool.Business
         /// </summary>
         public override void UpgradeNugetReference()
         {
-            var nugetInfoReferences = CsProj.GetReferences(Document).ToList();
+            var nugetInfoReferences = CsProj.GetNugetReferences(Document).ToList();
             foreach (var nugetReference in nugetInfoReferences)
             {
                 var hintPathElement = nugetReference.Elements().FirstOrDefault(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
@@ -127,7 +127,7 @@ namespace NugetEfficientTool.Business
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetInfo.Name} 改为 PackageReference");
                 ReplaceReferenceToPackageReference(nugetReference, nugetInfo.Name, nugetInfo.Version);
             }
-            var newInfoReferences = CsProj.GetReferences(Document).ToList();
+            var newInfoReferences = CsProj.GetNugetReferences(Document).ToList();
             var elements = new List<XElement>();
             foreach (var referenceItem in newInfoReferences)
             {

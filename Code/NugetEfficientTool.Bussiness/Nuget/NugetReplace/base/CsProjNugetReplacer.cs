@@ -8,7 +8,7 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// 项目文件Nuget替换类
     /// </summary>
-    public class CsProjNugetReplacer : XmlFileNugetReplacer, INugetFileReplacer
+    public class CsProjNugetReplacer : XmlFileNugetReplacer
     {
         private readonly string _nugetName;
         private readonly string _newProjectId;
@@ -36,7 +36,7 @@ namespace NugetEfficientTool.Business
         /// <returns></returns>
         public ReplacedFileRecord ReplaceNuget()
         {
-            var nugetInfoReferences = CsProj.GetNugetInfoReferences(Document).ToList();
+            var nugetInfoReferences = CsProj.GetNugetReferences(Document).ToList();
             var referenceElement = nugetInfoReferences.FirstOrDefault(x => CsProj.GetNugetInfo(x).Name == _nugetName);
             if (referenceElement == null)
             {

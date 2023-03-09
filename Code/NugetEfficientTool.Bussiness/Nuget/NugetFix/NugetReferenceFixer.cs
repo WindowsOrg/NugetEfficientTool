@@ -7,11 +7,11 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// Nuget引用修复器抽象类
     /// </summary>
-    public abstract class NugetReferenceFixerBase
+    public abstract class NugetReferenceFixer
     {
         #region 构造函数
 
-        protected NugetReferenceFixerBase(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies)
+        protected NugetReferenceFixer(XDocument xDocument, IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             Document = xDocument;
             NugetFixStrategies = nugetFixStrategies ?? throw new ArgumentNullException(nameof(nugetFixStrategies));
