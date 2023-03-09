@@ -82,20 +82,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Views\NugetReplace\ReplaceProjectMode.cs" />
-    <Compile Include="Views\NugetReplace\NugetReplaceItem.cs" />
-    <Compile Include="Views\NugetReplace\NugetReplaceView.xaml.cs">
+    <Compile Include="NugetReplace\ReplaceProjectMode.cs" />
+    <Compile Include="NugetReplace\NugetReplaceItem.cs" />
+    <Compile Include="NugetReplace\NugetReplaceView.xaml.cs">
       <DependentUpon>NugetReplaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetReplace\NugetReplaceViewModel.cs" />
-    <Compile Include="Views\NugetReplace\ReplaceViewContainer.xaml.cs">
+    <Compile Include="NugetReplace\NugetReplaceViewModel.cs" />
+    <Compile Include="NugetReplace\ReplaceViewContainer.xaml.cs">
       <DependentUpon>ReplaceViewContainer.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NugetFix\NugetFixView.xaml">
+    <Page Include="NugetFix\NugetFixView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,39 +107,39 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
+    <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetFix\NugetFixView.xaml.cs">
+    <Compile Include="NugetFix\NugetFixView.xaml.cs">
       <DependentUpon>NugetFixView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\NugetFix\FixingVersionSelectWindow.xaml">
+    <Page Include="NugetFix\FixingVersionSelectWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NugetFix\NugetVersionSelectorControl.xaml">
+    <Page Include="NugetFix\NugetVersionSelectorControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NugetReplace\NugetReplaceView.xaml">
+    <Page Include="NugetReplace\NugetReplaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NugetReplace\ReplaceViewContainer.xaml">
+    <Page Include="NugetReplace\ReplaceViewContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\NugetFix\NugetFixStrategiesEventArgs.cs" />
-    <Compile Include="Views\NugetFix\FixingVersionSelectWindow.xaml.cs">
+    <Compile Include="NugetFix\NugetFixStrategiesEventArgs.cs" />
+    <Compile Include="NugetFix\FixingVersionSelectWindow.xaml.cs">
       <DependentUpon>FixingVersionSelectWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetFix\NugetVersionSelectorControl.xaml.cs">
+    <Compile Include="NugetFix\NugetVersionSelectorControl.xaml.cs">
       <DependentUpon>NugetVersionSelectorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -159,14 +159,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NugetEfficientTool.Bussiness\NugetEfficientTool.Business.csproj">
@@ -197,5 +193,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
