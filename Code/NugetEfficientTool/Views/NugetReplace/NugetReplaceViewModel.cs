@@ -21,7 +21,7 @@ namespace NugetEfficientTool
         }
 
         private string _projectId = string.Empty;
-        public void Initialize(INugetReplaceView view, string projectId,string solutionFileUrl)
+        public void Initialize(INugetReplaceView view, string projectId, string solutionFileUrl)
         {
             _view = view;
             _projectId = projectId;
@@ -30,7 +30,7 @@ namespace NugetEfficientTool
 
             var nugetReplaceItems = new List<NugetReplaceItem>();
             var replaceNugetConfigs = NugetReplaceConfigs.GetNugetReplaceConfig(projectId);
-            if (replaceNugetConfigs.Any())
+            if (!string.IsNullOrEmpty(solutionFileUrl) && File.Exists(solutionFileUrl) && replaceNugetConfigs.Any())
             {
                 nugetReplaceItems = replaceNugetConfigs.Select(i => new NugetReplaceItem(i.Name, i.SourceCsprojPath)
                 {
