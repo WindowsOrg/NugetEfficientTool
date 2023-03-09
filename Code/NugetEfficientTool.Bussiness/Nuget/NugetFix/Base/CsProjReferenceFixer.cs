@@ -118,7 +118,8 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
                 //规避本地引用dll
-                if (!hintPathElement.Value.Contains(@"\packages\") || !hintPathElement.Value.Contains(@"\lib\"))
+                if (!hintPathElement.Value.Contains(CsProjConst.HintPathPackagePiece) || 
+                    !hintPathElement.Value.Contains(CsProjConst.HintPathLibPiece))
                 {
                     continue;
                 }

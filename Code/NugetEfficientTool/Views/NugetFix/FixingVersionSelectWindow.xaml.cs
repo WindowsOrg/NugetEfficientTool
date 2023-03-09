@@ -140,10 +140,10 @@ namespace NugetEfficientTool
                 var dllPath = versionNugetInfo.NugetDllInfo.DllPath ?? string.Empty;
                 if (dllPath.Contains("packages"))
                 {
-                    var list = dllPath.Split(new[] { "\\packages\\" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    var list = dllPath.Split(new[] { CsProjConst.HintPathPackagePiece }, StringSplitOptions.RemoveEmptyEntries).ToList();
                     if (list.Count > 1)
                     {
-                        dllPath = $"\\packages\\{list.Last()}";
+                        dllPath = $"{CsProjConst.HintPathPackagePiece}{list.Last()}";
                     }
                 }
                 if (nugetDllInfos.Any(i => i.DllPath == dllPath || i.DllPath.EndsWith(dllPath)))

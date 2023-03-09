@@ -24,6 +24,10 @@ namespace NugetEfficientTool.Business
         public const string VersionElementName = VersionAttribute;
         public const string HintPathElementName = "HintPath";
 
+        //路径引用路径中package片段。注：要关注sln和项目是否在同一路径下
+        public const string HintPathPackagePiece = "packages\\";
+        public const string HintPathLibPiece = "lib\\";
+
         public static string SdkAttribute = "Sdk";
         public static string SdkValue = "Microsoft.NET.Sdk.WindowsDesktop";
     }
