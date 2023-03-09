@@ -130,7 +130,7 @@ namespace NugetEfficientTool.Business
             var elements = new List<XElement>();
             foreach (var referenceItem in newInfoReferences)
             {
-                if (elements.Any(i => i.Value == referenceItem.Value))
+                if (elements.Any(i => i.ToString() == referenceItem.ToString()))
                 {
                     //删除重复的节点，解决转PackageReference后导致的重复引用
                     referenceItem.Remove();
