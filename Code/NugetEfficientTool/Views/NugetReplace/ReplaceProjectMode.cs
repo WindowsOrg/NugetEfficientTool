@@ -57,10 +57,8 @@ namespace NugetEfficientTool
             }
         }
 
-
         public NugetReplaceView ReplaceView { get; }
 
-        public event EventHandler SolutionFileChanged;
         private string _solutionFile = string.Empty;
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]

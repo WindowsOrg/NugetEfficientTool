@@ -106,26 +106,26 @@ namespace NugetEfficientTool
 
                 var repairLog = string.Empty;
                 var toReparingFiles = new List<string>();
-                foreach (var mismatchVersionNugetInfoEx in _versionChecker.MismatchVersionNugets)
+                foreach (var nugetFileGroups in _versionChecker.MismatchVersionNugets)
                 {
-                    foreach (var fileNugetInfo in mismatchVersionNugetInfoEx.FileNugetInfos)
+                    foreach (var nugetFile in nugetFileGroups.FileNugetInfos)
                     {
-                        if (nugetFixStrategies.All(i => i.NugetName != fileNugetInfo.Name))
+                        if (nugetFixStrategies.All(i => i.NugetName != nugetFile.Name))
                         {
                             continue;
                         }
                         //如果文件已经满足当前修复策略，则跳过
                         if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
-                                                      $"{fileNugetInfo.Name}_{fileNugetInfo.Version}"))
+                                                      $"{nugetFile.Name}_{nugetFile.Version}"))
                         {
                             continue;
                         }
 
-                        if (toReparingFiles.Any(i => i == fileNugetInfo.ConfigPath))
+                        if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
                         {
                             continue;
                         }
-                        toReparingFiles.Add(fileNugetInfo.ConfigPath);
+                        toReparingFiles.Add(nugetFile.ConfigPath);
                     }
                 }
                 //对文件进行修复
