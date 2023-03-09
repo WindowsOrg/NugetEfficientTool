@@ -126,6 +126,18 @@ namespace NugetEfficientTool.Business
                 Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetInfo.Name} 改为 PackageReference");
                 ReplaceReferenceToPackageReference(nugetReference, nugetInfo.Name, nugetInfo.Version);
             }
+            var newInfoReferences = CsProj.GetReferences(Document).ToList();
+            var elements = new List<XElement>();
+            foreach (var referenceItem in newInfoReferences)
+            {
+                if (elements.Any(i => i.Value == referenceItem.Value))
+                {
+                    //删除重复的节点，解决转PackageReference后导致的重复引用
+                    referenceItem.Remove();
+                    continue;
+                }
+                elements.Add(referenceItem);
+            }
         }
         /// <summary>
         /// 将Reference替换为PackageReference
