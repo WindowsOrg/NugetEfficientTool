@@ -38,12 +38,6 @@ namespace NugetEfficientTool.Business
             }
             //.4.5.0
             var versionMatches = VersionRegex.Match(matchesValue).Value;
-            if (!versionMatches.StartsWith("."))
-            {
-                //修复类似Microsoft.Web.WebView2.1.0.1210.39的版本解析问题
-                var firstIndex = versionMatches.IndexOf(".", StringComparison.Ordinal);
-                versionMatches = versionMatches.Substring(firstIndex, versionMatches.Length - 1);
-            }
             //4.5.0
             var version = versionMatches.Substring(1, versionMatches.Length - 1);
             //System.ValueTuple
@@ -53,6 +47,6 @@ namespace NugetEfficientTool.Business
 
         private static readonly Regex NugetNameVersionRegex = new Regex(@"(?<=packages\\).+(?=\\lib)");
 
-        private static readonly Regex VersionRegex = new Regex(@"(?=.*)(.[0-9]+){2,3}.[-0-9a-zA-Z]+");
+        private static readonly Regex VersionRegex = new Regex(@"(?=.*)(\.[0-9]+){2,3}.[-0-9a-zA-Z]+");
     }
 }
