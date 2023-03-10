@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using NugetEfficientTool.Business;
+using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool
 {
@@ -23,7 +24,7 @@ namespace NugetEfficientTool
                 throw new ArgumentNullException(nameof(mismatchVersionNugetGroups));
 
             InitializeComponent();
-            _mismatchVersionNugetInfoExs = mismatchVersionNugetGroups.OrderBy(i=>i.NugetName);
+            _mismatchVersionNugetInfoExs = mismatchVersionNugetGroups.OrderBy(i => i.NugetName);
             foreach (var mismatchVersionNugetInfoEx in _mismatchVersionNugetInfoExs)
             {
                 var nugetName = mismatchVersionNugetInfoEx.NugetName;
@@ -39,12 +40,14 @@ namespace NugetEfficientTool
 
         private readonly List<NugetFixStrategy> _nugetFixStrategyList = new List<NugetFixStrategy>();
 
+        #region 修复版本
+
         /// <summary>
         /// 修复版本异常
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ButtonFix_OnClick(object sender, RoutedEventArgs e)
+        private void FixButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -59,7 +62,7 @@ namespace NugetEfficientTool
                     var nugetName = nugetVersionSelectorUserControl.NugetName;
                     var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
                     //过滤掉“忽略修复”
-                    if (selectedVersion== NugetVersion.IgnoreFix)
+                    if (selectedVersion == NugetVersion.IgnoreFix)
                     {
                         continue;
                     }
@@ -80,7 +83,7 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                CustomText.Notification.ShowInfo(null,exception.Message);
+                CustomText.Notification.ShowInfo(null, exception.Message);
             }
         }
         /// <summary>
@@ -136,7 +139,7 @@ namespace NugetEfficientTool
                 {
                     continue;
                 }
-                
+
                 var dllPath = versionNugetInfo.NugetDllInfo.DllPath ?? string.Empty;
                 if (dllPath.Contains("packages"))
                 {
@@ -192,5 +195,30 @@ namespace NugetEfficientTool
             }
             return true;
         }
+
+        #endregion
+
+        #region 选择版本
+
+        private void IgnoreButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var versionSelectors = NugetVersionsPanel.VisualDescendants<NugetVersionSelectorControl>().ToList();
+            var isAllFixing = versionSelectors.All(i => i.SelectedVersion != NugetVersion.IgnoreFix);
+            var newVersionFixStatus = !isAllFixing;
+            foreach (var versionSelectorControl in versionSelectors)
+            {
+                if (newVersionFixStatus)
+                {
+                    versionSelectorControl.SelectHighVersion();
+                }
+                else
+                {
+                    versionSelectorControl.SelectIgnoreVersion();
+                }
+            }
+            IgnoreButton.IsChecked = newVersionFixStatus;
+        }
+
+        #endregion
     }
 }

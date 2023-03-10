@@ -84,5 +84,14 @@ namespace NugetEfficientTool
             var index = version.IndexOf('-');
             return version.Substring(index + 1);
         }
+
+        public void SelectHighVersion()
+        {
+            ComboBoxNugetVersion.SelectedIndex = 0;
+        }
+        public void SelectIgnoreVersion()
+        {
+            ComboBoxNugetVersion.SelectedIndex = ComboBoxNugetVersion.Items.Count - 1;
+        }
     }
 }
