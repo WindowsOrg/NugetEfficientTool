@@ -60,7 +60,8 @@ namespace NugetEfficientTool
         private async void CheckNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
             var solutionText = SolutionTextBox.Text;
-            if (!CheckInputText(solutionText, out var solutionFile))
+            if (!CheckInputText(solutionText, out var solutionFile)||
+                IsChecking)
             {
                 return;
             }
