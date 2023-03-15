@@ -52,6 +52,7 @@ namespace NugetEfficientTool
             try
             {
                 _nugetFixStrategyList.Clear();
+                //提取修复版本
                 foreach (var child in NugetVersionsPanel.Children)
                 {
                     if (!(child is NugetVersionSelectorControl nugetVersionSelectorUserControl))

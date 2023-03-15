@@ -17,8 +17,7 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="configPath">Nuget 配置文件路径</param>
         /// <param name="nugetFixStrategies">修复策略</param>
-        public NugetFileRepairer(string configPath,
-             IEnumerable<NugetFixStrategy> nugetFixStrategies)
+        public NugetFileRepairer(string configPath, IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             if (nugetFixStrategies == null)
             {
