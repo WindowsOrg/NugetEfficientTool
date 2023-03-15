@@ -84,7 +84,7 @@ namespace NugetEfficientTool
             }
             //设置检测结果
             TextBoxErrorMessage.Text = _versionChecker.Message;
-            ButtonFixVersion.IsEnabled = _versionChecker.MismatchVersionNugets.Any() &&
+            FixVersionButton.IsEnabled = _versionChecker.MismatchVersionNugets.Any() &&
                                          !_versionChecker.ErrorFormatNugetFiles.Any();
             UpgradeReferenceButton.Visibility = canReferenceWayUpgrade ? Visibility.Visible : Visibility.Collapsed;
             //更新到配置文件
@@ -98,7 +98,7 @@ namespace NugetEfficientTool
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FixNugetButton_OnClick(object sender, RoutedEventArgs e)
+        private void FixVersionButton_OnClick(object sender, RoutedEventArgs e)
         {
             var nugetVersionFixWindow = new FixingVersionSelectWindow(_versionChecker.MismatchVersionNugets)
             {
@@ -114,7 +114,7 @@ namespace NugetEfficientTool
                 //修复版本
                 var repairLog = RepairVersionErrors(nugetFixStrategies);
                 TextBoxErrorMessage.Text = repairLog;
-                ButtonFixVersion.IsEnabled = false;
+                FixVersionButton.IsEnabled = false;
                 nugetVersionFixWindow.Close();
             };
 
@@ -189,6 +189,7 @@ namespace NugetEfficientTool
             var log = fileReferenceWayUpdater.Log;
             TextBoxErrorMessage.Text = string.IsNullOrEmpty(log) ? "没有发现能升级PackageReference的引用" : log;
             UpgradeReferenceButton.Visibility = Visibility.Collapsed;
+            FixVersionButton.IsEnabled = false;
         }
 
         #endregion
