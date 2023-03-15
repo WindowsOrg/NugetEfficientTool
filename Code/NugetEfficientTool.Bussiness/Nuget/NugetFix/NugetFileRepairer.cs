@@ -8,7 +8,7 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// Nuget文件修复器
     /// </summary>
-    public class NugetConfigRepairer
+    public class NugetFileRepairer
     {
         #region 构造函数
 
@@ -17,7 +17,7 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="configPath">Nuget 配置文件路径</param>
         /// <param name="nugetFixStrategies">修复策略</param>
-        public NugetConfigRepairer(string configPath,
+        public NugetFileRepairer(string configPath,
              IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             if (nugetFixStrategies == null)

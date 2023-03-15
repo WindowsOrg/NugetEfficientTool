@@ -131,7 +131,7 @@ namespace NugetEfficientTool
                 //对文件进行修复
                 foreach (var configFile in toReparingFiles)
                 {
-                    var nugetConfigRepairer = new NugetConfigRepairer(configFile, nugetFixStrategies);
+                    var nugetConfigRepairer = new NugetFileRepairer(configFile, nugetFixStrategies);
                     nugetConfigRepairer.Repair();
                     if (!string.IsNullOrEmpty(nugetConfigRepairer.Log))
                     {

@@ -89,7 +89,7 @@
     <Compile Include="Nuget\FileParser\Csproject\CsProjFileParser.cs" />
     <Compile Include="Nuget\FileParser\INugetFileParser.cs" />
     <Compile Include="Nuget\Utils\NugetConfigReader.cs" />
-    <Compile Include="Nuget\NugetFix\NugetConfigRepairer.cs" />
+    <Compile Include="Nuget\NugetFix\NugetFileRepairer.cs" />
     <Compile Include="Nuget\Utils\NugetConfigType.cs" />
     <Compile Include="Nuget\NugetFix\Base\NugetFixStrategy.cs" />
     <Compile Include="Nuget\Utils\NugetInfo.cs" />
