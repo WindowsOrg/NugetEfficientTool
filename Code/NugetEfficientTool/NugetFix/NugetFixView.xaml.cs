@@ -84,7 +84,19 @@ namespace NugetEfficientTool
                 IsChecking = false;
             }
             //设置检测结果
-            TextBoxErrorMessage.Text = _versionChecker.Message;
+            var message = _versionChecker.Message;
+            if (string.IsNullOrEmpty(message))
+            {
+                if (canReferenceWayUpgrade)
+                {
+                    message = "存在Reference可升级";
+                }
+                else
+                {
+                    message = "完美无瑕！";
+                }
+            }
+            TextBoxErrorMessage.Text = message;
             FixVersionButton.IsEnabled = _versionChecker.MismatchVersionNugets.Any() &&
                                          !_versionChecker.ErrorFormatNugetFiles.Any();
             UpgradeReferenceButton.Visibility = canReferenceWayUpgrade ? Visibility.Visible : Visibility.Collapsed;

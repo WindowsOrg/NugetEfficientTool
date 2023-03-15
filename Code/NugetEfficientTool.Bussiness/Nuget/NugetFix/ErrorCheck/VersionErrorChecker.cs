@@ -64,10 +64,6 @@ namespace NugetEfficientTool.Business
                 Message = StringSplicer.SpliceWithDoubleNewLine(Message, errorFormatNugetConfig.ErrorMessage);
             }
             Message = StringSplicer.SpliceWithDoubleNewLine(Message, nugetMismatchVersionMessage);
-            if (string.IsNullOrEmpty(Message))
-            {
-                Message = "完美无瑕！";
-            }
         }
 
         /// <summary>
