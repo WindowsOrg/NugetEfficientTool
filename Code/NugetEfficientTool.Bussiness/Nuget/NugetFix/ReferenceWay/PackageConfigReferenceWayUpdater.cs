@@ -40,5 +40,17 @@ namespace NugetEfficientTool.Business
             _xDocument.Save(_packageFile);
             return true;
         }
+
+        public bool CanUpgrade()
+        {
+            var rootElement = _xDocument.Root;
+            if (rootElement == null)
+            {
+                return false;
+            }
+
+            var packageElementList = rootElement.Elements().ToList();
+            return packageElementList.Any();
+        }
     }
 }

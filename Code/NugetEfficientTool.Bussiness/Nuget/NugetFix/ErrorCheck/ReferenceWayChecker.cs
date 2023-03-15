@@ -40,9 +40,14 @@ namespace NugetEfficientTool.Business
                 }
             }
             var packageFiles = Directory.GetFiles(folder, CustomText.PackagesConfigSearchPattern, SearchOption.AllDirectories);
-            if (packageFiles.Any())
+            foreach (var packageFile in packageFiles)
             {
-                NeedFix = true;
+                var formatUpdater = new PackageConfigReferenceWayUpdater(packageFile);
+                if (formatUpdater.CanUpgrade())
+                {
+                    NeedFix = true;
+                    break;
+                }
             }
         }
         public bool NeedFix { get; private set; }

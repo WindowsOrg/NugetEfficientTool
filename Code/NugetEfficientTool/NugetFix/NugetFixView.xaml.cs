@@ -187,7 +187,7 @@ namespace NugetEfficientTool
             var fileReferenceWayUpdater = new FileReferenceWayRepairer(SolutionTextBox.Text);
             fileReferenceWayUpdater.Fix();
             var log = fileReferenceWayUpdater.Log;
-            TextBoxErrorMessage.Text = string.IsNullOrEmpty(log) ? "没有发现能升级PackageReference的引用" : log;
+            TextBoxErrorMessage.Text = string.IsNullOrEmpty(log) ? "未找到Reference可升级" : log;
             UpgradeReferenceButton.Visibility = Visibility.Collapsed;
             FixVersionButton.IsEnabled = false;
         }
