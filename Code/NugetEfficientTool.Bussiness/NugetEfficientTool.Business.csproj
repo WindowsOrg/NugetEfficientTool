@@ -69,6 +69,7 @@
     <Compile Include="Nuget\NugetFix\ErrorCheck\ReferenceWayChecker.cs" />
     <Compile Include="Nuget\NugetFix\ReferenceWay\CsProjReferenceWayUpdater.cs" />
     <Compile Include="Nuget\NugetFix\FileReferenceWayRepairer.cs" />
+    <Compile Include="Nuget\NugetFix\ReferenceWay\PackageConfigReferenceWayUpdater.cs" />
     <Compile Include="Nuget\Utils\CsProjConsts.cs" />
     <Compile Include="Nuget\FileParser\Csproject\CsProjFileBase.cs" />
     <Compile Include="Nuget\FileParser\Csproject\CsProjFileService.cs" />

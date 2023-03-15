@@ -42,20 +42,17 @@ namespace NugetEfficientTool.Business
                 if (formatUpdater.TryUpgrade() && !string.IsNullOrEmpty(formatUpdater.Log))
                 {
                     Log = StringSplicer.SpliceWithDoubleNewLine(Log, $"对 {csProjFile} 执行了以下修复操作：");
-                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, formatUpdater.Log);
+                    Log = StringSplicer.SpliceWithNewLine(Log, formatUpdater.Log);
                 }
             }
             var packageFiles = Directory.GetFiles(folder, CustomText.PackagesConfigSearchPattern, SearchOption.AllDirectories);
             foreach (var packageFile in packageFiles)
             {
-                try
+                var packageUpdater = new PackageConfigReferenceWayUpdater(packageFile);
+                if (packageUpdater.TryUpgrade() && !string.IsNullOrEmpty(packageUpdater.Log))
                 {
-                    File.Delete(packageFile);
-                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, $"删除 {packageFile}");
-                }
-                catch (Exception)
-                {
-                    // ignored
+                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, $"对 {packageFile} 执行了以下修复操作：");
+                    Log = StringSplicer.SpliceWithNewLine(Log, packageUpdater.Log);
                 }
             }
         }
