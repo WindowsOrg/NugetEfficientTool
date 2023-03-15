@@ -64,7 +64,8 @@ namespace NugetEfficientTool
             {
                 return;
             }
-            //检测Nuget版本
+            //检测Nuget错误
+            bool canReferenceWayUpgrade = false;
             try
             {
                 IsChecking = true;
@@ -72,6 +73,9 @@ namespace NugetEfficientTool
                 {
                     _versionChecker = new VersionErrorChecker(solutionFile);
                     _versionChecker.Check();
+                    var referenceWayChecker = new ReferenceWayChecker(solutionFile);
+                    referenceWayChecker.Check();
+                    canReferenceWayUpgrade = referenceWayChecker.NeedFix;
                 });
             }
             finally
@@ -82,9 +86,13 @@ namespace NugetEfficientTool
             TextBoxErrorMessage.Text = _versionChecker.Message;
             ButtonFixVersion.IsEnabled = _versionChecker.MismatchVersionNugets.Any() &&
                                          !_versionChecker.ErrorFormatNugetFiles.Any();
+            UpgradeReferenceButton.Visibility = canReferenceWayUpgrade ? Visibility.Visible : Visibility.Collapsed;
             //更新到配置文件
             NugetFixConfigs.SaveNugetFixPath(solutionText);
         }
+
+        #region 修复Nuget版本问题
+
         /// <summary>
         /// 修复Nuget版本问题
         /// </summary>
@@ -103,41 +111,8 @@ namespace NugetEfficientTool
                 {
                     return;
                 }
-
-                var repairLog = string.Empty;
-                var toReparingFiles = new List<string>();
-                foreach (var nugetFileGroups in _versionChecker.MismatchVersionNugets)
-                {
-                    foreach (var nugetFile in nugetFileGroups.FileNugetInfos)
-                    {
-                        if (nugetFixStrategies.All(i => i.NugetName != nugetFile.Name))
-                        {
-                            continue;
-                        }
-                        //如果文件已经满足当前修复策略，则跳过
-                        if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
-                                                      $"{nugetFile.Name}_{nugetFile.Version}"))
-                        {
-                            continue;
-                        }
-
-                        if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
-                        {
-                            continue;
-                        }
-                        toReparingFiles.Add(nugetFile.ConfigPath);
-                    }
-                }
-                //对文件进行修复
-                foreach (var configFile in toReparingFiles)
-                {
-                    var nugetConfigRepairer = new NugetFileRepairer(configFile, nugetFixStrategies);
-                    nugetConfigRepairer.Repair();
-                    if (!string.IsNullOrEmpty(nugetConfigRepairer.Log))
-                    {
-                        repairLog = StringSplicer.SpliceWithDoubleNewLine(repairLog, nugetConfigRepairer.Log);
-                    }
-                }
+                //修复版本
+                var repairLog = RepairVersionErrors(nugetFixStrategies);
                 TextBoxErrorMessage.Text = repairLog;
                 ButtonFixVersion.IsEnabled = false;
                 nugetVersionFixWindow.Close();
@@ -154,6 +129,72 @@ namespace NugetEfficientTool
             }
         }
 
+        /// <summary>
+        /// 根据版本策略修复版本
+        /// </summary>
+        /// <param name="nugetFixStrategies"></param>
+        /// <returns></returns>
+        private string RepairVersionErrors(List<NugetFixStrategy> nugetFixStrategies)
+        {
+            var repairLog = string.Empty;
+            var toReparingFiles = new List<string>();
+            foreach (var nugetFileGroups in _versionChecker.MismatchVersionNugets)
+            {
+                foreach (var nugetFile in nugetFileGroups.FileNugetInfos)
+                {
+                    if (nugetFixStrategies.All(i => i.NugetName != nugetFile.Name))
+                    {
+                        continue;
+                    }
+
+                    //如果文件已经满足当前修复策略，则跳过
+                    if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
+                                                    $"{nugetFile.Name}_{nugetFile.Version}"))
+                    {
+                        continue;
+                    }
+
+                    if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
+                    {
+                        continue;
+                    }
+
+                    toReparingFiles.Add(nugetFile.ConfigPath);
+                }
+            }
+
+            //对文件进行修复
+            foreach (var configFile in toReparingFiles)
+            {
+                var nugetConfigRepairer = new FileNugetVersionRepairer(configFile, nugetFixStrategies);
+                nugetConfigRepairer.Repair();
+                if (!string.IsNullOrEmpty(nugetConfigRepairer.Log))
+                {
+                    repairLog = StringSplicer.SpliceWithDoubleNewLine(repairLog, nugetConfigRepairer.Log);
+                }
+            }
+
+            return repairLog;
+        }
+
+        #endregion
+
+        #region 升级Nuget引用方式
+
+        private void UpgradeReferenceButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            //修复文件引用格式
+            var fileReferenceWayUpdater = new FileReferenceWayRepairer(SolutionTextBox.Text);
+            fileReferenceWayUpdater.Fix();
+            var log = fileReferenceWayUpdater.Log;
+            TextBoxErrorMessage.Text = string.IsNullOrEmpty(log) ? "没有发现能升级PackageReference的引用" : log;
+            UpgradeReferenceButton.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        #region 属性
+
         public static readonly DependencyProperty IsCheckingProperty = DependencyProperty.Register(
             "IsChecking", typeof(bool), typeof(NugetFixView), new PropertyMetadata(default(bool)));
         /// <summary>
@@ -164,6 +205,8 @@ namespace NugetEfficientTool
             get => (bool)GetValue(IsCheckingProperty);
             set => SetValue(IsCheckingProperty, value);
         }
+
+        #endregion
 
         #region private fields
 

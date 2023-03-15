@@ -70,11 +70,6 @@ namespace NugetEfficientTool.Business
             }
             return true;
         }
-
-        public override void UpgradeNugetReference()
-        {
-            
-        }
         private readonly string _packageFile;
     }
 }

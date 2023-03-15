@@ -104,42 +104,7 @@ namespace NugetEfficientTool.Business
             Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
             ReplaceReferenceToPackageReference(reference, nugetFixStrategy.NugetName, nugetFixStrategy.NugetVersion);
         }
-        /// <summary>
-        /// 升级Nuget引用
-        /// </summary>
-        public override void UpgradeNugetReference()
-        {
-            var nugetInfoReferences = CsProj.GetNugetReferences(Document).ToList();
-            foreach (var nugetReference in nugetInfoReferences)
-            {
-                var hintPathElement = nugetReference.Elements().FirstOrDefault(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
-                if (hintPathElement == null)
-                {
-                    continue;
-                }
-                //规避本地引用dll
-                if (!hintPathElement.Value.Contains(CsProjConst.HintPathPackagePiece) ||
-                    !hintPathElement.Value.Contains(CsProjConst.HintPathLibPiece))
-                {
-                    continue;
-                }
-                var nugetInfo = CsProj.GetNugetInfo(nugetReference);
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetInfo.Name} 改为 PackageReference");
-                ReplaceReferenceToPackageReference(nugetReference, nugetInfo.Name, nugetInfo.Version);
-            }
-            var newInfoReferences = CsProj.GetNugetReferences(Document).ToList();
-            var elements = new List<XElement>();
-            foreach (var referenceItem in newInfoReferences)
-            {
-                if (elements.Any(i => i.ToString() == referenceItem.ToString()))
-                {
-                    //删除重复的节点，解决转PackageReference后导致的重复引用
-                    referenceItem.Remove();
-                    continue;
-                }
-                elements.Add(referenceItem);
-            }
-        }
+       
         /// <summary>
         /// 将Reference替换为PackageReference
         /// </summary>

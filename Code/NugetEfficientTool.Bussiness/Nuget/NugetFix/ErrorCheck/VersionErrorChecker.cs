@@ -69,6 +69,7 @@ namespace NugetEfficientTool.Business
                 Message = "完美无瑕！";
             }
         }
+
         /// <summary>
         /// 筛选Nuget版本冲突列表
         /// </summary>
