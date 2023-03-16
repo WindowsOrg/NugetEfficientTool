@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -20,6 +21,51 @@ namespace NugetEfficientTool.Business
 
         private readonly string _csProjPath;
 
+        /// <summary>
+        /// 执行修复
+        /// </summary>
+        /// <returns>返回修复后的文档内容</returns>
+        public override XDocument Fix()
+        {
+            var fixedDocument = base.Fix();
+            if (SucceedStrategies.Any() && IsComponentCsproj(fixedDocument.Root))
+            {
+                AddComponentVersion(fixedDocument.Root);
+            }
+            return fixedDocument;
+        }
+
+        private bool IsComponentCsproj(XElement rootElement)
+        {
+            var sdkAttribute = rootElement?.Attribute("Sdk");
+            return sdkAttribute != null;
+        }
+
+        private void AddComponentVersion(XElement rootElement)
+        {
+            var propertyGroups = rootElement.Elements("PropertyGroup").ToList();
+            var componentVersionElement = propertyGroups.SelectMany(i => i.Elements("Version")).FirstOrDefault();
+            if (componentVersionElement != null)
+            {
+                var componentVersion = componentVersionElement.Value;
+                var lastVersion = componentVersion[componentVersion.Length - 1].ToString();
+                string newComponentVersion;
+                if (NumberVersionRegex.IsMatch(lastVersion))
+                {
+                    var newVersion = Convert.ToInt32(lastVersion) + 1;
+                    newComponentVersion = $"{componentVersion.Substring(0, componentVersion.Length - 1)}{newVersion}";
+                }
+                else
+                {
+                    newComponentVersion = $"{componentVersion}1";
+                }
+                componentVersionElement.SetValue(newComponentVersion);
+                //添加输出日志
+                var componentName = Path.GetFileNameWithoutExtension(_csProjPath);
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 升级组件{componentName}版本至{newComponentVersion}");
+            }
+        }
+        private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]");
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
             //以PackageReference为主
@@ -104,7 +150,7 @@ namespace NugetEfficientTool.Business
             Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
             ReplaceReferenceToPackageReference(reference, nugetFixStrategy.NugetName, nugetFixStrategy.NugetVersion);
         }
-       
+
         /// <summary>
         /// 将Reference替换为PackageReference
         /// </summary>
