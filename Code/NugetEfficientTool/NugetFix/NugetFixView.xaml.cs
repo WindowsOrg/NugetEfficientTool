@@ -128,6 +128,7 @@ namespace NugetEfficientTool
                 var repairLog = RepairVersionErrors(nugetFixStrategies);
                 TextBoxErrorMessage.Text = repairLog;
                 FixVersionButton.IsEnabled = false;
+                UpgradeReferenceButton.Visibility = Visibility.Collapsed;
                 nugetVersionFixWindow.Close();
             };
 
@@ -198,7 +199,7 @@ namespace NugetEfficientTool
             var fileReferenceWayUpdater = new FileReferenceWayRepairer(SolutionTextBox.Text);
             fileReferenceWayUpdater.Fix();
             var log = fileReferenceWayUpdater.Log;
-            TextBoxErrorMessage.Text = string.IsNullOrEmpty(log) ? "未找到Reference可升级" : log;
+            TextBoxErrorMessage.Text = string.IsNullOrEmpty(log) ? "emmm...未找到Reference可升级" : log;
             UpgradeReferenceButton.Visibility = Visibility.Collapsed;
             FixVersionButton.IsEnabled = false;
         }
