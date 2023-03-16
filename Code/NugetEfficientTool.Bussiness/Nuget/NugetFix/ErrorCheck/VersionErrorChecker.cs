@@ -47,7 +47,7 @@ namespace NugetEfficientTool.Business
                 var nugetConfigReader = new NugetConfigReader(nugetConfigFile);
                 if (nugetConfigReader.IsGoodFormat())
                 {
-                    nugetFiles.AddRange(nugetConfigReader.PackageInfoExs);
+                    nugetFiles.AddRange(nugetConfigReader.NugetInfoGroups);
                 }
                 else
                 {
