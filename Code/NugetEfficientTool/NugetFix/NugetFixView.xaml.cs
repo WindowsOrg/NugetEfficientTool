@@ -60,7 +60,7 @@ namespace NugetEfficientTool
         private async void CheckNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
             var solutionText = SolutionTextBox.Text;
-            if (!CheckInputText(solutionText, out var solutionFile)||
+            if (!CheckInputText(solutionText, out var solutionFile) ||
                 IsChecking)
             {
                 return;
@@ -151,29 +151,27 @@ namespace NugetEfficientTool
         {
             var repairLog = string.Empty;
             var toReparingFiles = new List<string>();
-            foreach (var nugetFileGroups in _versionChecker.MismatchVersionNugets)
+            var fileNugetInfos = _versionChecker.MismatchVersionNugets.SelectMany(i => i.FileNugetInfos);
+            foreach (var nugetFile in fileNugetInfos)
             {
-                foreach (var nugetFile in nugetFileGroups.FileNugetInfos)
+                if (nugetFixStrategies.All(i => i.NugetName != nugetFile.Name))
                 {
-                    if (nugetFixStrategies.All(i => i.NugetName != nugetFile.Name))
-                    {
-                        continue;
-                    }
-
-                    //如果文件已经满足当前修复策略，则跳过
-                    if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
-                                                    $"{nugetFile.Name}_{nugetFile.Version}"))
-                    {
-                        continue;
-                    }
-
-                    if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
-                    {
-                        continue;
-                    }
-
-                    toReparingFiles.Add(nugetFile.ConfigPath);
+                    continue;
                 }
+
+                //如果文件已经满足当前修复策略，则跳过
+                if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
+                                                $"{nugetFile.Name}_{nugetFile.Version}"))
+                {
+                    continue;
+                }
+
+                if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
+                {
+                    continue;
+                }
+
+                toReparingFiles.Add(nugetFile.ConfigPath);
             }
 
             //对文件进行修复
