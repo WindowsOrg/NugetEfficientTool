@@ -15,7 +15,7 @@ namespace NugetEfficientTool.Business
         /// <param name="solutionFile"></param>
         public static void SaveOrUpdateSolution(string id, string solutionFile)
         {
-            var solutions = UserOperationConfigHelper.GetSolutions();
+            var solutions = NugetReplaceConfigs.GetSolutions();
             var projectSolution = solutions.FirstOrDefault(i => i.Id == id);
             if (projectSolution != null)
             {
@@ -25,7 +25,7 @@ namespace NugetEfficientTool.Business
             {
                 solutions.Add(new ProjectSolution(){Id = id,SolutionFile = solutionFile});
             }
-            UserOperationConfigHelper.SaveSolutions(solutions);
+            NugetReplaceConfigs.SaveSolutions(solutions);
         }
 
         #endregion
@@ -34,7 +34,7 @@ namespace NugetEfficientTool.Business
 
         public static List<ReplacedNugetInfo> GetReplacedNugetInfos(string projectId)
         {
-            return UserOperationConfigHelper.GetReplaceRecords(projectId);
+            return NugetReplaceConfigs.GetReplaceRecords(projectId);
         }
 
         /// <summary>
@@ -58,12 +58,12 @@ namespace NugetEfficientTool.Business
             if (replacedNugetInfo != null)
             {
                 replacedNugetInfos.Remove(replacedNugetInfo);
-                UserOperationConfigHelper.SaveReplaceRecords(projectId, replacedNugetInfos);
+                NugetReplaceConfigs.SaveReplaceRecords(projectId, replacedNugetInfos);
             }
         }
         public static void ClearReplacedNugetInfo(string projectId)
         {
-            UserOperationConfigHelper.SaveReplaceRecords(projectId, new List<ReplacedNugetInfo>());
+            NugetReplaceConfigs.SaveReplaceRecords(projectId, new List<ReplacedNugetInfo>());
         }
         /// <summary>
         /// 获取替换记录
@@ -80,7 +80,7 @@ namespace NugetEfficientTool.Business
             }
             //nuget替换后，要按后替换先恢复的原则，进行保存
             replacedNugetInfos.Insert(0, replacedNugetInfo);
-            UserOperationConfigHelper.SaveReplaceRecords(projectId, replacedNugetInfos);
+            NugetReplaceConfigs.SaveReplaceRecords(projectId, replacedNugetInfos);
         }
 
         #endregion

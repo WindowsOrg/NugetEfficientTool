@@ -7,17 +7,18 @@ using System.Xml.Linq;
 
 namespace NugetEfficientTool.Business
 {
-    class CsProjFileService : CsProjFileBase, ICsProjFileService
+    class CsProjFileService : ICsProjFileService
     {
-        /// <summary>
-        /// 获取Reference节点
-        /// </summary>
-        /// <param name="xDocument"></param>
-        /// <returns></returns>
-        public List<XElement> GetReferences(XDocument xDocument)
+        public List<XElement> GetProjectReferences(XDocument xDocument)
         {
-            return GetCsProjService(xDocument).GetReferences(xDocument);
+            return GetCsProjService(xDocument).GetProjectReferences(xDocument);
         }
+
+        public List<XElement> GetPackageReferences(XDocument xDocument)
+        {
+            return GetCsProjService(xDocument).GetPackageReferences(xDocument);
+        }
+
         /// <summary>
         /// 获取所有Nuget-Reference节点
         /// </summary>

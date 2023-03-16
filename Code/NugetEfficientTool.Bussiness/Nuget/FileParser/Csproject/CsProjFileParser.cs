@@ -41,7 +41,7 @@ namespace NugetEfficientTool.Business
                 return false;
             }
 
-            foreach (var packageReference in CsProj.GetNugetInfoReferences(_xDocument))
+            foreach (var packageReference in CsProj.GetNugetReferences(_xDocument))
             {
                 if (packageReference.Attribute(CsProjConst.IncludeAttribute) == null)
                 {
@@ -83,7 +83,7 @@ namespace NugetEfficientTool.Business
             }
 
             var nugetInfoList = new List<NugetInfo>();
-            var references = CsProj.GetReferences(_xDocument);
+            var references = CsProj.GetNugetReferences(_xDocument);
             foreach (var reference in references)
             {
                 var nugetInfo = CsProj.GetNugetInfo(reference, _csProjPath);

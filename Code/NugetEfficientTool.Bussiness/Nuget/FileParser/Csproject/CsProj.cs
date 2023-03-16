@@ -15,20 +15,11 @@ namespace NugetEfficientTool.Business
         #region 获取节点
 
         /// <summary>
-        /// 获取Reference节点
-        /// </summary>
-        /// <param name="xDocument"></param>
-        /// <returns></returns>
-        public static IEnumerable<XElement> GetReferences(XDocument xDocument)
-        {
-            return CsProjService.GetReferences(xDocument);
-        }
-        /// <summary>
         /// 获取所有Nuget-Reference节点
         /// </summary>
         /// <param name="xDocument"></param>
         /// <returns></returns>
-        public static IEnumerable<XElement> GetNugetInfoReferences(XDocument xDocument)
+        public static IEnumerable<XElement> GetNugetReferences(XDocument xDocument)
         {
             return CsProjService.GetNugetReferences(xDocument);
         }
@@ -40,6 +31,20 @@ namespace NugetEfficientTool.Business
         public static List<XElement> GetProjectReferences(XDocument xDocument)
         {
             return CsProjService.GetProjectReferences(xDocument);
+        }
+
+        /// <summary>
+        /// 获取Xmlns值
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static XNamespace GetXmlns(XDocument document)
+        {
+            var rootElement = document.Root;
+            var xmlnsAttribute = rootElement?.Attribute(CsProjConst.XmlnsAttribute);
+            //"http://schemas.microsoft.com/developer/msbuild/2003"
+            XNamespace xmlns = xmlnsAttribute?.Value;
+            return xmlns;
         }
 
         #endregion
@@ -123,6 +128,10 @@ namespace NugetEfficientTool.Business
         public static string GetTargetFrameworkOfDll(string dllFilePath)
         {
             var matchCollection = NugetTargetFrameworkRegex.Matches(dllFilePath);
+            if (matchCollection.Count == 0)
+            {
+                return string.Empty;
+            }
             return matchCollection[matchCollection.Count - 1].Value;
         }
         public static void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
@@ -139,5 +148,6 @@ namespace NugetEfficientTool.Business
         private static readonly Regex NugetTargetFrameworkRegex = new Regex(@"(?<=lib\\).*(?=\\)");
 
         #endregion
+
     }
 }

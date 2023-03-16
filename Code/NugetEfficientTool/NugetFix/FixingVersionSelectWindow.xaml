@@ -1,0 +1,26 @@
+﻿<Window x:Class="NugetEfficientTool.FixingVersionSelectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="请选择 Nuget 版本" Height="320" Width="600"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <WrapPanel Name="NugetVersionsPanel" FlowDirection="LeftToRight" HorizontalAlignment="Left"/>
+        </ScrollViewer>
+        <Grid Grid.Row="1" Margin="10" >
+            <CheckBox Name="IgnoreButton" Height="26" Content="全选" IsChecked="True"
+                    VerticalAlignment="Center" HorizontalAlignment="Center" Click="IgnoreButton_OnClick"
+                    Style="{StaticResource Style.DefaultCheckBox}"/>
+            <Button Name="FixButton" Height="26" Content="执行修复" Margin="10 2"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Click="FixButton_OnClick"
+                    Style="{StaticResource Style.Button.AccentBackground.Text.WhiteTextAndAccentBackground}"/>
+        </Grid>
+    </Grid>
+</Window>

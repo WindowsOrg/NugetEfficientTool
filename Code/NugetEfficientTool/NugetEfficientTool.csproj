@@ -14,6 +14,21 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -67,20 +82,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Views\NugetReplace\ReplaceProjectMode.cs" />
-    <Compile Include="Views\NugetReplace\NugetReplaceItem.cs" />
-    <Compile Include="Views\NugetReplace\NugetReplaceView.xaml.cs">
+    <Compile Include="NugetReplace\ReplaceProjectMode.cs" />
+    <Compile Include="NugetReplace\NugetReplaceItem.cs" />
+    <Compile Include="NugetReplace\NugetReplaceView.xaml.cs">
       <DependentUpon>NugetReplaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetReplace\NugetReplaceViewModel.cs" />
-    <Compile Include="Views\NugetReplace\ReplaceViewContainer.xaml.cs">
+    <Compile Include="NugetReplace\NugetReplaceViewModel.cs" />
+    <Compile Include="NugetReplace\ReplaceViewContainer.xaml.cs">
       <DependentUpon>ReplaceViewContainer.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NugetFix\NugetErrorView.xaml">
+    <Page Include="NugetFix\NugetFixView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -92,40 +107,40 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
+    <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetFix\NugetErrorView.xaml.cs">
-      <DependentUpon>NugetErrorView.xaml</DependentUpon>
+    <Compile Include="NugetFix\NugetFixView.xaml.cs">
+      <DependentUpon>NugetFixView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\NugetFix\FixingVersionSelectWindow.xaml">
+    <Page Include="NugetFix\FixingVersionSelectWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NugetFix\NugetVersionSelectorUserControl.xaml">
+    <Page Include="NugetFix\NugetVersionSelectorControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NugetReplace\NugetReplaceView.xaml">
+    <Page Include="NugetReplace\NugetReplaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NugetReplace\ReplaceViewContainer.xaml">
+    <Page Include="NugetReplace\ReplaceViewContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\NugetFix\NugetFixStrategiesEventArgs.cs" />
-    <Compile Include="Views\NugetFix\FixingVersionSelectWindow.xaml.cs">
+    <Compile Include="NugetFix\NugetFixStrategiesEventArgs.cs" />
+    <Compile Include="NugetFix\FixingVersionSelectWindow.xaml.cs">
       <DependentUpon>FixingVersionSelectWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NugetFix\NugetVersionSelectorUserControl.xaml.cs">
-      <DependentUpon>NugetVersionSelectorUserControl.xaml</DependentUpon>
+    <Compile Include="NugetFix\NugetVersionSelectorControl.xaml.cs">
+      <DependentUpon>NugetVersionSelectorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -144,14 +159,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NugetEfficientTool.Bussiness\NugetEfficientTool.Business.csproj">
@@ -170,5 +181,18 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

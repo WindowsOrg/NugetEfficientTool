@@ -18,10 +18,18 @@ namespace NugetEfficientTool.Business
         public List<XElement> GetReferences(XDocument xDocument)
         {
             var xElements = new List<XElement>();
-            xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, ReferenceName));
-            xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, PackageReferenceName));
+            xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, CsProjConst.ReferenceName));
+            xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, CsProjConst.PackageReferenceName));
             return xElements;
         }
+
+        public List<XElement> GetPackageReferences(XDocument xDocument)
+        {
+            var xElements = new List<XElement>();
+            xElements.AddRange(GetXElementsByNameInItemGroups(xDocument, CsProjConst.PackageReferenceName));
+            return xElements;
+        }
+
         /// <summary>
         /// 获取所有Nuget-Reference节点
         /// </summary>
@@ -45,31 +53,36 @@ namespace NugetEfficientTool.Business
                 throw new ArgumentNullException(nameof(xElement));
             }
 
-            if (xElement.Name.LocalName != ReferenceName && xElement.Name.LocalName != PackageReferenceName)
+            if (xElement.Name.LocalName != CsProjConst.ReferenceName && xElement.Name.LocalName != CsProjConst.PackageReferenceName)
             {
                 return false;
             }
 
-            if (xElement.Attribute(IncludeAttribute) == null)
+            if (xElement.Attribute(CsProjConst.IncludeAttribute) == null)
             {
                 return false;
             }
 
-            var includeValue = xElement.Attribute(IncludeAttribute)?.Value;
+            //Include属性
+            var includeValue = xElement.Attribute(CsProjConst.IncludeAttribute)?.Value;
             if (string.IsNullOrEmpty(includeValue))
             {
                 return false;
             }
-
-            var versionElements = xElement.Elements().Where(x => x.Name.LocalName == VersionElementName).ToList();
+            //版本
+            var versionValue = xElement.Attribute(CsProjConst.VersionAttribute)?.Value;
+            if (!string.IsNullOrEmpty(versionValue))
+            {
+                return true;
+            }
+            var versionElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.VersionElementName).ToList();
             if (versionElements.Any())
             {
                 return true;
             }
-
-            var hintPathChildElements = xElement.Elements().Where(x => x.Name.LocalName == HintPathElementName).ToList();
-
-            if (!hintPathChildElements.Any(x => x.Value.Contains(@"\packages\")))
+            //引用路径HintPath
+            var hintPathChildElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
+            if (!hintPathChildElements.Any(x => x.Value.Contains(CsProjConst.HintPathPackagePiece)))
             {
                 return false;
             }
@@ -78,17 +91,38 @@ namespace NugetEfficientTool.Business
         }
         public NugetInfo GetNugetInfo(XElement xElement)
         {
-            var includeValue = xElement.Attribute(IncludeAttribute).Value;
+            var includeValue = xElement.Attribute(CsProjConst.IncludeAttribute).Value;
             string nugetVersion;
-            if (PackageReferenceName.Equals(xElement.Name.LocalName))
+            //PackageReference
+            if (CsProjConst.PackageReferenceName.Equals(xElement.Name.LocalName))
             {
-                var versionElements = xElement.Elements().Where(x => x.Name.LocalName == VersionElementName).ToList();
-                nugetVersion = versionElements.First().Value;
-                return new NugetInfo(includeValue, nugetVersion);
+                var versionElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.VersionElementName).ToList();
+                if (versionElements.Count != 0)
+                {
+                    nugetVersion = versionElements.First().Value;
+                    return new NugetInfo(includeValue, nugetVersion);
+                }
+                //PackageReference的Version,可能是以属性形式存在
+                var versionAttribute = xElement.Attributes(CsProjConst.VersionElementName).FirstOrDefault();
+                if (versionAttribute != null)
+                {
+                    return new NugetInfo(includeValue, versionAttribute.Value);
+                }
             }
-            
+            //Reference
             var nugetName = NugetNameRegex.Match(includeValue).Value;
-             nugetVersion = NugetVersionRegex.Match(includeValue).Value;
+            nugetVersion = NugetVersionRegex.Match(includeValue).Value;
+            //如果内部有HintPath，则获取DLL路径信息中的Nuget名称和版本号。HintPath下的信息才是准确的
+            if (xElement.Elements().FirstOrDefault(x => x.Name.LocalName == CsProjConst.HintPathElementName) is XElement hintPathElement)
+            {
+                var nugetInfo = HintPathElements.GetNugetInfo(hintPathElement);
+                if (nugetInfo != null)
+                {
+                    nugetName = nugetInfo.Name;
+                    nugetVersion = nugetInfo.Version;
+                }
+            }
+
             return new NugetInfo(nugetName, nugetVersion);
         }
         public void RevertReference(XDocument document, ReplacedFileRecord replacedRecord)
@@ -97,7 +131,7 @@ namespace NugetEfficientTool.Business
             //添加package引用
             var referenceElement = new XElement(replacedRecord.ReferenceType);
             var version = replacedRecord.Version;
-            if (replacedRecord.ReferenceType == PackageReferenceName)
+            if (replacedRecord.ReferenceType == CsProjConst.PackageReferenceName)
             {
                 referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute, $"{replacedRecord.NugetName}");
                 var versionElement = new XElement(CsProjConst.VersionElementName);
