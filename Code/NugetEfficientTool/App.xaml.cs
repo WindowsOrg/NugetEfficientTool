@@ -8,7 +8,6 @@ using Kybs0.Log;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
 using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
 
 namespace NugetEfficientTool
 {
