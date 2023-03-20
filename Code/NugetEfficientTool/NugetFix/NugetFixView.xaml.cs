@@ -124,8 +124,8 @@ namespace NugetEfficientTool
                 {
                     return;
                 }
-                //修复版本
-                var repairLog = RepairVersionErrors(nugetFixStrategies);
+                // 根据版本策略修复版本
+                var repairLog = new NugetMismatchVersionGroupFix(_versionChecker.MismatchVersionNugets,nugetFixStrategies).Fix();
                 TextBoxErrorMessage.Text = repairLog;
                 FixVersionButton.IsEnabled = false;
                 UpgradeReferenceButton.Visibility = Visibility.Collapsed;
@@ -141,52 +141,6 @@ namespace NugetEfficientTool
                 CustomText.Notification.ShowInfo(Window.GetWindow(this), exception.Message);
                 CustomText.Log.Error(exception);
             }
-        }
-
-        /// <summary>
-        /// 根据版本策略修复版本
-        /// </summary>
-        /// <param name="nugetFixStrategies"></param>
-        /// <returns></returns>
-        private string RepairVersionErrors(List<NugetFixStrategy> nugetFixStrategies)
-        {
-            var repairLog = string.Empty;
-            var toReparingFiles = new List<string>();
-            var fileNugetInfos = _versionChecker.MismatchVersionNugets.SelectMany(i => i.FileNugetInfos);
-            foreach (var nugetFile in fileNugetInfos)
-            {
-                if (nugetFixStrategies.All(i => i.NugetName != nugetFile.Name))
-                {
-                    continue;
-                }
-
-                //如果文件已经满足当前修复策略，则跳过
-                if (nugetFixStrategies.All(i => $"{i.NugetName}_{i.NugetVersion}" ==
-                                                $"{nugetFile.Name}_{nugetFile.Version}"))
-                {
-                    continue;
-                }
-
-                if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
-                {
-                    continue;
-                }
-
-                toReparingFiles.Add(nugetFile.ConfigPath);
-            }
-
-            //对文件进行修复
-            foreach (var configFile in toReparingFiles)
-            {
-                var nugetConfigRepairer = new FileNugetVersionRepairer(configFile, nugetFixStrategies);
-                nugetConfigRepairer.Repair();
-                if (!string.IsNullOrEmpty(nugetConfigRepairer.Log))
-                {
-                    repairLog = StringSplicer.SpliceWithDoubleNewLine(repairLog, nugetConfigRepairer.Log);
-                }
-            }
-
-            return repairLog;
         }
 
         #endregion
