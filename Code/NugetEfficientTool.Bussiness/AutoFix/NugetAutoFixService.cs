@@ -32,7 +32,7 @@ namespace NugetEfficientTool.Business
             {
                 return false;
             }
-            Message += versionChecker.Message;
+            Message +=StringSplicer.SpliceWithDoubleNewLine(Message, versionChecker.Message);
             if (versionChecker.ErrorFormatNugetFiles?.Count() > 0)
             {
                 return true;
@@ -42,14 +42,14 @@ namespace NugetEfficientTool.Business
             {
                 var nugetName = mismatchVersionNugetGroup.NugetName;
                 var nugetVersion = mismatchVersionNugetGroup.FileNugetInfos.Select(x => x.Version).Distinct().FirstOrDefault();
-                fixStrategies.Add(new NugetFixStrategy(nugetName, nugetVersion, null));
+                fixStrategies.Add(new NugetFixStrategy(nugetName, nugetVersion));
             }
             if (!fixStrategies.Any())
             {
                 return true;
             }
             var repairLog = new NugetMismatchVersionGroupFix(versionChecker.MismatchVersionNugets, fixStrategies).Fix();
-            Message += repairLog;
+            Message += StringSplicer.SpliceWithDoubleNewLine(Message, repairLog);
             //继续修复
             Fix();
             return true;

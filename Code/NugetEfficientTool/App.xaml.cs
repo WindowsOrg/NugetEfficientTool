@@ -46,15 +46,17 @@ namespace NugetEfficientTool
                 ShowMainWindow();
                 SetNotifyIcon();
             }
-            else if (e.Args.Length == 1 && !string.IsNullOrEmpty(e.Args[0]))
+            else if (startupArgs.Length == 1 && !string.IsNullOrEmpty(startupArgs[0]))
             {
-                var nugetAutoFixService = new NugetAutoFixService(e.Args[0]);
+                var nugetAutoFixService = new NugetAutoFixService(startupArgs[0]);
                 nugetAutoFixService.Fix();
-                Console.Error.Write(nugetAutoFixService.Message);
+                Console.WriteLine(nugetAutoFixService.Message);
+                Environment.Exit(0);
             }
             else
             {
-                Console.Error.Write($"不支持启动参数[{string.Join(",", startupArgs)}]!");
+                Console.WriteLine($"不支持启动参数[{string.Join(",", startupArgs)}]!");
+                Environment.Exit(0);
             }
         }
         private void ShowMainWindow()

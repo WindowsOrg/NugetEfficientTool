@@ -61,8 +61,7 @@ namespace NugetEfficientTool.Business
                 }
                 componentVersionElement.SetValue(newComponentVersion);
                 //添加输出日志
-                var componentName = Path.GetFileNameWithoutExtension(_csProjPath);
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 升级组件{componentName}版本至{newComponentVersion}");
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 升级组件版本至{newComponentVersion}");
             }
         }
         private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]");

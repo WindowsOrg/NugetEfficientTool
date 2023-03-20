@@ -12,6 +12,16 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// 构造一条 Nuget 包修复策略
         /// </summary>
+        /// <param name="nugetName"></param>
+        /// <param name="nugetVersion"></param>
+        public NugetFixStrategy(string nugetName, string nugetVersion)
+        {
+            NugetName = nugetName;
+            NugetVersion = nugetVersion;
+        }
+        /// <summary>
+        /// 构造一条 Nuget 包修复策略
+        /// </summary>
         /// <param name="nugetName">名称</param>
         /// <param name="nugetVersion">版本号</param>
         /// <param name="targetFramework"></param>
@@ -38,12 +48,6 @@ namespace NugetEfficientTool.Business
             {
                 TargetFramework = CsProj.GetTargetFrameworkOfDll(nugetDllInfo.DllPath);
             }
-        }
-
-        private NugetFixStrategy(string nugetName, string nugetVersion)
-        {
-            NugetName = nugetName;
-            NugetVersion = nugetVersion;
         }
 
         /// <summary>
