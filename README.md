@@ -8,3 +8,6 @@
 
 #### 安装教程
 ![使用指导](Readme/introduction.gif)
+
+### 下载安装
+[点击下载](/Readme/Nuget.exe)
