@@ -50,8 +50,6 @@ namespace NugetEfficientTool.Business
             }
             var repairLog = new NugetMismatchVersionGroupFix(versionChecker.MismatchVersionNugets, fixStrategies).Fix();
             Message = StringSplicer.SpliceWithDoubleNewLine(Message, repairLog);
-            //继续修复
-            Fix();
             return true;
         }
 
