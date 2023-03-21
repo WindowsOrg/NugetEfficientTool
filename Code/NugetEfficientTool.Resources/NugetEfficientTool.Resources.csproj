@@ -79,16 +79,16 @@
     <Compile Include="Controls\ProgressBar\ProgressBarControl.xaml.cs">
       <DependentUpon>ProgressBarControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters_\BooleanToBoolean.cs" />
-    <Compile Include="Converters_\ToolTipBorderVisibleConverter.cs" />
-    <Compile Include="Converters_\DownloadStateToProgressStateConverter.cs" />
-    <Compile Include="Converters_\ValueToAnnulusGeometryConverter.cs" />
-    <Compile Include="Converters_\ValueToSectorGeometryConverter.cs" />
-    <Compile Include="Converters_\VisibilityReverseConverter.cs" />
-    <Compile Include="Converters_\MultiBooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters_\EmptyOrNullToVisibilityConverter.cs" />
-    <Compile Include="Windows_\DefinedWindowsHelper.cs" />
-    <Compile Include="Windows_\WindowHeaderView.xaml.cs">
+    <Compile Include="Converters\BooleanToBoolean.cs" />
+    <Compile Include="Converters\ToolTipBorderVisibleConverter.cs" />
+    <Compile Include="Converters\DownloadStateToProgressStateConverter.cs" />
+    <Compile Include="Converters\ValueToAnnulusGeometryConverter.cs" />
+    <Compile Include="Converters\ValueToSectorGeometryConverter.cs" />
+    <Compile Include="Converters\VisibilityReverseConverter.cs" />
+    <Compile Include="Converters\MultiBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\EmptyOrNullToVisibilityConverter.cs" />
+    <Compile Include="Windows\DefinedWindowsHelper.cs" />
+    <Compile Include="Windows\WindowHeaderView.xaml.cs">
       <DependentUpon>WindowHeaderView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\CircleLoading.xaml">
@@ -203,7 +203,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ComplexTextBlock_\ComplexTextBlock.cs" />
+    <Compile Include="Controls\ComplexTextBlock\ComplexTextBlock.cs" />
     <Page Include="Styles\Style.TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -216,7 +216,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows_\WindowHeaderView.xaml">
+    <Page Include="Windows\WindowHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
