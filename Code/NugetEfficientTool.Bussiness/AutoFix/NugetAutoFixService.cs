@@ -32,7 +32,7 @@ namespace NugetEfficientTool.Business
             {
                 return false;
             }
-            Message +=StringSplicer.SpliceWithDoubleNewLine(Message, versionChecker.Message);
+            Message =StringSplicer.SpliceWithDoubleNewLine(Message, versionChecker.Message);
             if (versionChecker.ErrorFormatNugetFiles?.Count() > 0)
             {
                 return true;
@@ -49,9 +49,7 @@ namespace NugetEfficientTool.Business
                 return true;
             }
             var repairLog = new NugetMismatchVersionGroupFix(versionChecker.MismatchVersionNugets, fixStrategies).Fix();
-            Message += StringSplicer.SpliceWithDoubleNewLine(Message, repairLog);
-            //继续修复
-            Fix();
+            Message = StringSplicer.SpliceWithDoubleNewLine(Message, repairLog);
             return true;
         }
 
