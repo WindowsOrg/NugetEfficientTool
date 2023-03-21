@@ -41,6 +41,7 @@ namespace NugetEfficientTool
         private void App_Startup(object sender, StartupEventArgs e)
         {
             var startupArgs = e.Args;
+            //startupArgs = new[] { @"D:\Gitlab-Company\test" };
             if (startupArgs.Length == 0)
             {
                 //显示窗口
@@ -50,8 +51,8 @@ namespace NugetEfficientTool
             else if (startupArgs.Length == 1 && !string.IsNullOrEmpty(startupArgs[0]))
             {
                 var nugetAutoFixService = new NugetAutoFixService(startupArgs[0]);
-                nugetAutoFixService.Fix();
-                Console.WriteLine(nugetAutoFixService.Message);
+                var hasFixed = nugetAutoFixService.Fix();
+                Console.WriteLine(hasFixed ? nugetAutoFixService.Message : "无需修复");
                 Environment.Exit(0);
             }
             else
