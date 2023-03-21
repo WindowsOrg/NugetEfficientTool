@@ -25,7 +25,7 @@ namespace NugetEfficientTool.Business
         /// 执行修复
         /// </summary>
         /// <returns>返回修复后的文档内容</returns>
-        public XDocument Fix()
+        public virtual XDocument Fix()
         {
             foreach (var nugetFixStrategy in NugetFixStrategies)
             {

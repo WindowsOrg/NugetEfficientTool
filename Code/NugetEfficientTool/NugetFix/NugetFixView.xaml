@@ -10,59 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="TheErrorFixView">
     <UserControl.Resources>
-        <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
         <utils:BoolToVisibility x:Key="BoolToVisibility"/>
-        <Style x:Key="Style.GroupBox" TargetType="GroupBox">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type GroupBox}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="4"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="4"/>
-                            </Grid.RowDefinitions>
-                            <Border CornerRadius="4" Grid.Row="1"
-                                      Grid.RowSpan="3" Grid.Column="0"
-                                      Grid.ColumnSpan="4" BorderThickness="{TemplateBinding BorderThickness}"
-                                      BorderBrush="Transparent" Background="{TemplateBinding Background}"/>
-                            <!-- ContentPresenter for the header -->
-                            <Border x:Name="Header" Padding="6,0,6,0" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
-                                <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" />
-                            </Border>
-                            <!-- Primary content for GroupBox -->
-                            <ContentPresenter Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}"/>
-                            <Border x:Name="OuterBorder" CornerRadius="4" Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      BorderBrush="{TemplateBinding BorderBrush}">
-                                <Border.OpacityMask>
-                                    <MultiBinding Converter= "{StaticResource BorderGapMaskConverter}" ConverterParameter="6">
-                                        <Binding ElementName="Header" Path="ActualWidth"/>
-                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth"/>
-                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight"/>
-                                    </MultiBinding>
-                                </Border.OpacityMask>
-                            </Border>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource Brush.Accent.Light}" />
-                            </Trigger>
-                            <Trigger Property="utils:ControlHelper.IsFocused" Value="True">
-                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource Brush.Accent.Normal}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

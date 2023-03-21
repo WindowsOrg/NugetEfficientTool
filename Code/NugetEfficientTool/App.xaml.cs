@@ -8,6 +8,7 @@ using Kybs0.Log;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace NugetEfficientTool
 {
@@ -39,9 +40,25 @@ namespace NugetEfficientTool
         private MainWindow _mainWindow;
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //显示窗口
-            ShowMainWindow();
-            SetNotifyIcon();
+            var startupArgs = e.Args;
+            if (startupArgs.Length == 0)
+            {
+                //显示窗口
+                ShowMainWindow();
+                SetNotifyIcon();
+            }
+            else if (startupArgs.Length == 1 && !string.IsNullOrEmpty(startupArgs[0]))
+            {
+                var nugetAutoFixService = new NugetAutoFixService(startupArgs[0]);
+                nugetAutoFixService.Fix();
+                Console.WriteLine(nugetAutoFixService.Message);
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine($@"不支持启动参数[{string.Join(",", startupArgs)}]!");
+                Environment.Exit(0);
+            }
         }
         private void ShowMainWindow()
         {
@@ -95,7 +112,7 @@ namespace NugetEfficientTool
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             CustomText.Log.Error(e.Exception);
-            CustomText.Notification.ShowInfo(null,e.Exception.Message);
+            CustomText.Notification.ShowInfo(null, e.Exception.Message);
             //表示补救成功
             e.Handled = true;
         }

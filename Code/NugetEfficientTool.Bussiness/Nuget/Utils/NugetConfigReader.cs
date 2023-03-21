@@ -26,7 +26,7 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// Nuget 包信息列表
         /// </summary>
-        public IEnumerable<FileNugetInfo> PackageInfoExs { get; private set; }
+        public IEnumerable<FileNugetInfo> NugetInfoGroups { get; private set; }
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace NugetEfficientTool.Business
         {
             var nugetInfos = _nugetConfigParser.GetNugetInfos();
             var nugetInfoExs = nugetInfos.Select(x => new FileNugetInfo(x, FilePath));
-            PackageInfoExs = nugetInfoExs;
+            NugetInfoGroups = nugetInfoExs;
         }
 
         private string CreateFormatErrorMessage(string errorMessage)

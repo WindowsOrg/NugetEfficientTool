@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -87,11 +88,21 @@ namespace NugetEfficientTool.Business
             foreach (var reference in references)
             {
                 var nugetInfo = CsProj.GetNugetInfo(reference, _csProjPath);
-                if (nugetInfo == null||string.IsNullOrWhiteSpace(nugetInfo.Name)||string.IsNullOrWhiteSpace(nugetInfo.Version))
+                if (nugetInfo == null || string.IsNullOrWhiteSpace(nugetInfo.Name) || string.IsNullOrWhiteSpace(nugetInfo.Version))
                 {
                     continue;
                 }
                 nugetInfoList.Add(nugetInfo);
+            }
+            //组件项目，添加自己的版本
+            if (CsProj.IsComponent(_xDocument))
+            {
+                var componentVersion = CsProj.GetComponentVersion(_xDocument);
+                if (!string.IsNullOrEmpty(componentVersion))
+                {
+                    var componentName = Path.GetFileNameWithoutExtension(_csProjPath);
+                    nugetInfoList.Add(new NugetInfo(componentName, componentVersion));
+                }
             }
             return nugetInfoList;
         }

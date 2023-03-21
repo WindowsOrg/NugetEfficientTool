@@ -141,6 +141,32 @@ namespace NugetEfficientTool.Business
 
         #endregion
 
+        #region 组件项目相关
+
+        /// <summary>
+        /// 判断是否组件类型的项目
+        /// </summary>
+        /// <param name="xDocument"></param>
+        /// <returns></returns>
+        public static bool IsComponent(XDocument xDocument)
+        {
+            var rootElement = xDocument.Root;
+            var sdkAttribute = rootElement?.Attribute("Sdk");
+            return sdkAttribute != null;
+        }
+
+        public static string GetComponentVersion(XDocument xDocument)
+        {
+            var rootElement = xDocument.Root;
+            var propertyGroups = rootElement?.Elements("PropertyGroup").ToList();
+            var componentVersionElement = propertyGroups?.SelectMany(i => i.Elements("Version")).FirstOrDefault();
+            var componentVersion = componentVersionElement?.Value;
+            return componentVersion;
+        }
+        private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]");
+
+        #endregion
+
         #region private fields
 
         private static readonly ICsProjFileService CsProjService = new CsProjFileService();

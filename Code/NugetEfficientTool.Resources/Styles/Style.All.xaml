@@ -20,5 +20,6 @@
         <ResourceDictionary Source="Style.RadioButton.xaml"/>
         <ResourceDictionary Source="Style.ContextMenu.xaml"/>
         <ResourceDictionary Source="Style.MenuItem.xaml"/>
+        <ResourceDictionary Source="Style.GroupBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
