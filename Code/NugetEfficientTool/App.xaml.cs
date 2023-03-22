@@ -26,15 +26,11 @@ namespace NugetEfficientTool
             //启动项
             Startup += App_Startup;
 
-
-#if !DEBUG
-            //全局异常捕获.主要指的是UI线程。
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             //当某个异常未被捕获时出现。主要指的是非UI线程
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             //task线程内未处理捕获 
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-#endif
         }
         private MainWindow _mainWindow;
         private void App_Startup(object sender, StartupEventArgs e)
