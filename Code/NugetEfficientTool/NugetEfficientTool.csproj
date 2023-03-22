@@ -128,11 +128,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NugetFix\FixingVersionSelectWindow.xaml">
+    <Page Include="NugetFix\VersionSelectWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NugetFix\NugetVersionSelectorControl.xaml">
+    <Page Include="NugetFix\VersionSelectorControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -146,12 +146,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NugetFix\NugetFixStrategiesEventArgs.cs" />
-    <Compile Include="NugetFix\FixingVersionSelectWindow.xaml.cs">
-      <DependentUpon>FixingVersionSelectWindow.xaml</DependentUpon>
+    <Compile Include="NugetFix\FixStrategiesEventArgs.cs" />
+    <Compile Include="NugetFix\VersionSelectWindow.xaml.cs">
+      <DependentUpon>VersionSelectWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NugetFix\NugetVersionSelectorControl.xaml.cs">
-      <DependentUpon>NugetVersionSelectorControl.xaml</DependentUpon>
+    <Compile Include="NugetFix\VersionSelectorControl.xaml.cs">
+      <DependentUpon>VersionSelectorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
