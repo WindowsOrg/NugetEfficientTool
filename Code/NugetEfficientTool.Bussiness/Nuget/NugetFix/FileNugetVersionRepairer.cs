@@ -80,7 +80,7 @@ namespace NugetEfficientTool.Business
             }
             catch (Exception e)
             {
-                Log = StringSplicer.SpliceWithNewLine(e.Message, e.StackTrace);
+                Log = StringSplicer.SpliceWithNewLine($"修复失败，{e.Message}", e.StackTrace);
                 return false;
             }
         }
