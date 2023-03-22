@@ -32,23 +32,28 @@ namespace NugetEfficientTool.Business
             {
                 return false;
             }
-            Message =StringSplicer.SpliceWithDoubleNewLine(Message, versionChecker.Message);
+            Message = StringSplicer.SpliceWithDoubleNewLine(Message, versionChecker.Message);
             if (versionChecker.ErrorFormatNugetFiles?.Count() > 0)
             {
                 return true;
             }
+            //获取修复版本
             var fixStrategies = new List<NugetFixStrategy>();
             foreach (var mismatchVersionNugetGroup in versionChecker.MismatchVersionNugets)
             {
                 var nugetName = mismatchVersionNugetGroup.NugetName;
-                var nugetVersion = mismatchVersionNugetGroup.FileNugetInfos.Select(x => x.Version).Distinct().FirstOrDefault();
-                fixStrategies.Add(new NugetFixStrategy(nugetName, nugetVersion));
+                var nugetVersions = mismatchVersionNugetGroup.FileNugetInfos.Select(x => x.Version).Distinct().ToList();
+                //版本大小倒序
+                nugetVersions.Sort(NugetVersionContrast.VersionDescendingComparison);
+                fixStrategies.Add(new NugetFixStrategy(nugetName, nugetVersions.First()));
             }
             if (!fixStrategies.Any())
             {
                 return true;
             }
-            var repairLog = new NugetMismatchVersionGroupFix(versionChecker.MismatchVersionNugets, fixStrategies).Fix();
+            //修复
+            var versionFixer = new NugetMismatchVersionGroupFix(versionChecker.MismatchVersionNugets, fixStrategies);
+            var repairLog = versionFixer.Fix();
             Message = StringSplicer.SpliceWithDoubleNewLine(Message, repairLog);
             return true;
         }
