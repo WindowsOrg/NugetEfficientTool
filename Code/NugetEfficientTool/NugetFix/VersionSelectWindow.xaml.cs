@@ -12,13 +12,13 @@ namespace NugetEfficientTool
     /// <summary>
     /// nuget修复版本选择窗口
     /// </summary>
-    public partial class FixingVersionSelectWindow : Window
+    public partial class VersionSelectWindow : Window
     {
         /// <summary>
         /// nuget修复版本选择窗口
         /// </summary>
         /// <param name="mismatchVersionNugetGroups">存在版本不匹配的Nuget列表</param>
-        public FixingVersionSelectWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetGroups)
+        public VersionSelectWindow(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetGroups)
         {
             if (ReferenceEquals(mismatchVersionNugetGroups, null))
                 throw new ArgumentNullException(nameof(mismatchVersionNugetGroups));
@@ -29,12 +29,12 @@ namespace NugetEfficientTool
             {
                 var nugetName = mismatchVersionNugetInfoEx.NugetName;
                 var repeatNugetVersions = mismatchVersionNugetInfoEx.FileNugetInfos.Select(x => x.Version).Distinct();
-                var versionSelectControl = new NugetVersionSelectorControl(nugetName, repeatNugetVersions);
+                var versionSelectControl = new VersionSelectorControl(nugetName, repeatNugetVersions);
                 NugetVersionsPanel.Children.Add(versionSelectControl);
             }
         }
 
-        public event EventHandler<NugetFixStrategiesEventArgs> NugetFixStrategiesSelected;
+        public event EventHandler<FixStrategiesEventArgs> NugetFixStrategiesSelected;
 
         private readonly IEnumerable<FileNugetInfoGroup> _mismatchVersionNugetInfoExs;
 
@@ -55,7 +55,7 @@ namespace NugetEfficientTool
                 //提取修复版本
                 foreach (var child in NugetVersionsPanel.Children)
                 {
-                    if (!(child is NugetVersionSelectorControl nugetVersionSelectorUserControl))
+                    if (!(child is VersionSelectorControl nugetVersionSelectorUserControl))
                     {
                         continue;
                     }
@@ -80,7 +80,7 @@ namespace NugetEfficientTool
                     return;
                 }
 
-                NugetFixStrategiesSelected?.Invoke(this, new NugetFixStrategiesEventArgs(_nugetFixStrategyList));
+                NugetFixStrategiesSelected?.Invoke(this, new FixStrategiesEventArgs(_nugetFixStrategyList));
             }
             catch (Exception exception)
             {
@@ -181,7 +181,7 @@ namespace NugetEfficientTool
                 }
                 if (dllFileList.Length == 0)
                 {
-                    Console.WriteLine($"找不到 {dllFilePath}，可能无法进行正常修复。先试着编译一下，还原下 Nuget 包");
+                    Console.WriteLine($@"找不到 {dllFilePath}，可能无法进行正常修复。先试着编译一下，还原下 Nuget 包");
                     return false;
                 }
                 if (dllFileList.Length == 1)
@@ -203,7 +203,7 @@ namespace NugetEfficientTool
 
         private void IgnoreButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var versionSelectors = NugetVersionsPanel.VisualDescendants<NugetVersionSelectorControl>().ToList();
+            var versionSelectors = NugetVersionsPanel.VisualDescendants<VersionSelectorControl>().ToList();
             var isAllFixing = versionSelectors.All(i => i.SelectedVersion != NugetVersion.IgnoreFix);
             var newVersionFixStatus = !isAllFixing;
             foreach (var versionSelectorControl in versionSelectors)

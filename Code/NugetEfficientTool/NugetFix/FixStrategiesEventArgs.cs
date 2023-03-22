@@ -4,9 +4,9 @@ using NugetEfficientTool.Business;
 
 namespace NugetEfficientTool
 {
-    public class NugetFixStrategiesEventArgs : EventArgs
+    public class FixStrategiesEventArgs : EventArgs
     {
-        public NugetFixStrategiesEventArgs( IEnumerable<NugetFixStrategy> nugetFixStrategies)
+        public FixStrategiesEventArgs( IEnumerable<NugetFixStrategy> nugetFixStrategies)
         {
             NugetFixStrategies = nugetFixStrategies ?? throw new ArgumentNullException(nameof(nugetFixStrategies));
         }

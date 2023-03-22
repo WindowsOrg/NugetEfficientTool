@@ -34,7 +34,6 @@ namespace NugetEfficientTool
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             //task线程内未处理捕获 
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-
 #endif
         }
         private MainWindow _mainWindow;
@@ -114,6 +113,7 @@ namespace NugetEfficientTool
         {
             CustomText.Log.Error(e.Exception);
             CustomText.Notification.ShowInfo(null, e.Exception.Message);
+            Console.WriteLine($@"{CustomText.FixErrorKey},{e.Exception.Message}");
             //表示补救成功
             e.Handled = true;
         }
@@ -122,6 +122,7 @@ namespace NugetEfficientTool
             if (e.ExceptionObject is Exception exception)
             {
                 CustomText.Log.Error(exception);
+                Console.WriteLine($@"{CustomText.FixErrorKey},{exception.Message}");
                 //通过配置legacyUnhandledExceptionPolicy防止后台线程抛出的异常让程序崩溃退出，
                 //e.IsTerminating经过配置，才会变成false
 
@@ -133,6 +134,7 @@ namespace NugetEfficientTool
             foreach (Exception item in e.Exception.InnerExceptions)
             {
                 CustomText.Log.Error(item);
+                Console.WriteLine($@"{CustomText.FixErrorKey},{item.Message}");
             }
             //设置该异常已察觉（这样处理后就不会引起程序崩溃）
             e.SetObserved();
