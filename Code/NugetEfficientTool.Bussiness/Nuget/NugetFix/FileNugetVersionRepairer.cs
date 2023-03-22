@@ -67,11 +67,12 @@ namespace NugetEfficientTool.Business
                 {
                     if (_nugetConfigFixer.Log == null || string.IsNullOrEmpty(_nugetConfigFixer.Log))
                     {
-                        Log = $"对 {_configPath} 执行{string.Join(",", _nugetConfigFixer.SucceedStrategies.Select(i => $"{i.NugetName}{i.NugetVersion}"))}修复失败";
+                        var fixedNugets = string.Join(",", _nugetConfigFixer.SucceedStrategies.Select(i => $"{i.NugetName}{i.NugetVersion}"));
+                        Log = $"对 {_configPath} 执行{fixedNugets}{CustomText.FixErrorKey}";
                     }
                     else
                     {
-                        var headerMessage = $"对 {_configPath} 执行了以下修复操作：";
+                        var headerMessage = string.Format(CustomText.FixSuccessKey,_configPath);
                         Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixer.Log);
                     }
                 }
@@ -80,7 +81,7 @@ namespace NugetEfficientTool.Business
             }
             catch (Exception e)
             {
-                Log = StringSplicer.SpliceWithNewLine($"修复失败，{e.Message}", e.StackTrace);
+                Log = StringSplicer.SpliceWithNewLine($"{CustomText.FixErrorKey}，{e.Message}", e.StackTrace);
                 return false;
             }
         }

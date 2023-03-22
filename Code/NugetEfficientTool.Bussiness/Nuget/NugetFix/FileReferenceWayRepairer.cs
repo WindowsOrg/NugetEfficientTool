@@ -41,7 +41,8 @@ namespace NugetEfficientTool.Business
                 var formatUpdater = new CsProjReferenceWayUpdater(csProjFile);
                 if (formatUpdater.TryUpgrade() && !string.IsNullOrEmpty(formatUpdater.Log))
                 {
-                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, $"对 {csProjFile} 执行了以下修复操作：");
+                    var headerMessage = string.Format(CustomText.FixSuccessKey, csProjFile);
+                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, headerMessage);
                     Log = StringSplicer.SpliceWithNewLine(Log, formatUpdater.Log);
                 }
             }
@@ -51,7 +52,8 @@ namespace NugetEfficientTool.Business
                 var packageUpdater = new PackageConfigReferenceWayUpdater(packageFile);
                 if (packageUpdater.TryUpgrade() && !string.IsNullOrEmpty(packageUpdater.Log))
                 {
-                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, $"对 {packageFile} 执行了以下修复操作：");
+                    var headerMessage = string.Format(CustomText.FixSuccessKey, packageFile);
+                    Log = StringSplicer.SpliceWithDoubleNewLine(Log, headerMessage);
                     Log = StringSplicer.SpliceWithNewLine(Log, packageUpdater.Log);
                 }
             }

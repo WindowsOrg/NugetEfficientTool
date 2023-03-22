@@ -181,7 +181,7 @@ namespace NugetEfficientTool
                 }
                 if (dllFileList.Length == 0)
                 {
-                    Console.WriteLine($"找不到 {dllFilePath}，可能无法进行正常修复。先试着编译一下，还原下 Nuget 包");
+                    Console.WriteLine($@"找不到 {dllFilePath}，可能无法进行正常修复。先试着编译一下，还原下 Nuget 包");
                     return false;
                 }
                 if (dllFileList.Length == 1)

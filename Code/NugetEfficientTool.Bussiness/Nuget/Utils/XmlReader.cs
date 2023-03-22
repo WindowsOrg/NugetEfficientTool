@@ -128,8 +128,8 @@ namespace NugetEfficientTool.Business
             }
             catch (XmlException xmlException)
             {
-                Console.WriteLine($"{FilePath} 检测到格式异常。");
-                Console.WriteLine($"异常原因：{xmlException.Message}");
+                Console.WriteLine($@"{FilePath} 检测到格式异常。");
+                Console.WriteLine($@"异常原因：{xmlException.Message}");
                 ErrorMessage = $"{FilePath} 存在格式异常：{Environment.NewLine}  {xmlException.Message}";
             }
         }
