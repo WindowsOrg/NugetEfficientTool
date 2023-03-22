@@ -40,7 +40,7 @@ namespace NugetEfficientTool
         private void App_Startup(object sender, StartupEventArgs e)
         {
             var startupArgs = e.Args;
-            startupArgs = new[] { @"D:\Gitlab-Company\Tools\GitBatchManager\GitBatchManager\bin\Debug" };
+            //startupArgs = new[] { @"D:\Gitlab-Company\Tools\GitBatchManager\GitBatchManager\bin\Debug" };
             if (startupArgs.Length == 0)
             {
                 //显示窗口
