@@ -65,8 +65,15 @@ namespace NugetEfficientTool.Business
                 _xDocument = _nugetConfigFixer.Fix();
                 if (_nugetConfigFixer.SucceedStrategies.Any())
                 {
-                    var headerMessage = $"对 {_configPath} 执行了以下修复操作：";
-                    Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixer.Log);
+                    if (_nugetConfigFixer.Log == null || string.IsNullOrEmpty(_nugetConfigFixer.Log))
+                    {
+                        Log = $"对 {_configPath} 执行{string.Join(",", _nugetConfigFixer.SucceedStrategies.Select(i => $"{i.NugetName}{i.NugetVersion}"))}修复失败";
+                    }
+                    else
+                    {
+                        var headerMessage = $"对 {_configPath} 执行了以下修复操作：";
+                        Log = StringSplicer.SpliceWithNewLine(headerMessage, _nugetConfigFixer.Log);
+                    }
                 }
                 _xDocument.Save(_configPath);
                 return true;

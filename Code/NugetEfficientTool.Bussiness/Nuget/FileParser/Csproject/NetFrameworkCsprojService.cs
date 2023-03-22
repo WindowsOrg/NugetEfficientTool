@@ -70,7 +70,7 @@ namespace NugetEfficientTool.Business
                 return false;
             }
             //版本
-            var versionValue = xElement.Attribute(CsProjConst.VersionAttribute)?.Value;
+            var versionValue = NugetVersionRegex.Match(includeValue).Value;
             if (!string.IsNullOrEmpty(versionValue))
             {
                 return true;

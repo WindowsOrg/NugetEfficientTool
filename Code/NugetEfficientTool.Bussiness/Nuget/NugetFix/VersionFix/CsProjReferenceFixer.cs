@@ -142,10 +142,6 @@ namespace NugetEfficientTool.Business
 
         private void FixNugetReference(XElement reference, NugetFixStrategy nugetFixStrategy)
         {
-            if (nugetFixStrategy.NugetDllInfo == null)
-            {
-                return;
-            }
             Log = StringSplicer.SpliceWithNewLine(Log, $"    - 将 {nugetFixStrategy.NugetName} 设定为 {nugetFixStrategy.NugetVersion}");
             ReplaceReferenceToPackageReference(reference, nugetFixStrategy.NugetName, nugetFixStrategy.NugetVersion);
         }
