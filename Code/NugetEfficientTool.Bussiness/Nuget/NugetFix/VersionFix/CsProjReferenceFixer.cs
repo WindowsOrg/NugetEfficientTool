@@ -59,7 +59,7 @@ namespace NugetEfficientTool.Business
                     //数字结尾，版本+1
                     var versionEndNumber = versionNumbers[versionNumbers.Count - 1].Value;
                     var newVersionEnd = Convert.ToInt32(versionEndNumber) + 1;
-                    var versionStart = componentVersion.Substring(0, componentVersion.Length - 1 - versionEndNumber.Length);
+                    var versionStart = componentVersion.Substring(0, componentVersion.Length - versionEndNumber.Length);
                     newComponentVersion = $"{versionStart}{newVersionEnd}";
                 }
                 else
