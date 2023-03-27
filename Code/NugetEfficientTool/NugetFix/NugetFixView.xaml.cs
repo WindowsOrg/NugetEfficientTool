@@ -55,6 +55,20 @@ namespace NugetEfficientTool
             {
                 return true;
             }
+
+            if (solutionText.Contains(";"))
+            {
+                var folders = solutionText.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var folder in folders)
+                {
+                    if (SolutionFileHelper.TryGetSlnFiles(folder, out var files) &&
+                        files.Count > 0)
+                    {
+                        solutionFiles.AddRange(files);
+                    }
+                }
+                return true;
+            }
             NugetTools.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
             return false;
         }
