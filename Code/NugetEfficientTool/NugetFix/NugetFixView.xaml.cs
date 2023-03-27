@@ -35,22 +35,28 @@ namespace NugetEfficientTool
             //整理输入光标
             SolutionTextBox.SelectionStart = SolutionTextBox.Text.Length;
         }
-        private bool CheckInputText(string solutionText, out string solutionFile)
+        private bool TryGetSlnFiles(string solutionText, out List<string> solutionFiles)
         {
-            solutionFile = solutionText;
-            if (string.IsNullOrWhiteSpace(solutionFile))
+            solutionFiles = new List<string>();
+            if (string.IsNullOrWhiteSpace(solutionText))
             {
                 NugetTools.Notification.ShowInfo(Window.GetWindow(this), "解决方案路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
-            var isFolder = !File.Exists(solutionFile) && Directory.Exists(solutionFile);
-            if (isFolder && SolutionFileHelper.TryGetSlnFiles(solutionFile, out var slnFiles) &&
-                slnFiles.Count == 0)
+            if (File.Exists(solutionText) && Path.GetExtension(solutionText) == ".sln")
             {
-                NugetTools.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
-                return false;
+                solutionFiles.Add(solutionText);
+                return true;
             }
-            return true;
+            if (!File.Exists(solutionText) &&
+                Directory.Exists(solutionText) &&
+                SolutionFileHelper.TryGetSlnFiles(solutionText, out solutionFiles) &&
+                solutionFiles.Count > 0)
+            {
+                return true;
+            }
+            NugetTools.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
+            return false;
         }
         /// <summary>
         /// 检查Nuget版本问题
@@ -60,7 +66,7 @@ namespace NugetEfficientTool
         private async void CheckNugetButton_OnClick(object sender, RoutedEventArgs e)
         {
             var solutionText = SolutionTextBox.Text;
-            if (!CheckInputText(solutionText, out var solutionFile) ||
+            if (!TryGetSlnFiles(solutionText, out var solutionFiles) ||
                 IsChecking)
             {
                 return;
@@ -72,9 +78,9 @@ namespace NugetEfficientTool
                 IsChecking = true;
                 await Task.Run(() =>
                 {
-                    _versionChecker = new VersionErrorChecker(solutionFile);
+                    _versionChecker = new VersionErrorChecker(solutionFiles);
                     _versionChecker.Check();
-                    var referenceWayChecker = new ReferenceWayChecker(solutionFile);
+                    var referenceWayChecker = new ReferenceWayChecker(solutionFiles);
                     referenceWayChecker.Check();
                     canReferenceWayUpgrade = referenceWayChecker.NeedFix;
                 });
@@ -125,7 +131,7 @@ namespace NugetEfficientTool
                     return;
                 }
                 // 根据版本策略修复版本
-                var repairLog = new NugetMismatchVersionGroupFix(_versionChecker.MismatchVersionNugets,nugetFixStrategies).Fix();
+                var repairLog = new NugetMismatchVersionGroupFix(_versionChecker.MismatchVersionNugets, nugetFixStrategies).Fix();
                 TextBoxErrorMessage.Text = repairLog;
                 FixVersionButton.IsEnabled = false;
                 UpgradeReferenceButton.Visibility = Visibility.Collapsed;

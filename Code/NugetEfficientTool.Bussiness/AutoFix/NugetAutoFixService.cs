@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace NugetEfficientTool.Business
 {
@@ -11,15 +13,15 @@ namespace NugetEfficientTool.Business
     /// </summary>
     public class NugetAutoFixService
     {
-        private readonly string _solutionFile;
+        private readonly string _inputPath;
 
         /// <summary>
         /// 提供类<see cref="NugetAutoFixService"/>实例的初始化
         /// </summary>
-        /// <param name="solutionFile"></param>
-        public NugetAutoFixService(string solutionFile)
+        /// <param name="inputPath"></param>
+        public NugetAutoFixService(string inputPath)
         {
-            _solutionFile = solutionFile;
+            _inputPath = inputPath;
         }
 
         /// <summary>
@@ -28,7 +30,11 @@ namespace NugetEfficientTool.Business
         /// <returns>有异常</returns>
         public bool Fix()
         {
-            if (!CanFix(out var versionChecker))
+            if (!TryGetSlnFiles(_inputPath, out var solutionFiles))
+            {
+                return false;
+            }
+            if (!CanFix(solutionFiles, out var versionChecker))
             {
                 return false;
             }
@@ -58,11 +64,34 @@ namespace NugetEfficientTool.Business
             return true;
         }
 
-        private bool CanFix(out VersionErrorChecker versionChecker)
+        private bool CanFix(List<string> solutionFiles, out VersionErrorChecker versionChecker)
         {
-            versionChecker = new VersionErrorChecker(_solutionFile);
+            versionChecker = new VersionErrorChecker(solutionFiles);
             versionChecker.Check();
             return !string.IsNullOrEmpty(versionChecker.Message);
+        }
+        private bool TryGetSlnFiles(string solutionText, out List<string> solutionFiles)
+        {
+            solutionFiles = new List<string>();
+            if (string.IsNullOrWhiteSpace(solutionText))
+            {
+                Console.WriteLine("解决方案路径不能为空……");
+                return false;
+            }
+            if (File.Exists(solutionText) && Path.GetExtension(solutionText) == ".sln")
+            {
+                solutionFiles.Add(solutionText);
+                return true;
+            }
+            if (!File.Exists(solutionText) &&
+                Directory.Exists(solutionText) &&
+                SolutionFileHelper.TryGetSlnFiles(solutionText, out solutionFiles) &&
+                solutionFiles.Count > 0)
+            {
+                return true;
+            }
+            Console.WriteLine("找不到指定的解决方案，这是啥情况？？？");
+            return false;
         }
 
         public string Message { get; private set; }

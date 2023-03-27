@@ -13,10 +13,14 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// 构造一个 Nuget 版本检查器
         /// </summary>
-        /// <param name="solutionFile">解决方案路径</param>
-        public VersionErrorChecker(string solutionFile)
+        /// <param name="solutionFiles">解决方案路径</param>
+        public VersionErrorChecker(List<string> solutionFiles)
         {
-            _solutionFile = solutionFile;
+            if (solutionFiles.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(solutionFiles));
+            }
+            _solutionFiles = solutionFiles;
         }
 
         #region 对外字段 & 方法
@@ -26,18 +30,13 @@ namespace NugetEfficientTool.Business
         /// </summary>
         public void Check()
         {
-            var solutionFilePath = _solutionFile;
-            if (string.IsNullOrEmpty(solutionFilePath))
-            {
-                throw new ArgumentNullException(nameof(solutionFilePath));
-            }
-
-            var projectFiles = GetProjectFiles(solutionFilePath);
+            var solutionFiles = _solutionFiles;
+            var projectFiles = solutionFiles.SelectMany(SolutionFileHelper.GetProjectFiles);
             var projectDirectories = projectFiles.Select(Path.GetDirectoryName);
             var nugetConfigFiles = new List<string>();
             foreach (var projectDirectory in projectDirectories)
             {
-                nugetConfigFiles.AddRange(SolutionFileHelper.GetNugetConfigFiles(projectDirectory));
+                nugetConfigFiles.AddRange(SolutionFileHelper.GetConfigFilesInFolder(projectDirectory));
             }
             //获取nuget相关信息
             var badFormatNugetFiles = new List<NugetConfigReader>();
@@ -74,26 +73,9 @@ namespace NugetEfficientTool.Business
         private List<FileNugetInfo> FilterFormatNugets(IEnumerable<FileNugetInfo> fileNugetInfos)
         {
             //不需要关心System、Microsoft等系统相关版本
-            var nugetInfos = fileNugetInfos.Where(i => !i.Name.StartsWith("System.")&&
+            var nugetInfos = fileNugetInfos.Where(i => !i.Name.StartsWith("System.") &&
                                                        !i.Name.StartsWith("Microsoft.")).ToList();
             return nugetInfos;
-        }
-
-        private List<string> GetProjectFiles(string solutionFilePath)
-        {
-            List<string> solutionFiles = new List<string>();
-            if (File.Exists(solutionFilePath))
-            {
-                solutionFiles.Add(solutionFilePath);
-            }
-            else if (Directory.Exists(solutionFilePath) &&
-                     SolutionFileHelper.TryGetSlnFiles(solutionFilePath, out var slnFiles))
-            {
-                solutionFiles.AddRange(slnFiles);
-            }
-            //获取所有解决方案的项目列表
-            var projectFiles = solutionFiles.SelectMany(SolutionFileHelper.GetProjectFiles).ToList();
-            return projectFiles;
         }
 
         /// <summary>
@@ -194,7 +176,7 @@ namespace NugetEfficientTool.Business
 
         #region private fields
 
-        private readonly string _solutionFile;
+        private readonly List<string> _solutionFiles;
 
         #endregion
     }

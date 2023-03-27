@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool.Business
 {
@@ -12,24 +13,22 @@ namespace NugetEfficientTool.Business
     /// </summary>
     public class ReferenceWayChecker
     {
-        private readonly string _solutionFile;
+        private readonly List<string> _solutionFiles;
 
-        public ReferenceWayChecker(string solutionFile)
+        public ReferenceWayChecker(List<string> solutionFiles)
         {
-            _solutionFile = solutionFile;
+            if (solutionFiles.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(solutionFiles));
+            }
+            _solutionFiles = solutionFiles;
         }
         public void Check()
         {
-            var folder = _solutionFile;
-            if (_solutionFile.EndsWith(".sln") && !File.Exists(_solutionFile))
-            {
-                folder = Path.GetDirectoryName(folder);
-            }
-            if (!Directory.Exists(folder))
-            {
-                return;
-            }
-            var csProjFiles = Directory.GetFiles(folder, CustomText.CsProjSearchPattern,SearchOption.AllDirectories);
+            var solutionFiles = _solutionFiles;
+            var solutionFolders = solutionFiles.Select(Path.GetDirectoryName).ToList();
+            //Csproj文件
+            var csProjFiles = solutionFolders.SelectMany(i => FolderHelper.GetFilesFromDirectory(i, CustomText.CsProjSearchPattern));
             foreach (var csProjFile in csProjFiles)
             {
                 var formatUpdater = new CsProjReferenceWayUpdater(csProjFile);
@@ -39,7 +38,8 @@ namespace NugetEfficientTool.Business
                     break;
                 }
             }
-            var packageFiles = Directory.GetFiles(folder, CustomText.PackagesConfigSearchPattern, SearchOption.AllDirectories);
+            //package.config文件
+            var packageFiles = solutionFolders.SelectMany(i => FolderHelper.GetFilesFromDirectory(i, CustomText.PackagesConfigSearchPattern));
             foreach (var packageFile in packageFiles)
             {
                 var formatUpdater = new PackageConfigReferenceWayUpdater(packageFile);

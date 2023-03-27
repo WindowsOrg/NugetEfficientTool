@@ -77,21 +77,15 @@ namespace NugetEfficientTool.Business
                 }
             }
         }
+
         /// <summary>
         /// 获取目录下所有的 Nuget 配置文件
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<string> GetNugetConfigFiles(string directoryPath)
+        public static IEnumerable<string> GetConfigFilesInFolder(string folder)
         {
-#if TEST
-            const string packagesConfigSearchPattern = "*.config";
-            const string csProjSearchPattern = "*.csproj";
-#else
-            const string packagesConfigSearchPattern = "packages.config";
-            const string csProjSearchPattern = "*.csproj";
-#endif
-            var packagesConfigs = FolderHelper.GetFilesFromDirectory(directoryPath, packagesConfigSearchPattern);
-            var csProjs = FolderHelper.GetFilesFromDirectory(directoryPath, csProjSearchPattern);
+            var packagesConfigs = FolderHelper.GetFilesFromDirectory(folder, CustomText.PackagesConfigSearchPattern);
+            var csProjs = FolderHelper.GetFilesFromDirectory(folder, CustomText.CsProjSearchPattern);
             return packagesConfigs.Concat(csProjs);
         }
         /// <summary>
@@ -99,14 +93,14 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="solutionFile"></param>
         /// <returns></returns>
-        public static List<string> GetConfigFileInSln(string solutionFile)
+        public static List<string> GetConfigFilesInSln(string solutionFile)
         {
             var projectFiles = GetProjectFiles(solutionFile);
             var projectDirectories = projectFiles.Select(Path.GetDirectoryName);
             var nugetConfigFiles = new List<string>();
             foreach (var projectDirectory in projectDirectories)
             {
-                nugetConfigFiles.AddRange(GetNugetConfigFiles(projectDirectory));
+                nugetConfigFiles.AddRange(GetConfigFilesInFolder(projectDirectory));
             }
 
             return nugetConfigFiles;
@@ -117,9 +111,9 @@ namespace NugetEfficientTool.Business
         /// <param name="solutionFile"></param>
         /// <param name="nugetName">Nuget名称</param>
         /// <returns></returns>
-        public static IEnumerable<string> GetConfigFileInSln(string solutionFile, string nugetName)
+        public static IEnumerable<string> GetConfigFilesInSln(string solutionFile, string nugetName)
         {
-            var nugetConfigFiles = GetConfigFileInSln(solutionFile);
+            var nugetConfigFiles = GetConfigFilesInSln(solutionFile);
             var csProjConfigFiles = nugetConfigFiles.Where(i => NugetConfig.GetNugetConfigType(i) == NugetConfigType.CsProj).ToList();
             foreach (var csProjConfigFile in csProjConfigFiles)
             {

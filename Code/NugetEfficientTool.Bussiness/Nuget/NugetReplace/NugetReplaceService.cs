@@ -49,7 +49,7 @@ namespace NugetEfficientTool.Business
             };
             var newProjectId = Guid.NewGuid().ToString().ToUpper();
             //先获取所有配置文件
-            var configFilesInSln = SolutionFileHelper.GetConfigFileInSln(solutionFile, nugetName);
+            var configFilesInSln = SolutionFileHelper.GetConfigFilesInSln(solutionFile, nugetName);
             //替换解决方案文件 - Sln file
             new SlnFileNugetReplacer(solutionFile, nugetName, newProjectId, sourceProjectFile).ReplaceNuget();
             //替换项目配置文件
@@ -100,7 +100,7 @@ namespace NugetEfficientTool.Business
             //恢复解决方案文件 - Sln file
             new SlnFileNugetReplacer(solutionFile, replacedNugetInfo.Name, sourceProjectFile).RevertNuget();
             //恢复项目配置文件
-            var configFilesInSln = SolutionFileHelper.GetConfigFileInSln(solutionFile, replacedNugetInfo.Name);
+            var configFilesInSln = SolutionFileHelper.GetConfigFilesInSln(solutionFile, replacedNugetInfo.Name);
             foreach (var configFile in configFilesInSln)
             {
                 var replacedFileRecord = replacedNugetInfo.Records.FirstOrDefault(i => i.FileName == configFile);
