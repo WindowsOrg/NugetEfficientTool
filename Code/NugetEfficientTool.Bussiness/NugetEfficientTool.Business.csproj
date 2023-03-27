@@ -67,6 +67,7 @@
     <Compile Include="CustomText.cs" />
     <Compile Include="Notification\NotificationProvider.cs" />
     <Compile Include="Notification\NotificationViewProvider.cs" />
+    <Compile Include="NugetTools.cs" />
     <Compile Include="Nuget\NugetFix\ErrorCheck\ReferenceWayChecker.cs" />
     <Compile Include="Nuget\NugetFix\NugetMismatchVersionGroupFix.cs" />
     <Compile Include="Nuget\NugetFix\ReferenceWay\CsProjReferenceWayUpdater.cs" />

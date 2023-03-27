@@ -84,7 +84,7 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                CustomText.Notification.ShowInfo(null, exception.Message);
+                NugetTools.Notification.ShowInfo(null, exception.Message);
             }
         }
         /// <summary>

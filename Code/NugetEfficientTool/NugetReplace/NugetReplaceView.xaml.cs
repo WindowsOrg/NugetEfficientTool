@@ -89,7 +89,7 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                CustomText.Log.Error(exception);
+                NugetTools.Log.Error(exception);
             }
             //判断输入的解决方案，是否已添加
             var projectSolutions = NugetReplaceConfigs.GetSolutions();
@@ -97,7 +97,7 @@ namespace NugetEfficientTool
             {
                 //已存在解决方案，则置空
                 solutionFile = string.Empty;
-                CustomText.Notification.ShowInfo(Window.GetWindow(this), "此解决方案已添加");
+                NugetTools.Notification.ShowInfo(Window.GetWindow(this), "此解决方案已添加");
             }
             if (sourceText != solutionFile)
             {

@@ -22,7 +22,7 @@ namespace NugetEfficientTool
             //删除原有进程
             ProcessHelper.KillProcess(System.Windows.Forms.Application.ProductName);
             //日志
-            CustomText.Log = new Logger(CustomText.ProjectName);
+            NugetTools.Log = new Logger(CustomText.ProjectName);
             //启动项
             Startup += App_Startup;
 
@@ -107,8 +107,8 @@ namespace NugetEfficientTool
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            CustomText.Log.Error(e.Exception);
-            CustomText.Notification.ShowInfo(null, e.Exception.Message);
+            NugetTools.Log.Error(e.Exception);
+            NugetTools.Notification.ShowInfo(null, e.Exception.Message);
             Console.WriteLine($@"{CustomText.FixErrorKey},{e.Exception.Message}");
             //表示补救成功
             e.Handled = true;
@@ -117,24 +117,24 @@ namespace NugetEfficientTool
         {
             if (e.ExceptionObject is Exception exception)
             {
-                CustomText.Log.Error(exception);
+                NugetTools.Log.Error(exception);
                 Console.WriteLine($@"{CustomText.FixErrorKey},{exception.Message}");
                 //通过配置legacyUnhandledExceptionPolicy防止后台线程抛出的异常让程序崩溃退出，
                 //e.IsTerminating经过配置，才会变成false
 
-                CustomText.Notification.ShowInfo(null, exception.Message);
+                NugetTools.Notification.ShowInfo(null, exception.Message);
             }
         }
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             foreach (Exception item in e.Exception.InnerExceptions)
             {
-                CustomText.Log.Error(item);
+                NugetTools.Log.Error(item);
                 Console.WriteLine($@"{CustomText.FixErrorKey},{item.Message}");
             }
             //设置该异常已察觉（这样处理后就不会引起程序崩溃）
             e.SetObserved();
-            CustomText.Notification.ShowInfo(null, e.Exception.Message);
+            NugetTools.Notification.ShowInfo(null, e.Exception.Message);
         }
 
         #endregion

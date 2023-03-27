@@ -76,7 +76,7 @@ namespace NugetEfficientTool
             }
             if (NugetReplaceItems.Any(i => i.HasReplaced))
             {
-                CustomText.Notification.ShowAsync(_view.Window, "当前有Nuget源已替换，不支持排序！");
+                NugetTools.Notification.ShowAsync(_view.Window, "当前有Nuget源已替换，不支持排序！");
                 return;
             }
             NugetReplaceItems.Remove(obj);
@@ -93,7 +93,7 @@ namespace NugetEfficientTool
         {
             if (item.HasReplaced)
             {
-                CustomText.Notification.ShowInfo(_view.Window, "Nuget已替换，请先还原引用再删除！");
+                NugetTools.Notification.ShowInfo(_view.Window, "Nuget已替换，请先还原引用再删除！");
                 return;
             }
             NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, SolutionFileUrl, item.NugetName);
@@ -130,8 +130,8 @@ namespace NugetEfficientTool
             catch (Exception exception)
             {
                 nugetItems.ForEach(i => NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, solutionFile, i.NugetName));
-                CustomText.Notification.ShowInfo(_view.Window, exception.Message);
-                CustomText.Log.Error(exception);
+                NugetTools.Notification.ShowInfo(_view.Window, exception.Message);
+                NugetTools.Log.Error(exception);
             }
         }
         /// <summary>
@@ -155,8 +155,8 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                CustomText.Notification.ShowInfo(_view.Window, exception.Message);
-                CustomText.Log.Error(exception);
+                NugetTools.Notification.ShowInfo(_view.Window, exception.Message);
+                NugetTools.Log.Error(exception);
             }
             //清空记录
             nugetItems.ForEach(i => NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, solutionFile, i.NugetName));
@@ -168,22 +168,22 @@ namespace NugetEfficientTool
             nugetItems = NugetReplaceItems.Where(i => i.IsSelected).ToList();
             if (string.IsNullOrWhiteSpace(solutionFile))
             {
-                CustomText.Notification.ShowInfo(_view.Window, "项目路径不能为空…… 心急吃不了热豆腐……");
+                NugetTools.Notification.ShowInfo(_view.Window, "项目路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
             if (!File.Exists(solutionFile))
             {
-                CustomText.Notification.ShowInfo(_view.Window, "项目路径下找不到指定的解决方案，这是啥情况？？？");
+                NugetTools.Notification.ShowInfo(_view.Window, "项目路径下找不到指定的解决方案，这是啥情况？？？");
                 return false;
             }
             if (nugetItems.Any(i => string.IsNullOrWhiteSpace(i.NugetName)))
             {
-                CustomText.Notification.ShowInfo(_view.Window, "Nuget名称不能为空…… 心急吃不了热豆腐……");
+                NugetTools.Notification.ShowInfo(_view.Window, "Nuget名称不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
             if (nugetItems.Any(i => string.IsNullOrWhiteSpace(i.SourceCsprojFile)))
             {
-                CustomText.Notification.ShowInfo(_view.Window, "源代码路径不能为空…… 心急吃不了热豆腐……");
+                NugetTools.Notification.ShowInfo(_view.Window, "源代码路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
 

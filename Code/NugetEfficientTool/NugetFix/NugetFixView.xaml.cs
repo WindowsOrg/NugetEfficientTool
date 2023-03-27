@@ -40,14 +40,14 @@ namespace NugetEfficientTool
             solutionFile = solutionText;
             if (string.IsNullOrWhiteSpace(solutionFile))
             {
-                CustomText.Notification.ShowInfo(Window.GetWindow(this), "解决方案路径不能为空…… 心急吃不了热豆腐……");
+                NugetTools.Notification.ShowInfo(Window.GetWindow(this), "解决方案路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
             var isFolder = !File.Exists(solutionFile) && Directory.Exists(solutionFile);
             if (isFolder && SolutionFileHelper.TryGetSlnFiles(solutionFile, out var slnFiles) &&
                 slnFiles.Count == 0)
             {
-                CustomText.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
+                NugetTools.Notification.ShowInfo(Window.GetWindow(this), "找不到指定的解决方案，这是啥情况？？？");
                 return false;
             }
             return true;
@@ -138,8 +138,8 @@ namespace NugetEfficientTool
             }
             catch (Exception exception)
             {
-                CustomText.Notification.ShowInfo(Window.GetWindow(this), exception.Message);
-                CustomText.Log.Error(exception);
+                NugetTools.Notification.ShowInfo(Window.GetWindow(this), exception.Message);
+                NugetTools.Log.Error(exception);
             }
         }
 

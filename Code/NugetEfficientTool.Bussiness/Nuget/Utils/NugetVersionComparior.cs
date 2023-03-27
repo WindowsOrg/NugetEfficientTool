@@ -55,7 +55,7 @@ namespace NugetEfficientTool.Business
             }
             catch (Exception)
             {
-                CustomText.Notification.ShowInfo(null, $"无法从 {version} 构造版本号对象。请保留现场，并联系开发者。");
+                NugetTools.Notification.ShowInfo(null, $"无法从 {version} 构造版本号对象。请保留现场，并联系开发者。");
                 return new Version(0, 0);
             }
         }
