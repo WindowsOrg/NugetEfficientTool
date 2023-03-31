@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -33,6 +34,12 @@ namespace NugetEfficientTool
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
         private MainWindow _mainWindow;
+        /// <summary>
+        /// 显示控制台窗口。如果不存在控制台窗口，则创建
+        /// </summary>
+        /// <returns></returns>
+        [DllImport("kernel32.dll")]
+        static extern bool AllocConsole();
         private void App_Startup(object sender, StartupEventArgs e)
         {
             var startupArgs = e.Args;

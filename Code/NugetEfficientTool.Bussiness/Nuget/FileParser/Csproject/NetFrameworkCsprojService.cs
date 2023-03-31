@@ -69,25 +69,14 @@ namespace NugetEfficientTool.Business
             {
                 return false;
             }
-            //版本
-            var versionValue = NugetVersionRegex.Match(includeValue).Value;
-            if (!string.IsNullOrEmpty(versionValue))
-            {
-                return true;
-            }
-            var versionElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.VersionElementName).ToList();
-            if (versionElements.Any())
-            {
-                return true;
-            }
             //引用路径HintPath
-            var hintPathChildElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
-            if (!hintPathChildElements.Any(x => x.Value.Contains(CsProjConst.HintPathPackagePiece)))
+            if (xElement.Name.LocalName == CsProjConst.ReferenceName)
             {
-                return false;
+                var hintPathChildElements = xElement.Elements().Where(x => x.Name.LocalName == CsProjConst.HintPathElementName).ToList();
+                var hasHintPath = hintPathChildElements.Any(x => x.Value.Contains(CsProjConst.HintPathPackagePiece));
+                return hasHintPath;
             }
-
-            return IncludeValueRegex.IsMatch(includeValue);
+            return true;
         }
         public NugetInfo GetNugetInfo(XElement xElement)
         {

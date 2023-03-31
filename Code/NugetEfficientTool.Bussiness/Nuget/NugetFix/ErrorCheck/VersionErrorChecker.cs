@@ -32,7 +32,7 @@ namespace NugetEfficientTool.Business
         {
             var solutionFiles = _solutionFiles;
             var projectFiles = solutionFiles.SelectMany(SolutionFileHelper.GetProjectFiles);
-            var projectDirectories = projectFiles.Select(Path.GetDirectoryName);
+            var projectDirectories = projectFiles.Select(Path.GetDirectoryName).Distinct();
             var nugetConfigFiles = new List<string>();
             foreach (var projectDirectory in projectDirectories)
             {
@@ -41,6 +41,7 @@ namespace NugetEfficientTool.Business
             //获取nuget相关信息
             var badFormatNugetFiles = new List<NugetConfigReader>();
             var nugetFiles = new List<FileNugetInfo>();
+            //nugetConfigFiles = nugetConfigFiles.Where(i => i.Contains("OTA.Demo")).ToList();
             foreach (var nugetConfigFile in nugetConfigFiles)
             {
                 var nugetConfigReader = new NugetConfigReader(nugetConfigFile);

@@ -96,7 +96,7 @@ namespace NugetEfficientTool.Business
         public static List<string> GetConfigFilesInSln(string solutionFile)
         {
             var projectFiles = GetProjectFiles(solutionFile);
-            var projectDirectories = projectFiles.Select(Path.GetDirectoryName);
+            var projectDirectories = projectFiles.Select(Path.GetDirectoryName).Distinct();
             var nugetConfigFiles = new List<string>();
             foreach (var projectDirectory in projectDirectories)
             {
