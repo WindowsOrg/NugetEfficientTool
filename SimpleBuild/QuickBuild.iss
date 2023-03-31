@@ -1,6 +1,6 @@
 #define MyAppName "NugetEfficientTool"
 #define MyAppChineseName "Nuget¹¤¾ß"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "1.0.3"
 #define MyAppPublisher "Kybs0"
 #define MyAppCopyright "Kybs0"
 #define MyAppURL "https://www.cnblogs.com/kybs0/"
