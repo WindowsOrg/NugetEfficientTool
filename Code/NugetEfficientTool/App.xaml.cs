@@ -19,8 +19,6 @@ namespace NugetEfficientTool
     {
         public App()
         {
-            //删除原有进程
-            ProcessHelper.KillProcess(System.Windows.Forms.Application.ProductName);
             //日志
             NugetTools.Log = new Logger(CustomText.ProjectName);
             //启动项
