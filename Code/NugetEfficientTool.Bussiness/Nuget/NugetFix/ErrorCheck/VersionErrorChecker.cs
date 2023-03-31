@@ -41,7 +41,6 @@ namespace NugetEfficientTool.Business
             //获取nuget相关信息
             var badFormatNugetFiles = new List<NugetConfigReader>();
             var nugetFiles = new List<FileNugetInfo>();
-            //nugetConfigFiles = nugetConfigFiles.Where(i => i.Contains("OTA.Demo")).ToList();
             foreach (var nugetConfigFile in nugetConfigFiles)
             {
                 var nugetConfigReader = new NugetConfigReader(nugetConfigFile);

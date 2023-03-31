@@ -9,7 +9,6 @@ using Kybs0.Log;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
 using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
 
 namespace NugetEfficientTool
 {
@@ -34,12 +33,6 @@ namespace NugetEfficientTool
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
         private MainWindow _mainWindow;
-        /// <summary>
-        /// 显示控制台窗口。如果不存在控制台窗口，则创建
-        /// </summary>
-        /// <returns></returns>
-        [DllImport("kernel32.dll")]
-        static extern bool AllocConsole();
         private void App_Startup(object sender, StartupEventArgs e)
         {
             var startupArgs = e.Args;
