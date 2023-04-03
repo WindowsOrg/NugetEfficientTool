@@ -83,6 +83,8 @@ namespace NugetEfficientTool
             AdjustLocationAndSize();
             //禁用系统菜单弹出方向
             MenuDropAlignmentHelper.DisableSystemMenuAlignment();
+
+            
         }
 
         private void AdjustLocationAndSize()
