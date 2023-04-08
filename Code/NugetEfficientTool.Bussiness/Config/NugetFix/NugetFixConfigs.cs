@@ -34,7 +34,7 @@ namespace NugetEfficientTool.Business
         public static string GetNugetSourceUri()
         {
             var value = IniFileHelper.IniReadValue(UserOperationSection, NugetSourceUriKey);
-            return value;
+            return string.IsNullOrEmpty(value) ? @"\\10.214.20.48\H3C-Nuget-Packages" : value;
         }
         public static void SaveNugetSourceUri(string nugetSourceUri)
         {

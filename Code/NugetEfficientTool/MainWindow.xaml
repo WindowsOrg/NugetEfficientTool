@@ -30,6 +30,18 @@
             <Grid Background="#FFFFFF" Grid.Row="0" Grid.Column="1"
               MouseLeftButtonDown="HeaderGridOnMouseLeftButtonDown">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Name="SettingButton" Style="{StaticResource Style.Button.ImageAndText}"
+                            Click="SettingButton_OnClick" 
+                            Width="36" Height="32"
+                            utils:ControlHelper.Image="{StaticResource Image.Setting.Gray}"
+                            utils:ControlHelper.ImageHover="{StaticResource Image.Setting.Gray}"
+                            utils:ControlHelper.ImagePressed="{StaticResource Image.Setting.Gray}"
+                            utils:ControlHelper.BackgroundHover="#0D000000"
+                            utils:ControlHelper.BackgroundPressed="#14000000"
+                            utils:ControlHelper.ForegroundNormal="{StaticResource Brush.Icon.Faint}"
+                            utils:ControlHelper.ForegroundHover="{StaticResource Brush.Icon.Heavy}"
+                            utils:ControlHelper.ForegroundPressed="{StaticResource Brush.Icon.Heavy}" 
+                            ToolTip="设置"/>
                     <!-- 最小化按钮 -->
                     <Button Name="MinimizeButton" Style="{StaticResource Style.Button.Geometry.Background.SimpleSize}"
                         Click="MinimizeButton_OnClick" 

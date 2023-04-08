@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="NugetEfficientTool.Setting.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NugetEfficientTool.Setting"
+             xmlns:utils="clr-namespace:NugetEfficientTool.Utils;assembly=NugetEfficientTool.Utils"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20 0 6 0">
+            <TextBlock Text="Nuget源：" FontSize="14" VerticalAlignment="Center" Foreground="{StaticResource Brush.Text.Normal}"></TextBlock>
+            <Border BorderThickness="1" CornerRadius="2 0 0 2" BorderBrush="{StaticResource Brush.BorderBrush.Lighter}">
+                <TextBox x:Name="NugetSourceTextBox" IsEnabled="True"
+                         FontSize="14" BorderThickness="0" Background="White" TextWrapping="NoWrap"
+                         Padding="6 0 6 0" Style="{StaticResource Style.DefaultTextBox}"
+                         Height="30" MinWidth="290"
+                         VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+            </Border>
+        </StackPanel>
+        <Button Grid.Row="1" x:Name="ConfirmButton" Content="确 定" Style="{StaticResource Style.Button.AccentBackground.Text}"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                Foreground="{StaticResource Brush.Text.Brightest}"
+                utils:ControlHelper.BackgroundNormal="{StaticResource Brush.Accent.Normal}"
+                utils:ControlHelper.BackgroundHover="{StaticResource Brush.Accent.Light}"
+                Click="ConfirmButton_OnClick"/>
+    </Grid>
+</UserControl>

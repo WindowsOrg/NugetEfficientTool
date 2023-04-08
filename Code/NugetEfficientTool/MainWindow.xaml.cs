@@ -107,5 +107,12 @@ namespace NugetEfficientTool
         }
 
         #endregion
+
+        private void SettingButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var settingWindow = new SettingWindow();
+            settingWindow.Owner = this;
+            settingWindow.ShowDialog();
+        }
     }
 }
