@@ -6,7 +6,7 @@ namespace NugetEfficientTool.Business
 {
     public class FileNugetInfoGroup
     {
-        public FileNugetInfoGroup(string nugetName, IEnumerable<FileNugetInfo> fileNugetInfos)
+        public FileNugetInfoGroup(string nugetName, List<FileNugetInfo> fileNugetInfos)
         {
             if (fileNugetInfos.Any(x => x.Name != nugetName))
             {
@@ -19,17 +19,17 @@ namespace NugetEfficientTool.Business
 
 
         public FileNugetInfoGroup(IGrouping<string, FileNugetInfo> fileNugetInfoGroup)
-            : this(fileNugetInfoGroup.Key, fileNugetInfoGroup)
+            : this(fileNugetInfoGroup.Key, fileNugetInfoGroup.ToList())
         {
         }
 
-        public FileNugetInfoGroup(IEnumerable<FileNugetInfo> fileNugetInfos)
+        public FileNugetInfoGroup(List<FileNugetInfo> fileNugetInfos)
             : this(fileNugetInfos.FirstOrDefault()?.Name, fileNugetInfos)
         {
         }
 
         public string NugetName { get; }
 
-        public IEnumerable<FileNugetInfo> FileNugetInfos { get; }
+        public List<FileNugetInfo> FileNugetInfos { get; }
     }
 }

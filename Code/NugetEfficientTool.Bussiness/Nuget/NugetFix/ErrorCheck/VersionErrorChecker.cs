@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NugetEfficientTool.Business
 {
@@ -14,13 +15,26 @@ namespace NugetEfficientTool.Business
         /// 构造一个 Nuget 版本检查器
         /// </summary>
         /// <param name="solutionFiles">解决方案路径</param>
-        public VersionErrorChecker(List<string> solutionFiles)
+        public VersionErrorChecker(List<string> solutionFiles) : this(solutionFiles, string.Empty)
+        {
+        }
+
+        /// <summary>
+        /// 构造一个 Nuget 版本检查器
+        /// </summary>
+        /// <param name="solutionFiles">解决方案路径</param>
+        /// <param name="nugetSourceUri"></param>
+        public VersionErrorChecker(List<string> solutionFiles, string nugetSourceUri)
         {
             if (solutionFiles.Count == 0)
             {
                 throw new ArgumentNullException(nameof(solutionFiles));
             }
             _solutionFiles = solutionFiles;
+            if (!string.IsNullOrEmpty(nugetSourceUri))
+            {
+                _nugetSource = new NugetSourceSearcher(nugetSourceUri);
+            }
         }
 
         #region 对外字段 & 方法
@@ -28,7 +42,7 @@ namespace NugetEfficientTool.Business
         /// <summary>
         /// 检测Nuget引用问题
         /// </summary>
-        public void Check()
+        public async Task CheckAsync()
         {
             var solutionFiles = _solutionFiles;
             var projectFiles = solutionFiles.SelectMany(SolutionFileHelper.GetProjectFiles);
@@ -55,7 +69,7 @@ namespace NugetEfficientTool.Business
             }
             //格式问题及版本问题
             ErrorFormatNugetFiles = badFormatNugetFiles;
-            MismatchVersionNugets = GetMismatchVersionNugets(nugetFiles);
+            MismatchVersionNugets = await GetMismatchVersionsAsync(nugetFiles);
             //设置nuget问题异常显示
             var nugetMismatchVersionMessage = CreateNugetMismatchVersionMessage(MismatchVersionNugets);
             foreach (var errorFormatNugetConfig in ErrorFormatNugetFiles)
@@ -99,27 +113,39 @@ namespace NugetEfficientTool.Business
         /// </summary>
         /// <param name="nugetPackageInfoExs"></param>
         /// <returns></returns>
-        private IEnumerable<FileNugetInfoGroup> GetMismatchVersionNugets(
-             IEnumerable<FileNugetInfo> nugetPackageInfoExs)
+        private async Task<IEnumerable<FileNugetInfoGroup>> GetMismatchVersionsAsync(IEnumerable<FileNugetInfo> nugetPackageInfoExs)
         {
             nugetPackageInfoExs = FilterFormatNugets(nugetPackageInfoExs);
 
-            var mismatchVersionNugetGroupList = new List<FileNugetInfoGroup>();
-            var nugetPackageInfoGroups = nugetPackageInfoExs.GroupBy(x => x.Name);
-            foreach (var nugetPackageInfoGroup in nugetPackageInfoGroups)
+            var mismatchVersionNugetGroups = new List<FileNugetInfoGroup>();
+            var nugetGroups = nugetPackageInfoExs.GroupBy(x => x.Name);
+            foreach (var nugetGroup in nugetGroups)
             {
                 //因为CsProj与package获取nuget信息，都有一定缺陷，所以需要彼此信息进行补偿。
-                CompensateNugetInfos(nugetPackageInfoGroup.ToList());
+                CompensateNugetInfos(nugetGroup.ToList());
                 //筛选掉没问题的数据
-                if (nugetPackageInfoGroup.Select(x => x.Version).Distinct().Count() == 1)
+                if (nugetGroup.Select(x => x.Version).Distinct().Count() == 1)
                 {
                     continue;
                 }
+                var nugetInfoGroup = new FileNugetInfoGroup(nugetGroup);
+                //添加Nuget源版本
+                if (_nugetSource != null)
+                {
+                    var latestVersion = await _nugetSource.GetLatestVersionAsync(nugetGroup.Key);
+                    if (!string.IsNullOrEmpty(latestVersion))
+                    {
+                        var nugetInfo = new NugetInfo(nugetGroup.Key, latestVersion);
+                        var fileNugetInfo = new FileNugetInfo(nugetInfo, $@"{_nugetSource.NugetSourceUrl}\{nugetGroup.Key}");
+                        fileNugetInfo.IsEmptyFile = true;
+                        nugetInfoGroup.FileNugetInfos.Add(fileNugetInfo);
+                    }
+                }
 
-                mismatchVersionNugetGroupList.Add(new FileNugetInfoGroup(nugetPackageInfoGroup));
+                mismatchVersionNugetGroups.Add(nugetInfoGroup);
             }
 
-            return mismatchVersionNugetGroupList;
+            return mismatchVersionNugetGroups;
         }
 
         /// <summary>
@@ -150,11 +176,10 @@ namespace NugetEfficientTool.Business
             }
         }
 
-        private string CreateNugetMismatchVersionMessage(
-             IEnumerable<FileNugetInfoGroup> mismatchVersionNugetInfoExs)
+        private string CreateNugetMismatchVersionMessage(IEnumerable<FileNugetInfoGroup> mismatchVersionNugetGroups)
         {
             var nugetMismatchVersionMessage = string.Empty;
-            foreach (var mismatchVersionNugetInfoEx in mismatchVersionNugetInfoExs)
+            foreach (var mismatchVersionNugetInfoEx in mismatchVersionNugetGroups)
             {
                 var headMessage = $"{mismatchVersionNugetInfoEx.NugetName} 存在版本异常：";
                 var detailMessage = string.Empty;
@@ -177,6 +202,7 @@ namespace NugetEfficientTool.Business
         #region private fields
 
         private readonly List<string> _solutionFiles;
+        private readonly NugetSourceSearcher _nugetSource;
 
         #endregion
     }

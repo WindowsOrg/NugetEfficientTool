@@ -26,5 +26,19 @@ namespace NugetEfficientTool.Business
         {
             IniFileHelper.IniWriteValue(UserOperationSection, NugetFixKey, fixPath);
         }
+
+        /// <summary>
+        /// Nuget源路径
+        /// </summary>
+        private const string NugetSourceUriKey = "NugetSourceUri";
+        public static string GetNugetSourceUri()
+        {
+            var value = IniFileHelper.IniReadValue(UserOperationSection, NugetSourceUriKey);
+            return value;
+        }
+        public static void SaveNugetSourceUri(string nugetSourceUri)
+        {
+            IniFileHelper.IniWriteValue(UserOperationSection, NugetSourceUriKey, nugetSourceUri);
+        }
     }
 }

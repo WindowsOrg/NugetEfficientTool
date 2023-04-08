@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,12 +40,14 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
 
-                if (toReparingFiles.Any(i => i == nugetFile.ConfigPath))
+                //跳过已记录和空文件
+                var fileConfigPath = nugetFile.ConfigPath;
+                if (toReparingFiles.Any(i => i == fileConfigPath) || nugetFile.IsEmptyFile)
                 {
                     continue;
                 }
 
-                toReparingFiles.Add(nugetFile.ConfigPath);
+                toReparingFiles.Add(fileConfigPath);
             }
 
             //对文件进行修复

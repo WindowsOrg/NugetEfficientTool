@@ -24,14 +24,14 @@ namespace NugetEfficientTool
             //启动项
             Startup += App_Startup;
 
-            DispatcherUnhandledException += App_DispatcherUnhandledException;
-            //当某个异常未被捕获时出现。主要指的是非UI线程
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            //task线程内未处理捕获 
-            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            //DispatcherUnhandledException += App_DispatcherUnhandledException;
+            ////当某个异常未被捕获时出现。主要指的是非UI线程
+            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            ////task线程内未处理捕获 
+            //TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
         private MainWindow _mainWindow;
-        private void App_Startup(object sender, StartupEventArgs e)
+        private async void App_Startup(object sender, StartupEventArgs e)
         {
             var startupArgs = e.Args;
             //startupArgs = new[] { @"D:\Gitlab-Company\Tools\GitBatchManager\GitBatchManager\bin\Debug" };
@@ -44,7 +44,7 @@ namespace NugetEfficientTool
             else if (startupArgs.Length == 1 && !string.IsNullOrEmpty(startupArgs[0]))
             {
                 var nugetAutoFixService = new NugetAutoFixService(startupArgs[0]);
-                var hasFixed = nugetAutoFixService.Fix();
+                var hasFixed = await nugetAutoFixService.FixAsync();
                 Console.WriteLine(hasFixed ? nugetAutoFixService.Message : "无需修复");
                 Environment.Exit(0);
             }

@@ -28,13 +28,16 @@ namespace NugetEfficientTool.Business
         /// 修复
         /// </summary>
         /// <returns>有异常</returns>
-        public bool Fix()
+        public async Task<bool> FixAsync()
         {
             if (!TryGetSlnFiles(_inputPath, out var solutionFiles))
             {
                 return false;
             }
-            if (!CanFix(solutionFiles, out var versionChecker))
+            //检查版本异常
+            var versionChecker = new VersionErrorChecker(solutionFiles);
+            await versionChecker.CheckAsync();
+            if (string.IsNullOrEmpty(versionChecker.Message))
             {
                 return false;
             }
@@ -64,12 +67,6 @@ namespace NugetEfficientTool.Business
             return true;
         }
 
-        private bool CanFix(List<string> solutionFiles, out VersionErrorChecker versionChecker)
-        {
-            versionChecker = new VersionErrorChecker(solutionFiles);
-            versionChecker.Check();
-            return !string.IsNullOrEmpty(versionChecker.Message);
-        }
         private bool TryGetSlnFiles(string solutionText, out List<string> solutionFiles)
         {
             solutionFiles = new List<string>();

@@ -16,5 +16,10 @@
         /// 配置文件路径
         /// </summary>
         public string ConfigPath { get; }
+
+        /// <summary>
+        /// 是否空文件。表示这不是一个配置文件，只是一个虚拟的NugetInfo。比如Nuget源下的Nuget包
+        /// </summary>
+        public bool IsEmptyFile { get; set; }
     }
 }

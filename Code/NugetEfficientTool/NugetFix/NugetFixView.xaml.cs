@@ -90,10 +90,10 @@ namespace NugetEfficientTool
             try
             {
                 IsChecking = true;
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    _versionChecker = new VersionErrorChecker(solutionFiles);
-                    _versionChecker.Check();
+                    _versionChecker = new VersionErrorChecker(solutionFiles, NugetFixConfigs.GetNugetSourceUri());
+                    await _versionChecker.CheckAsync();
                     var referenceWayChecker = new ReferenceWayChecker(solutionFiles);
                     referenceWayChecker.Check();
                     canReferenceWayUpgrade = referenceWayChecker.NeedFix;
