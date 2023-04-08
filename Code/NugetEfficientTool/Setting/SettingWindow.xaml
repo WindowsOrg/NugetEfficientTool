@@ -7,7 +7,7 @@
         xmlns:resources="clr-namespace:NugetEfficientTool.Resources;assembly=NugetEfficientTool.Resources"
         xmlns:setting="clr-namespace:NugetEfficientTool.Setting"
         mc:Ignorable="d"
-        Title="设置" Height="210" Width="412" BorderThickness="0" Icon="../icon.ico"
+        Title="设置" Height="220" Width="412" BorderThickness="0" Icon="../icon.ico"
         WindowStartupLocation="CenterOwner" Style="{DynamicResource Style.AlertWindow}">
     <Window.Resources>
         <ResourceDictionary>
