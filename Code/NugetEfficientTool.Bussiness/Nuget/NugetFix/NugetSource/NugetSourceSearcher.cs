@@ -32,7 +32,7 @@ namespace NugetEfficientTool.Business
             var latestVersion = await resource.GetLatestVersion(packageName, true, false, new SourceCacheContext(),
                 new NullLogger(), new CancellationToken());
 
-            return latestVersion?.Version.ToString() ?? string.Empty;
+            return latestVersion?.OriginalVersion ?? string.Empty;
         }
 
         /// <summary>
