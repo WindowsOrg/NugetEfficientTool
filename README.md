@@ -10,4 +10,4 @@
 ![使用指导](Readme/introduction.gif)
 
 ### 下载安装
-点击下载最新版本：[Nuget工具_1.0.3.0408](/Readme/Nuget工具_1.0.3.0408.exe)
+点击下载最新版本：[Nuget工具_1.0.3.0424.exe](/Readme/Nuget工具_1.0.3.0424.exe)
