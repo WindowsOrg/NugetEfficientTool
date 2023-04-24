@@ -42,7 +42,7 @@
                         Click="FixVersionButton_OnClick" Style="{StaticResource Style.Button.AccentBackground.Text}"/>
             </StackPanel>
         </Grid>
-        <Border Grid.Row="0" Grid.RowSpan="2" Background="#22D3D3D3" 
+        <Border Grid.Row="0" Grid.RowSpan="2" Margin="0 -60 0 0" Background="#22D3D3D3" 
               Visibility="{Binding ElementName=TheErrorFixView,Path=IsChecking,Converter={StaticResource BoolToVisibility}}">
             <resources:LoadingControl IsSearching="{Binding ElementName=TheErrorFixView,Path=IsChecking}"/>
         </Border>
