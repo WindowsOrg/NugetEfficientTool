@@ -14,11 +14,17 @@ namespace NugetEfficientTool.Business
     public static class NugetVersionExtensions
     {
         private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]+");
+        /// <summary>
+        /// 升级版本号
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public static string AddVersion(this NuGetVersion version)
         {
             string newVersion;
             if (version.Revision == 0 && string.IsNullOrEmpty(version.Release))
             {
+                //正式版本且无构建号的，增加构建号
                 newVersion = $"{version.Major}.{version.Minor}.{version.Patch}.{1}";
             }
             else
@@ -40,12 +46,12 @@ namespace NugetEfficientTool.Business
                 }
                 else
                 {
+                    //补充数字版本号1
                     newVersion = $"{componentVersion}1";
                 }
             }
 
             return newVersion;
-
         }
     }
 }
