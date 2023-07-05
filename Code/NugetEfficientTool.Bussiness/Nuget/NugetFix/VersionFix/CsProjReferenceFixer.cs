@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using NuGet.Versioning;
 
 namespace NugetEfficientTool.Business
 {
@@ -48,30 +49,13 @@ namespace NugetEfficientTool.Business
             if (componentVersionElement != null)
             {
                 var componentVersion = componentVersionElement.Value;
-                //获取版本中的数字
-                var versionNumbers = NumberVersionRegex.Matches(componentVersion);
-                //判断版本是否以数字结尾
-                var isVersionNumberEnd = versionNumbers.Count > 0 &&
-                                         componentVersion.EndsWith(versionNumbers[versionNumbers.Count - 1].Value);
-                string newComponentVersion;
-                if (isVersionNumberEnd)
-                {
-                    //数字结尾，版本+1
-                    var versionEndNumber = versionNumbers[versionNumbers.Count - 1].Value;
-                    var newVersionEnd = Convert.ToInt32(versionEndNumber) + 1;
-                    var versionStart = componentVersion.Substring(0, componentVersion.Length - versionEndNumber.Length);
-                    newComponentVersion = $"{versionStart}{newVersionEnd}";
-                }
-                else
-                {
-                    newComponentVersion = $"{componentVersion}1";
-                }
-                componentVersionElement.SetValue(newComponentVersion);
+                var newVersion = new NuGetVersion(componentVersion).AddVersion();
+                componentVersionElement.SetValue(newVersion);
                 //添加输出日志
-                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 升级组件版本至{newComponentVersion}");
+                Log = StringSplicer.SpliceWithNewLine(Log, $"    - 升级组件版本至{newVersion}");
             }
         }
-        private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]+");
+
         private static readonly Regex VersionRegex = new Regex(@"(?=.*)(\.[0-9]+){2,3}.[-0-9a-zA-Z]+");
         protected override bool FixDocumentByStrategy(NugetFixStrategy nugetFixStrategy)
         {
