@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using NuGet.Versioning;
+
+namespace NugetEfficientTool.Business
+{
+    /// <summary>
+    /// NuGetVersion扩展方法
+    /// </summary>
+    public static class NugetVersionExtensions
+    {
+        private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]+");
+        public static string AddVersion(this NuGetVersion version)
+        {
+            string newVersion;
+            if (version.Revision == 0 && string.IsNullOrEmpty(version.Release))
+            {
+                newVersion = $"{version.Major}.{version.Minor}.{version.Patch}.{1}";
+            }
+            else
+            {
+                var componentVersion = version.ToString();
+                //获取版本中的数字
+                var versionNumbers = NumberVersionRegex.Matches(componentVersion);
+                var lastNumberInVersion = versionNumbers[versionNumbers.Count - 1].Value;
+                //判断版本是否以数字结尾
+                var isVersionNumberEnd = versionNumbers.Count > 0 &&
+                                         componentVersion.EndsWith(lastNumberInVersion);
+                if (isVersionNumberEnd)
+                {
+                    var versionStart = componentVersion.Substring(0, componentVersion.Length - 1);
+                    //数字结尾，版本+1
+                    var versionEndNumber = lastNumberInVersion;
+                    var newVersionEnd = Convert.ToInt32(versionEndNumber) + 1;
+                    newVersion = $"{versionStart}{newVersionEnd}";
+                }
+                else
+                {
+                    newVersion = $"{componentVersion}1";
+                }
+            }
+
+            return newVersion;
+
+        }
+    }
+}
