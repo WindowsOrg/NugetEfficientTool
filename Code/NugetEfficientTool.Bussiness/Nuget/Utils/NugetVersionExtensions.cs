@@ -32,15 +32,14 @@ namespace NugetEfficientTool.Business
                 var componentVersion = version.ToString();
                 //获取版本中的数字
                 var versionNumbers = NumberVersionRegex.Matches(componentVersion);
-                var lastNumberInVersion = versionNumbers[versionNumbers.Count - 1].Value;
                 //判断版本是否以数字结尾
                 var isVersionNumberEnd = versionNumbers.Count > 0 &&
-                                         componentVersion.EndsWith(lastNumberInVersion);
+                                         componentVersion.EndsWith(versionNumbers[versionNumbers.Count - 1].Value);
                 if (isVersionNumberEnd)
                 {
                     var versionStart = componentVersion.Substring(0, componentVersion.Length - 1);
                     //数字结尾，版本+1
-                    var versionEndNumber = lastNumberInVersion;
+                    var versionEndNumber = versionNumbers[versionNumbers.Count - 1].Value;
                     var newVersionEnd = Convert.ToInt32(versionEndNumber) + 1;
                     newVersion = $"{versionStart}{newVersionEnd}";
                 }
