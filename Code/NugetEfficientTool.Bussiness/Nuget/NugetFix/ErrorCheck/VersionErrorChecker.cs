@@ -123,11 +123,7 @@ namespace NugetEfficientTool.Business
             {
                 //因为CsProj与package获取nuget信息，都有一定缺陷，所以需要彼此信息进行补偿。
                 CompensateNugetInfos(nugetGroup.ToList());
-                //筛选掉没问题的数据
-                if (nugetGroup.Select(x => x.Version).Distinct().Count() == 1)
-                {
-                    continue;
-                }
+
                 var nugetInfoGroup = new FileNugetInfoGroup(nugetGroup);
                 //添加Nuget源版本
                 if (_nugetSource != null)
@@ -141,7 +137,11 @@ namespace NugetEfficientTool.Business
                         nugetInfoGroup.FileNugetInfos.Add(fileNugetInfo);
                     }
                 }
-
+                //筛选掉没问题的数据
+                if (nugetInfoGroup.FileNugetInfos.Select(x => x.Version).Distinct().Count() == 1)
+                {
+                    continue;
+                }
                 mismatchVersionNugetGroups.Add(nugetInfoGroup);
             }
 
