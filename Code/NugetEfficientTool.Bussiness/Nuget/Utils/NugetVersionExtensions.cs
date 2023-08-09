@@ -37,7 +37,8 @@ namespace NugetEfficientTool.Business
                                          componentVersion.EndsWith(versionNumbers[versionNumbers.Count - 1].Value);
                 if (isVersionNumberEnd)
                 {
-                    var versionStart = componentVersion.Substring(0, componentVersion.Length - 1);
+                    var lastVersion=versionNumbers[versionNumbers.Count - 1];
+                    var versionStart = componentVersion.Substring(0, componentVersion.Length - lastVersion.Length);
                     //数字结尾，版本+1
                     var versionEndNumber = versionNumbers[versionNumbers.Count - 1].Value;
                     var newVersionEnd = Convert.ToInt32(versionEndNumber) + 1;
