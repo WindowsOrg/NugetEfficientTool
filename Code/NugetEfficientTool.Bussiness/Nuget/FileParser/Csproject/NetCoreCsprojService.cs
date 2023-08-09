@@ -73,7 +73,16 @@ namespace NugetEfficientTool.Business
             var referenceElement = new XElement(CsProjConst.PackageReferenceName);
             referenceElement.SetAttributeValue(CsProjConst.IncludeAttribute, replacedRecord.NugetName);
             referenceElement.SetAttributeValue(CsProjConst.VersionAttribute, replacedRecord.Version);
-            references[replacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
+
+            //在之前位置插入Reference引用
+            if (replacedRecord.ModifiedLineIndex >= references.Count)
+            {
+                references[references.Count - 1].AddAfterSelf(referenceElement);
+            }
+            else
+            {
+                references[replacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
+            }
         }
     }
 }
