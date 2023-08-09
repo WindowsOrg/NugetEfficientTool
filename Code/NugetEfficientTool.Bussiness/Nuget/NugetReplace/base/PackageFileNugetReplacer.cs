@@ -69,8 +69,16 @@ namespace NugetEfficientTool.Business
             packageElement.SetAttributeValue("id", _replacedFileRecord.NugetName);
             packageElement.SetAttributeValue("version", _replacedFileRecord.Version);
             packageElement.SetAttributeValue("targetFramework", _replacedFileRecord.TargetFramework);
-            packageElements[_replacedFileRecord.ModifiedLineIndex].AddBeforeSelf(packageElement);
 
+            //在之前位置插入Reference引用
+            if (_replacedFileRecord.ModifiedLineIndex >= packageElements.Count)
+            {
+                packageElements[packageElements.Count - 1].AddAfterSelf(packageElement);
+            }
+            else
+            {
+                packageElements[_replacedFileRecord.ModifiedLineIndex].AddBeforeSelf(packageElement);
+            }
             SaveFile();
         }
     }

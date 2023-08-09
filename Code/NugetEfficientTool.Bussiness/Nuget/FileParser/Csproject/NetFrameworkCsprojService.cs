@@ -139,7 +139,15 @@ namespace NugetEfficientTool.Business
                 hintPathElement.SetValue(replacedRecord.NugetDllPath);
                 referenceElement.Add(hintPathElement);
             }
-            references[replacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
+            //在之前位置插入Reference引用
+            if (replacedRecord.ModifiedLineIndex >= references.Count)
+            {
+                references[references.Count - 1].AddAfterSelf(referenceElement);
+            }
+            else
+            {
+                references[replacedRecord.ModifiedLineIndex].AddBeforeSelf(referenceElement);
+            }
         }
 
         private static readonly Regex NugetNameRegex = new Regex(@".+(?=,\s*Version)");
