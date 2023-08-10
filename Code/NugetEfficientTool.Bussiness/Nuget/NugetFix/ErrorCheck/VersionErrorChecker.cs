@@ -121,21 +121,15 @@ namespace NugetEfficientTool.Business
             var nugetGroups = nugetPackageInfoExs.GroupBy(x => x.Name);
             foreach (var nugetGroup in nugetGroups)
             {
+                var fileNugetInfos = nugetGroup.ToList();
                 //因为CsProj与package获取nuget信息，都有一定缺陷，所以需要彼此信息进行补偿。
-                CompensateNugetInfos(nugetGroup.ToList());
+                CompensateNugetInfos(fileNugetInfos);
 
                 var nugetInfoGroup = new FileNugetInfoGroup(nugetGroup);
                 //添加Nuget源版本
                 if (_nugetSource != null)
                 {
-                    var latestVersion = await _nugetSource.GetLatestVersionAsync(nugetGroup.Key);
-                    if (!string.IsNullOrEmpty(latestVersion))
-                    {
-                        var nugetInfo = new NugetInfo(nugetGroup.Key, latestVersion);
-                        var fileNugetInfo = new FileNugetInfo(nugetInfo, $@"{_nugetSource.NugetSourceUrl}\{nugetGroup.Key}");
-                        fileNugetInfo.IsEmptyFile = true;
-                        nugetInfoGroup.FileNugetInfos.Add(fileNugetInfo);
-                    }
+                    await TryAddNugetSourceVersion(nugetGroup.Key, fileNugetInfos, nugetInfoGroup);
                 }
                 //筛选掉没问题的数据
                 if (nugetInfoGroup.FileNugetInfos.Select(x => x.Version).Distinct().Count() == 1)
@@ -146,6 +140,42 @@ namespace NugetEfficientTool.Business
             }
 
             return mismatchVersionNugetGroups;
+        }
+
+        /// <summary>
+        /// 添加Nuget源版本
+        /// </summary>
+        /// <param name="nugetKey"></param>
+        /// <param name="fileNugetInfos"></param>
+        /// <param name="nugetInfoGroup"></param>
+        /// <returns></returns>
+        private async Task TryAddNugetSourceVersion(string nugetKey, List<FileNugetInfo> fileNugetInfos, FileNugetInfoGroup nugetInfoGroup)
+        {
+            var sourceNugetVersion = await _nugetSource.GetLatestVersionAsync(nugetKey);
+            if (string.IsNullOrEmpty(sourceNugetVersion))
+            {
+                return;
+            }
+            var versionList = fileNugetInfos.Select(i => i.Version).ToList();
+            versionList.Sort(NugetVersionContrast.Compare);
+            var minVersion = versionList.FirstOrDefault();
+            //Nuget源版本小于等于最小版本时，直接返回
+            if (NugetVersionContrast.Compare(sourceNugetVersion, minVersion) <= 0)
+            {
+                return;
+            }
+            //版本列表中只有源代码版本，则不处理
+            if (nugetInfoGroup.FileNugetInfos.Count == 1 && nugetInfoGroup.FileNugetInfos[0].ConfigPath.EndsWith($"{nugetKey}.csproj"))
+            {
+                return;
+            }
+            //删除源代码版本是最小版本的情况
+            nugetInfoGroup.FileNugetInfos.RemoveAll(i => i.ConfigPath.EndsWith($"{nugetKey}.csproj") && i.Version == minVersion);
+            //添加Nuget源版本
+            var nugetInfo = new NugetInfo(nugetKey, sourceNugetVersion);
+            var fileNugetInfo = new FileNugetInfo(nugetInfo, $@"{_nugetSource.NugetSourceUrl}\{nugetKey}");
+            fileNugetInfo.IsEmptyFile = true;
+            nugetInfoGroup.FileNugetInfos.Add(fileNugetInfo);
         }
 
         /// <summary>
