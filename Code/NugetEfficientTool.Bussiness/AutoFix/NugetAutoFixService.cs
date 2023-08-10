@@ -53,7 +53,7 @@ namespace NugetEfficientTool.Business
                 var nugetName = mismatchVersionNugetGroup.NugetName;
                 var nugetVersions = mismatchVersionNugetGroup.FileNugetInfos.Select(x => x.Version).Distinct().ToList();
                 //版本大小倒序
-                nugetVersions.Sort(NugetVersionContrast.VersionDescendingComparison);
+                nugetVersions.Sort(NugetVersionContrast.DescendingCompare);
                 fixStrategies.Add(new NugetFixStrategy(nugetName, nugetVersions.First()));
             }
             if (!fixStrategies.Any())
