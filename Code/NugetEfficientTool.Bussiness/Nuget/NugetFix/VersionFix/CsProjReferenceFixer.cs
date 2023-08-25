@@ -42,6 +42,7 @@ namespace NugetEfficientTool.Business
             return sdkAttribute != null;
         }
 
+        //Nuget包，新增版本
         private void AddComponentVersion(XElement rootElement)
         {
             var propertyGroups = rootElement.Elements("PropertyGroup").ToList();
@@ -71,7 +72,7 @@ namespace NugetEfficientTool.Business
                 return false;
             }
             //忽略修复
-            if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
+            if (nugetFixStrategy.NugetVersion == NugetVersions.IgnoreFix)
             {
                 return true;
             }

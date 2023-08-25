@@ -11,8 +11,9 @@ namespace NugetEfficientTool.Business
     /// <summary>
     /// NuGetVersion扩展方法
     /// </summary>
-    public static class NugetVersionExtensions
+    public static class NugetVersions
     {
+        public const string IgnoreFix = "忽略修复";
         private static readonly Regex NumberVersionRegex = new Regex(@"[0-9]+");
         /// <summary>
         /// 升级版本号

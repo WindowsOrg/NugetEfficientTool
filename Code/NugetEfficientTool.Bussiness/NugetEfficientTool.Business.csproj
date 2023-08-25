@@ -128,10 +128,9 @@
     <Compile Include="Nuget\NugetFix\VersionFix\NugetFixStrategy.cs" />
     <Compile Include="Nuget\Utils\NugetInfo.cs" />
     <Compile Include="Nuget\Utils\FileNugetInfo.cs" />
-    <Compile Include="Nuget\Utils\NugetVersion.cs" />
     <Compile Include="Nuget\NugetFix\ErrorCheck\VersionErrorChecker.cs" />
     <Compile Include="Nuget\Utils\NugetVersionComparior.cs" />
-    <Compile Include="Nuget\Utils\NugetVersionExtensions.cs" />
+    <Compile Include="Nuget\Utils\NugetVersions.cs" />
     <Compile Include="Nuget\Utils\PackagesConfig.cs" />
     <Compile Include="Nuget\Utils\SolutionFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

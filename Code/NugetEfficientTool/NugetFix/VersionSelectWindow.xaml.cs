@@ -63,7 +63,7 @@ namespace NugetEfficientTool
                     var nugetName = nugetVersionSelectorUserControl.NugetName;
                     var selectedVersion = nugetVersionSelectorUserControl.SelectedVersion;
                     //过滤掉“忽略修复”
-                    if (selectedVersion == NugetVersion.IgnoreFix)
+                    if (selectedVersion == NugetVersions.IgnoreFix)
                     {
                         continue;
                     }
@@ -204,7 +204,7 @@ namespace NugetEfficientTool
         private void IgnoreButton_OnClick(object sender, RoutedEventArgs e)
         {
             var versionSelectors = NugetVersionsPanel.VisualDescendants<VersionSelectorControl>().ToList();
-            var isAllFixing = versionSelectors.All(i => i.SelectedVersion != NugetVersion.IgnoreFix);
+            var isAllFixing = versionSelectors.All(i => i.SelectedVersion != NugetVersions.IgnoreFix);
             var newVersionFixStatus = !isAllFixing;
             foreach (var versionSelectorControl in versionSelectors)
             {

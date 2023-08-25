@@ -40,7 +40,7 @@ namespace NugetEfficientTool.Business
             {
                 return false;
             }
-            if (nugetFixStrategy.NugetVersion == NugetVersion.IgnoreFix)
+            if (nugetFixStrategy.NugetVersion == NugetVersions.IgnoreFix)
             {
                 return true;
             }

@@ -19,7 +19,7 @@ namespace NugetEfficientTool
             TextBlockNugetName.Text = nugetName;
             var nugetVersionList = nugetVersions.ToList();
             nugetVersionList.Sort(NugetVersionContrast.DescendingCompare);
-            nugetVersionList.Add(NugetVersion.IgnoreFix);
+            nugetVersionList.Add(NugetVersions.IgnoreFix);
             ComboBoxNugetVersion.ItemsSource = nugetVersionList;
             ComboBoxNugetVersion.SelectedIndex = 0;
         }
