@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace NugetEfficientTool.Utils
 {
@@ -52,18 +53,19 @@ namespace NugetEfficientTool.Utils
         /// <summary>
         /// 从指定目录中获取所有文件（含子文件夹）
         /// </summary>
-        /// <param name="directoryPath">待遍历的目录</param>
+        /// <param name="folder">待遍历的目录</param>
         /// <param name="searchPattern">搜索字符串</param>
         /// <returns>获取到的文件路径列表</returns>
-        public static IEnumerable<string> GetFilesFromDirectory(string directoryPath, string searchPattern = null)
+        public static IEnumerable<string> GetFilesFromDirectory(string folder, string searchPattern = null)
         {
-            if (searchPattern == null)
+            if (!Directory.Exists(folder))
             {
-                searchPattern = "*";
+                return new List<string>();
             }
+            searchPattern ??= "*";
 
-            var files = Directory.EnumerateFiles(directoryPath, searchPattern);
-            foreach (var directory in Directory.GetDirectories(directoryPath))
+            var files = Directory.EnumerateFiles(folder, searchPattern);
+            foreach (var directory in Directory.GetDirectories(folder))
             {
                 files = files.Concat(GetFilesFromDirectory(directory, searchPattern));
             }
