@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace NugetEfficientTool.Business
 {
@@ -53,6 +54,14 @@ namespace NugetEfficientTool.Business
                     continue;
                 }
                 elements.Add(referenceItem);
+            }
+            //删除package.config
+            var nonePackagesFileElement = _xDocument.Root?.Elements().Where(i=>i.Name.LocalName=="ItemGroup").
+                SelectMany(i=>i.Elements().Where(i=>i.Name.LocalName=="None"))
+                .Where(i => i.HasAttributes && i.Attribute("Include")?.Value == "packages.config")?.FirstOrDefault();
+            if (nonePackagesFileElement!=null)
+            {
+                nonePackagesFileElement.Remove();
             }
             _xDocument.Save(_csProjFile);
             return true;
