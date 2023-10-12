@@ -83,9 +83,9 @@ namespace NugetEfficientTool.Business
         }
         private bool CanUpgrade(XElement reference)
         {
-            if (reference.Name.LocalName== CsProjConst.PackageReferenceName)
+            if (reference.Name.LocalName == CsProjConst.PackageReferenceName)
             {
-                if (reference.Attribute(CsProjConst.VersionAttribute)!=null)
+                if (reference.Attribute(CsProjConst.VersionAttribute) != null)
                 {
                     return true;
                 }
@@ -119,9 +119,9 @@ namespace NugetEfficientTool.Business
         {
             //创建元素时，添加xmlns，用于修复xmlns=""空值的问题
             var xmlns = CsProj.GetXmlns(_xDocument);
-            var xElement = new XElement(xmlns + CsProjConst.PackageReferenceName);
+            var xElement = new XElement(xmlns == null ? CsProjConst.PackageReferenceName : xmlns + CsProjConst.PackageReferenceName);
             xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetName);
-            var versionElement = new XElement(xmlns + CsProjConst.VersionElementName);
+            var versionElement = new XElement(xmlns == null ? CsProjConst.VersionElementName : xmlns + CsProjConst.VersionElementName);
             versionElement.SetValue(nugetVersion);
             xElement.Add(versionElement);
             if (reference.NextNode is XElement nextElement)

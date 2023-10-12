@@ -149,9 +149,11 @@ namespace NugetEfficientTool.Business
         {
             //创建元素时，添加xmlns，用于修复xmlns=""空值的问题
             var xmlns = CsProj.GetXmlns(Document);
-            var xElement = new XElement(xmlns + CsProjConst.PackageReferenceName);
+            var xElement = new XElement(xmlns == null ? CsProjConst.PackageReferenceName : xmlns + CsProjConst.PackageReferenceName);
             xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetName);
-            xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetVersion);
+            var versionElement = new XElement(xmlns == null ? CsProjConst.VersionElementName : xmlns + CsProjConst.VersionElementName);
+            versionElement.SetValue(nugetVersion);
+            xElement.Add(versionElement);
             if (reference.NextNode is XElement nextElement)
             {
                 reference.Remove();
