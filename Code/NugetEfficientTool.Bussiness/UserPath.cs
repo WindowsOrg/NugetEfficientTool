@@ -5,14 +5,7 @@ namespace NugetEfficientTool.Business
 {
     public class UserPath
     {
-        public string ConfigFilePath => GetConfigFilePath();
-
-        private string GetConfigFilePath()
-        {
-            var configPath = Path.Combine(AppDataFolder, "Configs.fkv");
-            return configPath;
-        }
-        public string AppDataFolder => _appDataFolder ?? (_appDataFolder = GetAppDataFolder());
+        public string AppDataFolder => _appDataFolder ??= GetAppDataFolder();
         private string GetAppDataFolder()
         {
             var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -20,6 +13,7 @@ namespace NugetEfficientTool.Business
             EnsureExistFolder(appDataFolder);
             return appDataFolder;
         }
+        public string ConfigFilePath => Path.Combine(AppDataFolder, "Configs.fkv");
 
         private void EnsureExistFolder(string folder)
         {
