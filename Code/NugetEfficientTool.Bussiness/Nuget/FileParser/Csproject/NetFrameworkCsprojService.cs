@@ -139,6 +139,30 @@ namespace NugetEfficientTool.Business
                 hintPathElement.SetValue(replacedRecord.NugetDllPath);
                 referenceElement.Add(hintPathElement);
             }
+            //因NugetReference列表不存在，处理边界情况
+            if (references.Count == 0)
+            {
+                //找到一个空的ItemGroup
+                var itemGroups = CsProj.GetItemGroups(document);
+                var emptyItemGroup = itemGroups.FirstOrDefault(i => !i.HasElements);
+                if (emptyItemGroup != null)
+                {
+                    emptyItemGroup.Add(referenceElement);
+                    return;
+                }
+                //找Reference列表
+                var referenceElements = GetReferences(document);
+                if (referenceElements.Count > 0)
+                {
+                    referenceElements[referenceElements.Count - 1].AddAfterSelf(referenceElement);
+                    return;
+                }
+                //直接在Project内插入ItemGroup
+                var itemGroup = new XElement("ItemGroup");
+                itemGroup.Add(referenceElement);
+                document.Root?.Add(itemGroup);
+                return;
+            }
             //在之前位置插入Reference引用
             if (replacedRecord.ModifiedLineIndex >= references.Count)
             {

@@ -47,6 +47,13 @@ namespace NugetEfficientTool.Business
             return xmlns;
         }
 
+        public static List<XElement> GetItemGroups(XDocument xDocument)
+        {
+            var rootElement = xDocument.Root;
+            var itemGroupElements = rootElement?.Elements().Where(x => x.Name.LocalName == CsProjConst.ItemGroupName).ToList();
+            return itemGroupElements??new List<XElement>();
+        }
+
         #endregion
 
         #region Nuget相关

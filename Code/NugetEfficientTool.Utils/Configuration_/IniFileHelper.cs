@@ -31,8 +31,8 @@ namespace NugetEfficientTool.Utils
         /// <param name="Key">键</param> 
         public static string IniReadValue(string Section, string Key)
         {
-            StringBuilder temp = new StringBuilder(5000);
-            int i = GetPrivateProfileString(Section, Key, "", temp, 5000, GetIniPath());
+            StringBuilder temp = new StringBuilder(50000);
+            int i = GetPrivateProfileString(Section, Key, "", temp, 50000, GetIniPath());
             return temp.ToString();
         }
 

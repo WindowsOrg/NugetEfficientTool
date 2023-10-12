@@ -38,10 +38,10 @@ namespace NugetEfficientTool.Business
         }
 
         /// <summary>
-        /// 记录替换记录
+        /// 获取指定记录替换记录
         /// </summary>
         /// <param name="projectId"></param>
-        /// <param name="solutionFile"></param>
+        /// <param name="solutionFile">解决方案</param>
         /// <param name="nugetName"></param>
         /// <returns></returns>
         public static ReplacedNugetInfo GetReplacedNugetInfo(string projectId, string solutionFile, string nugetName)
@@ -51,6 +51,12 @@ namespace NugetEfficientTool.Business
             return replacedNugetInfo;
         }
 
+        /// <summary>
+        /// 清除指定Nuget替换记录信息
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="solutionFile">解决方案</param>
+        /// <param name="nugetName"></param>
         public static void ClearReplacedNugetInfo(string projectId, string solutionFile, string nugetName)
         {
             var replacedNugetInfos = GetReplacedNugetInfos(projectId);

@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using NugetEfficientTool.Business;
+using NugetEfficientTool.Utils;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace NugetEfficientTool
 {
@@ -40,15 +42,29 @@ namespace NugetEfficientTool
         {
             if (sender is TextBox textBox && textBox.DataContext is NugetReplaceItem replaceItem)
             {
-                if (!textBox.Text.Contains('"'))
-                {
-                    return;
-                }
                 await Task.Delay(TimeSpan.FromMilliseconds(10));
                 var sourceCsprojFile = textBox.Text.Trim('"');
+                // 其实输入的可能是文件夹
+                try
+                {
+                    if (!File.Exists(sourceCsprojFile) && Directory.Exists(sourceCsprojFile))
+                    {
+                        var csProjList =
+                            FolderHelper.GetFilesFromDirectory(sourceCsprojFile, CustomText.CsProjSearchPattern).ToList();
+                        //如果是只存在一个csproj文件，则直接显示出来
+                        if (csProjList.Count == 1)
+                        {
+                            sourceCsprojFile = csProjList[0];
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    NugetTools.Log.Error(exception);
+                }
                 textBox.Text = sourceCsprojFile;
                 textBox.SelectionStart = textBox.Text.Length;
-                //填充显示
+                //填充Nuget显示
                 if (!string.IsNullOrEmpty(sourceCsprojFile) && File.Exists(sourceCsprojFile))
                 {
                     replaceItem.NugetName = Path.GetFileNameWithoutExtension(sourceCsprojFile);
@@ -81,9 +97,10 @@ namespace NugetEfficientTool
             {
                 if (!File.Exists(solutionFile) && Directory.Exists(solutionFile))
                 {
-                    if (SolutionFileHelper.TryGetSlnFile(solutionFile, out var slnFile))
+                    if (SolutionFileHelper.TryGetSlnFiles(solutionFile, out var slnFiles)&&
+                        slnFiles.Count==1)
                     {
-                        solutionFile = slnFile;
+                        solutionFile = slnFiles[0];
                     }
                 }
             }

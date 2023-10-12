@@ -25,16 +25,17 @@ namespace NugetEfficientTool
         {
             _view = view;
             _projectId = projectId;
-            SolutionFileUrl = solutionFileUrl;
+            SolutionUrl = solutionFileUrl;
             _nugetReplaceService = new NugetReplaceService(projectId);
 
             var nugetReplaceItems = new List<NugetReplaceItem>();
+            var solutionFiles = GetSolutionFiles();
             var replaceNugetConfigs = NugetReplaceConfigs.GetNugetReplaceConfig(projectId);
-            if (!string.IsNullOrEmpty(solutionFileUrl) && File.Exists(solutionFileUrl) && replaceNugetConfigs.Any())
+            if (solutionFiles.Count>0 && replaceNugetConfigs.Any())
             {
                 nugetReplaceItems = replaceNugetConfigs.Select(i => new NugetReplaceItem(i.Name, i.SourceCsprojPath)
                 {
-                    HasReplaced = CheckNugetReplaced(SolutionFileUrl, i.Name)
+                    HasReplaced = CheckNugetReplaced(i.Name)
                 }).ToList();
             }
             else
@@ -45,10 +46,16 @@ namespace NugetEfficientTool
             NugetReplaceItems = new ObservableCollection<NugetReplaceItem>(nugetReplaceItems);
             UpdateOperationStatus();
         }
-
-        private bool CheckNugetReplaced(string solutionFileUrl, string nugetName)
+        /// <summary>
+        /// 判断
+        /// </summary>
+        /// <param name="nugetName"></param>
+        /// <returns></returns>
+        private bool CheckNugetReplaced(string nugetName)
         {
-            return File.ReadAllText(solutionFileUrl).Contains(nugetName);
+            var solutionFiles = GetSolutionFiles();
+            var hasReplaced = solutionFiles.All(file => File.ReadAllText(file).Contains(nugetName));
+            return hasReplaced;
         }
 
         #region 添加Nuget
@@ -96,7 +103,11 @@ namespace NugetEfficientTool
                 NugetTools.Notification.ShowInfo(_view.Window, "Nuget已替换，请先还原引用再删除！");
                 return;
             }
-            NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, SolutionFileUrl, item.NugetName);
+            var solutionFiles = GetSolutionFiles();
+            foreach (var solutionFile in solutionFiles)
+            {
+                NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, solutionFile, item.NugetName);
+            }
             NugetReplaceItems.Remove(item);
             UpdateOperationStatus();
         }
@@ -106,40 +117,50 @@ namespace NugetEfficientTool
         #region 替换Nuget
 
         public ICommand ReplaceNugetItemsCommand { get; }
-        public ICommand RevertNugetItemsCommand { get; }
 
         /// <summary>
         /// 替换源包
         /// </summary>
         private void ReplaceNugetItems()
         {
-            if (!CheckInputText(out var solutionFile, out var nugetItems)) return;
+            if (!CheckInputText(out var solutionFiles, out var nugetItems)) return;
+            var replacedNugetInfos = new List<ReplacedNugetInfo>();
             try
             {
                 foreach (var nugetReplaceItem in nugetItems)
                 {
-                    var replacedNugetInfo = _nugetReplaceService.Replace(solutionFile, nugetReplaceItem.NugetName, nugetReplaceItem.SourceCsprojFile);
-                    if (replacedNugetInfo != null)
+                    foreach (var solutionFile in solutionFiles)
                     {
-                        NugetReplaceCacheManager.SaveReplacedNugetInfo(_projectId, replacedNugetInfo);
-                        nugetReplaceItem.HasReplaced = true;
+                        var replacedNugetInfo = _nugetReplaceService.Replace(solutionFile, nugetReplaceItem.NugetName, nugetReplaceItem.SourceCsprojFile);
+                        if (replacedNugetInfo != null)
+                        {
+                            replacedNugetInfos.Add(replacedNugetInfo);
+                            replacedNugetInfos.ForEach(i => NugetReplaceCacheManager.SaveReplacedNugetInfo(_projectId, i));
+                        }
                     }
+                    nugetReplaceItem.HasReplaced = true;
                 }
                 UpdateOperationStatus();
             }
             catch (Exception exception)
             {
-                nugetItems.ForEach(i => NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, solutionFile, i.NugetName));
+                foreach (var replacedNugetInfo in replacedNugetInfos)
+                {
+                    NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, replacedNugetInfo.SolutionFile,
+                        replacedNugetInfo.Name);
+                }
                 NugetTools.Notification.ShowInfo(_view.Window, exception.Message);
                 NugetTools.Log.Error(exception);
             }
         }
+        public ICommand RevertNugetItemsCommand { get; }
+
         /// <summary>
         /// 撤回原nuget引用
         /// </summary>
         private void RevertNugetItems()
         {
-            if (!CheckInputText(out var solutionFile, out var nugetItems)) return;
+            if (!CheckInputText(out var solutionFiles, out var nugetItems)) return;
             try
             {
                 //对nuget包列表进行重新排序，先替换的先恢复
@@ -148,7 +169,13 @@ namespace NugetEfficientTool
                       replacedInfo.Name == i.NugetName && replacedInfo.SourceCsprojPath == i.SourceCsprojFile)).ToList();
                 foreach (var nugetReplaceItem in nugetItems)
                 {
-                    _nugetReplaceService.Revert(solutionFile, nugetReplaceItem.NugetName, nugetReplaceItem.SourceCsprojFile);
+                    foreach (var solutionFile in solutionFiles)
+                    {
+                        _nugetReplaceService.Revert(solutionFile, nugetReplaceItem.NugetName, nugetReplaceItem.SourceCsprojFile);
+                        //清空记录
+                        NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, solutionFile,
+                            nugetReplaceItem.NugetName);
+                    }
                     nugetReplaceItem.HasReplaced = false;
                 }
                 UpdateOperationStatus();
@@ -158,24 +185,24 @@ namespace NugetEfficientTool
                 NugetTools.Notification.ShowInfo(_view.Window, exception.Message);
                 NugetTools.Log.Error(exception);
             }
-            //清空记录
-            nugetItems.ForEach(i => NugetReplaceCacheManager.ClearReplacedNugetInfo(_projectId, solutionFile, i.NugetName));
         }
 
-        private bool CheckInputText(out string solutionFile, out List<NugetReplaceItem> nugetItems)
+        private bool CheckInputText(out List<string> solutionFiles, out List<NugetReplaceItem> nugetItems)
         {
-            solutionFile = SolutionFileUrl;
-            nugetItems = NugetReplaceItems.Where(i => i.IsSelected).ToList();
-            if (string.IsNullOrWhiteSpace(solutionFile))
+            solutionFiles = new List<string>();
+            nugetItems = new List<NugetReplaceItem>();
+            if (string.IsNullOrWhiteSpace(SolutionUrl))
             {
                 NugetTools.Notification.ShowInfo(_view.Window, "项目路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
-            if (!File.Exists(solutionFile))
+            solutionFiles = GetSolutionFiles();
+            if (solutionFiles.Count == 0)
             {
                 NugetTools.Notification.ShowInfo(_view.Window, "项目路径下找不到指定的解决方案，这是啥情况？？？");
                 return false;
             }
+            nugetItems = NugetReplaceItems.Where(i => i.IsSelected).ToList();
             if (nugetItems.Any(i => string.IsNullOrWhiteSpace(i.NugetName)))
             {
                 NugetTools.Notification.ShowInfo(_view.Window, "Nuget名称不能为空…… 心急吃不了热豆腐……");
@@ -186,13 +213,27 @@ namespace NugetEfficientTool
                 NugetTools.Notification.ShowInfo(_view.Window, "源代码路径不能为空…… 心急吃不了热豆腐……");
                 return false;
             }
-
-            SolutionUrlUpdated?.Invoke(null, solutionFile);
+            //保存操作记录
             NugetReplaceConfigs.SaveNugetReplaceConfig(_projectId, nugetItems.Select(i => new ReplaceNugetConfig(i.NugetName, i.SourceCsprojFile)).ToList());
             return true;
         }
 
-        public event EventHandler<string> SolutionUrlUpdated;
+        private List<string> GetSolutionFiles()
+        {
+            //解决方案或者文件夹
+            var solutionUrl = SolutionUrl;
+            if (Path.GetExtension(solutionUrl) == ".sln")
+            {
+                return new List<string>() { solutionUrl };
+            }
+            if (Directory.Exists(solutionUrl) &&
+                SolutionFileHelper.TryGetSlnFiles(solutionUrl, out var slnFiles))
+            {
+                return slnFiles;
+            }
+
+            return new List<string>();
+        }
 
         #endregion
 
@@ -220,16 +261,16 @@ namespace NugetEfficientTool
         /// <summary>
         /// 解决方案
         /// </summary>
-        public string SolutionFileUrl
+        public string SolutionUrl
         {
-            get => _solutionFileUrl;
+            get => _solutionUrl;
             set
             {
-                _solutionFileUrl = value;
+                _solutionUrl = value;
                 OnPropertyChanged();
             }
         }
-        private string _solutionFileUrl;
+        private string _solutionUrl;
 
         public bool CanSelectedItemsReplace
         {

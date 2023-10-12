@@ -60,11 +60,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0" >
-		<Version>5.7.0</Version>
-		<IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		<PrivateAssets>all</PrivateAssets>
-	</PackageReference>
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <Version>5.7.0</Version>
+      <IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Kybs0.Log" Version="1.0.6" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -171,7 +171,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NugetEfficientTool.Bussiness\NugetEfficientTool.Business.csproj">
