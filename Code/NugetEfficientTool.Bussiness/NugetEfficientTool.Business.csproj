@@ -90,11 +90,11 @@
     <Compile Include="Nuget\FileParser\Csproject\NetFrameworkCsprojService.cs" />
     <Compile Include="Nuget\FileParser\Csproject\CsprojFileType.cs" />
     <Compile Include="Nuget\FileParser\Packages\PackagesFileParser.cs" />
-    <Compile Include="NugetReplace\Base\XmlFileNugetReplacer.cs" />
-    <Compile Include="NugetReplace\Base\PackageFileNugetReplacer.cs" />
-    <Compile Include="NugetReplace\Base\CsProjNugetReplacer.cs" />
+    <Compile Include="NugetReplace\Replacers\XmlFileNugetReplacer.cs" />
+    <Compile Include="NugetReplace\Replacers\PackageFileNugetReplacer.cs" />
+    <Compile Include="NugetReplace\Replacers\CsProjNugetReplacer.cs" />
     <Compile Include="NugetReplace\NugetReplaceService.cs" />
-    <Compile Include="NugetReplace\Base\SlnFileNugetReplacer.cs" />
+    <Compile Include="NugetReplace\Replacers\SlnFileNugetReplacer.cs" />
     <Compile Include="Nuget\FileParser\Csproject\CsProj.cs" />
     <Compile Include="Nuget\Utils\DllInfo.cs" />
     <Compile Include="Nuget\Utils\HintPathElements.cs" />

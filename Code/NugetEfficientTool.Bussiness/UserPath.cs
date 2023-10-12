@@ -3,6 +3,9 @@ using System.IO;
 
 namespace NugetEfficientTool.Business
 {
+    /// <summary>
+    /// 常用路径
+    /// </summary>
     public class UserPath
     {
         public string AppDataFolder => _appDataFolder ??= GetAppDataFolder();
