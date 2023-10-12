@@ -56,10 +56,10 @@ namespace NugetEfficientTool.Business
                 elements.Add(referenceItem);
             }
             //删除package.config
-            var nonePackagesFileElement = _xDocument.Root?.Elements().Where(i=>i.Name.LocalName=="ItemGroup").
-                SelectMany(i=>i.Elements().Where(i=>i.Name.LocalName=="None"))
+            var nonePackagesFileElement = _xDocument.Root?.Elements().Where(i => i.Name.LocalName == "ItemGroup").
+                SelectMany(i => i.Elements().Where(i => i.Name.LocalName == "None"))
                 .Where(i => i.HasAttributes && i.Attribute("Include")?.Value == "packages.config")?.FirstOrDefault();
-            if (nonePackagesFileElement!=null)
+            if (nonePackagesFileElement != null)
             {
                 nonePackagesFileElement.Remove();
             }
@@ -83,6 +83,15 @@ namespace NugetEfficientTool.Business
         }
         private bool CanUpgrade(XElement reference)
         {
+            if (reference.Name.LocalName== CsProjConst.PackageReferenceName)
+            {
+                if (reference.Attribute(CsProjConst.VersionAttribute)!=null)
+                {
+                    return true;
+                }
+                return false;
+            }
+
             var hintPathElement = reference.Elements()
                 .FirstOrDefault(elem => elem.Name.LocalName == CsProjConst.HintPathElementName);
             if (hintPathElement == null)
@@ -112,7 +121,9 @@ namespace NugetEfficientTool.Business
             var xmlns = CsProj.GetXmlns(_xDocument);
             var xElement = new XElement(xmlns + CsProjConst.PackageReferenceName);
             xElement.SetAttributeValue(CsProjConst.IncludeAttribute, nugetName);
-            xElement.SetAttributeValue(CsProjConst.VersionAttribute, nugetVersion);
+            var versionElement = new XElement(xmlns + CsProjConst.VersionElementName);
+            versionElement.SetValue(nugetVersion);
+            xElement.Add(versionElement);
             if (reference.NextNode is XElement nextElement)
             {
                 reference.Remove();
