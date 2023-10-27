@@ -75,6 +75,7 @@
     <Compile Include="CustomText.cs" />
     <Compile Include="Notification\NotificationProvider.cs" />
     <Compile Include="Notification\NotificationViewProvider.cs" />
+    <Compile Include="NugetReplace\Revert\NugetReplacedRevert.cs" />
     <Compile Include="NugetTools.cs" />
     <Compile Include="NugetFix\ErrorCheck\ReferenceWayChecker.cs" />
     <Compile Include="NugetFix\NugetMismatchVersionGroupFix.cs" />
@@ -82,46 +83,25 @@
     <Compile Include="NugetFix\ReferenceWay\CsProjReferenceWayUpdater.cs" />
     <Compile Include="NugetFix\FileReferenceWayRepairer.cs" />
     <Compile Include="NugetFix\ReferenceWay\PackageConfigReferenceWayUpdater.cs" />
-    <Compile Include="Nuget\Utils\CsProjConsts.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\CsProjFileBase.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\CsProjFileService.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\ICsProjFileService.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\NetCoreCsprojService.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\NetFrameworkCsprojService.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\CsprojFileType.cs" />
-    <Compile Include="Nuget\FileParser\Packages\PackagesFileParser.cs" />
     <Compile Include="NugetReplace\Replacers\XmlFileNugetReplacer.cs" />
     <Compile Include="NugetReplace\Replacers\PackageFileNugetReplacer.cs" />
     <Compile Include="NugetReplace\Replacers\CsProjNugetReplacer.cs" />
     <Compile Include="NugetReplace\NugetReplaceService.cs" />
     <Compile Include="NugetReplace\Replacers\SlnFileNugetReplacer.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\CsProj.cs" />
-    <Compile Include="Nuget\Utils\DllInfo.cs" />
-    <Compile Include="Nuget\Utils\HintPathElements.cs" />
-    <Compile Include="Nuget\Utils\NugetConfig.cs" />
     <Compile Include="NugetFix\VersionFix\CsProjReferenceFixer.cs" />
     <Compile Include="NugetFix\VersionFix\NugetReferenceFixer.cs" />
     <Compile Include="NugetFix\VersionFix\PackagesReferenceFixer.cs" />
-    <Compile Include="Nuget\FileParser\Csproject\CsProjFileParser.cs" />
-    <Compile Include="Nuget\FileParser\INugetFileParser.cs" />
-    <Compile Include="Nuget\Utils\NugetConfigReader.cs" />
     <Compile Include="NugetFix\FileNugetVersionRepairer.cs" />
-    <Compile Include="Nuget\Utils\NugetConfigType.cs" />
     <Compile Include="NugetFix\VersionFix\NugetFixStrategy.cs" />
-    <Compile Include="Nuget\Utils\NugetInfo.cs" />
-    <Compile Include="Nuget\Utils\FileNugetInfo.cs" />
     <Compile Include="NugetFix\ErrorCheck\VersionErrorChecker.cs" />
-    <Compile Include="Nuget\Utils\NugetVersionComparior.cs" />
-    <Compile Include="Nuget\Utils\NugetVersions.cs" />
-    <Compile Include="Nuget\Utils\PackagesConfig.cs" />
-    <Compile Include="Nuget\Utils\SolutionFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Nuget\Utils\StringSplicer.cs" />
-    <Compile Include="Nuget\Utils\FileNugetInfoGroup.cs" />
-    <Compile Include="Nuget\Utils\XmlReader.cs" />
     <Compile Include="UserPath.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NugetEfficientTool.Nuget\Kybs0.Csproj.Analyzer.csproj">
+      <Project>{8ba55cfa-d0de-4843-9284-a96bf3997275}</Project>
+      <Name>Kybs0.Csproj.Analyzer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NugetEfficientTool.Resources\NugetEfficientTool.Resources.csproj">
       <Project>{C0A7F2CD-E5C6-4270-BABA-9A1C03EC11E7}</Project>
       <Name>NugetEfficientTool.Resources</Name>

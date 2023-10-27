@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using Kybs0.Csproj.Analyzer;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
 

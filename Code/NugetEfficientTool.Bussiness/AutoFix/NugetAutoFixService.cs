@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Kybs0.Csproj.Analyzer;
 
 namespace NugetEfficientTool.Business
 {
@@ -82,7 +83,7 @@ namespace NugetEfficientTool.Business
             }
             if (!File.Exists(solutionText) &&
                 Directory.Exists(solutionText) &&
-                SolutionFileHelper.TryGetSlnFiles(solutionText, out solutionFiles) &&
+                SolutionFiles.TryGetSlnFiles(solutionText, out solutionFiles) &&
                 solutionFiles.Count > 0)
             {
                 return true;

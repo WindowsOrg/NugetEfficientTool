@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using Kybs0.Csproj.Analyzer;
 using NuGet.Versioning;
 
 namespace NugetEfficientTool.Business

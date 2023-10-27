@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using Kybs0.Csproj.Analyzer;
 using NugetEfficientTool.Business;
 
 namespace NugetEfficientTool
@@ -50,7 +51,7 @@ namespace NugetEfficientTool
             }
             if (!File.Exists(solutionText) &&
                 Directory.Exists(solutionText) &&
-                SolutionFileHelper.TryGetSlnFiles(solutionText, out solutionFiles) &&
+                SolutionFiles.TryGetSlnFiles(solutionText, out solutionFiles) &&
                 solutionFiles.Count > 0)
             {
                 return true;
@@ -61,7 +62,7 @@ namespace NugetEfficientTool
                 var folders = solutionText.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var folder in folders)
                 {
-                    if (SolutionFileHelper.TryGetSlnFiles(folder, out var files) &&
+                    if (SolutionFiles.TryGetSlnFiles(folder, out var files) &&
                         files.Count > 0)
                     {
                         solutionFiles.AddRange(files);

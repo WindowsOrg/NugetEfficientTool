@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using Kybs0.Csproj.Analyzer;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
 
@@ -227,7 +228,7 @@ namespace NugetEfficientTool
                 return new List<string>() { solutionUrl };
             }
             if (Directory.Exists(solutionUrl) &&
-                SolutionFileHelper.TryGetSlnFiles(solutionUrl, out var slnFiles))
+                SolutionFiles.TryGetSlnFiles(solutionUrl, out var slnFiles))
             {
                 return slnFiles;
             }

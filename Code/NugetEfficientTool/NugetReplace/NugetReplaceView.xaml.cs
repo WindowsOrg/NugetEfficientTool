@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Kybs0.Csproj.Analyzer;
 using Microsoft.Win32;
 using NugetEfficientTool.Business;
 using NugetEfficientTool.Utils;
@@ -50,7 +51,7 @@ namespace NugetEfficientTool
                     if (!File.Exists(sourceCsprojFile) && Directory.Exists(sourceCsprojFile))
                     {
                         var csProjList =
-                            FolderHelper.GetFilesFromDirectory(sourceCsprojFile, CustomText.CsProjSearchPattern).ToList();
+                            FolderHelper.GetFilesFromDirectory(sourceCsprojFile, "*.csproj").ToList();
                         //如果是只存在一个csproj文件，则直接显示出来
                         if (csProjList.Count == 1)
                         {
@@ -97,7 +98,7 @@ namespace NugetEfficientTool
             {
                 if (!File.Exists(solutionFile) && Directory.Exists(solutionFile))
                 {
-                    if (SolutionFileHelper.TryGetSlnFiles(solutionFile, out var slnFiles)&&
+                    if (SolutionFiles.TryGetSlnFiles(solutionFile, out var slnFiles)&&
                         slnFiles.Count==1)
                     {
                         solutionFile = slnFiles[0];

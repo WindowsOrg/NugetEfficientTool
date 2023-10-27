@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Kybs0.Csproj.Analyzer;
 
 namespace NugetEfficientTool.Business
 {
@@ -96,7 +97,7 @@ namespace NugetEfficientTool.Business
 
         public void RevertNuget()
         {
-            CsProj.RevertReference(Document, _lastReplacedRecord);
+            NugetReplacedRevert.RevertReference(Document, _lastReplacedRecord);
             //删除源代码引用
             var projectReferences = CsProj.GetProjectReferences(Document);
             var sourceProjectReferences = projectReferences.Where(i => i.Attribute(CsProjConst.IncludeAttribute).Value.Contains(_sourceProjectFile)).ToList();

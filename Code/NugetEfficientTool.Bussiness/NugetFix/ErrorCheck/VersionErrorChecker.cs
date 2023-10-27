@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Kybs0.Csproj.Analyzer;
 
 namespace NugetEfficientTool.Business
 {
@@ -45,12 +46,12 @@ namespace NugetEfficientTool.Business
         public async Task CheckAsync()
         {
             var solutionFiles = _solutionFiles;
-            var projectFiles = solutionFiles.SelectMany(SolutionFileHelper.GetProjectFiles);
+            var projectFiles = solutionFiles.SelectMany(SolutionFiles.GetProjectFiles);
             var projectDirectories = projectFiles.Select(Path.GetDirectoryName).Distinct();
             var nugetConfigFiles = new List<string>();
             foreach (var projectDirectory in projectDirectories)
             {
-                nugetConfigFiles.AddRange(SolutionFileHelper.GetConfigFilesInFolder(projectDirectory));
+                nugetConfigFiles.AddRange(SolutionFiles.GetConfigFilesInFolder(projectDirectory));
             }
             //获取nuget相关信息
             var badFormatNugetFiles = new List<NugetConfigReader>();

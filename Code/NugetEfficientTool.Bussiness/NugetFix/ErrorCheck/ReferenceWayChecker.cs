@@ -28,7 +28,7 @@ namespace NugetEfficientTool.Business
             var solutionFiles = _solutionFiles;
             var solutionFolders = solutionFiles.Select(Path.GetDirectoryName).ToList();
             //Csproj文件
-            var csProjFiles = solutionFolders.SelectMany(i => FolderHelper.GetFilesFromDirectory(i, CustomText.CsProjSearchPattern));
+            var csProjFiles = solutionFolders.SelectMany(i => FolderHelper.GetFilesFromDirectory(i, "*.csproj"));
             foreach (var csProjFile in csProjFiles)
             {
                 var formatUpdater = new CsProjReferenceWayUpdater(csProjFile);
@@ -39,7 +39,7 @@ namespace NugetEfficientTool.Business
                 }
             }
             //package.config文件
-            var packageFiles = solutionFolders.SelectMany(i => FolderHelper.GetFilesFromDirectory(i, CustomText.PackagesConfigSearchPattern));
+            var packageFiles = solutionFolders.SelectMany(i => FolderHelper.GetFilesFromDirectory(i, "packages.config"));
             foreach (var packageFile in packageFiles)
             {
                 var formatUpdater = new PackageConfigReferenceWayUpdater(packageFile);

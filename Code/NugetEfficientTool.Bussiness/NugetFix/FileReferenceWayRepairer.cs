@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Kybs0.Csproj.Analyzer;
 
 namespace NugetEfficientTool.Business
 {
@@ -35,7 +36,7 @@ namespace NugetEfficientTool.Business
             {
                 return;
             }
-            var csProjFiles = Directory.GetFiles(folder, CustomText.CsProjSearchPattern, SearchOption.AllDirectories);
+            var csProjFiles = Directory.GetFiles(folder, "*.csproj", SearchOption.AllDirectories);
             foreach (var csProjFile in csProjFiles)
             {
                 var formatUpdater = new CsProjReferenceWayUpdater(csProjFile);
@@ -46,7 +47,7 @@ namespace NugetEfficientTool.Business
                     Log = StringSplicer.SpliceWithNewLine(Log, formatUpdater.Log);
                 }
             }
-            var packageFiles = Directory.GetFiles(folder, CustomText.PackagesConfigSearchPattern, SearchOption.AllDirectories);
+            var packageFiles = Directory.GetFiles(folder, "packages.config", SearchOption.AllDirectories);
             foreach (var packageFile in packageFiles)
             {
                 var packageUpdater = new PackageConfigReferenceWayUpdater(packageFile);
