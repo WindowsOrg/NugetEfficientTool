@@ -75,7 +75,6 @@
     <Compile Include="CustomText.cs" />
     <Compile Include="Notification\NotificationProvider.cs" />
     <Compile Include="Notification\NotificationViewProvider.cs" />
-    <Compile Include="NugetReplace\Revert\NugetReplacedRevert.cs" />
     <Compile Include="NugetTools.cs" />
     <Compile Include="NugetFix\ErrorCheck\ReferenceWayChecker.cs" />
     <Compile Include="NugetFix\NugetMismatchVersionGroupFix.cs" />
