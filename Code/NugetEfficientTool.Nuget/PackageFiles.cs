@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// package.config文件辅助类

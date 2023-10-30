@@ -177,9 +177,9 @@
       <Project>{3D1123FB-CF18-492C-8B0B-F9970F59497F}</Project>
       <Name>NugetEfficientTool.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NugetEfficientTool.Nuget\Kybs0.Csproj.Analyzer.csproj">
+    <ProjectReference Include="..\NugetEfficientTool.Nuget\Kybs0.Project.csproj">
       <Project>{8ba55cfa-d0de-4843-9284-a96bf3997275}</Project>
-      <Name>Kybs0.Csproj.Analyzer</Name>
+      <Name>Kybs0.Project</Name>
     </ProjectReference>
     <ProjectReference Include="..\NugetEfficientTool.Resources\NugetEfficientTool.Resources.csproj">
       <Project>{c0a7f2cd-e5c6-4270-baba-9a1c03ec11e7}</Project>

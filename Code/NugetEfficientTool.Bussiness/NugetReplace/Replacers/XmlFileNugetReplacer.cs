@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Xml.Linq;
-using Kybs0.Csproj.Analyzer;
+using Kybs0.Project;
 
 namespace NugetEfficientTool.Business
 {
@@ -13,7 +13,7 @@ namespace NugetEfficientTool.Business
         protected XmlFileNugetReplacer(string xmlFile)
         {
             XmlFile = xmlFile;
-            Document = new XmlReader(xmlFile).Document;
+            Document = new CodeXmlReader(xmlFile).Document;
         }
 
         protected string File => XmlFile;

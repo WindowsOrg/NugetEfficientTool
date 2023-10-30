@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetEfficientTool.Resource
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetEfficientTool.Utils", "NugetEfficientTool.Utils\NugetEfficientTool.Utils.csproj", "{1AE87A5D-E763-420E-964B-073F60DFE832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kybs0.Csproj.Analyzer", "NugetEfficientTool.Nuget\Kybs0.Csproj.Analyzer.csproj", "{8BA55CFA-D0DE-4843-9284-A96BF3997275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kybs0.Project", "NugetEfficientTool.Nuget\Kybs0.Project.csproj", "{8BA55CFA-D0DE-4843-9284-A96BF3997275}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

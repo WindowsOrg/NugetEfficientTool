@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// Reference下HintPath元素的辅助操作

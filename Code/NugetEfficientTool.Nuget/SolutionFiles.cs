@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// 解决方案文件辅助类

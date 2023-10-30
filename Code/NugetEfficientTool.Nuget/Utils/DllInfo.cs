@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     public class NugetDllInfo
     {

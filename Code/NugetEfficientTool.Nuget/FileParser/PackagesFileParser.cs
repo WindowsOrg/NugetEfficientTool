@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// Nuget 解析器

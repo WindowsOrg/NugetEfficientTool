@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Kybs0.Csproj.Analyzer;
+using Kybs0.Project;
 
 namespace NugetEfficientTool.Business
 {
@@ -21,7 +21,7 @@ namespace NugetEfficientTool.Business
         public CsProjReferenceWayUpdater(string csProjFile)
         {
             _csProjFile = csProjFile;
-            _xDocument = new XmlReader(csProjFile).Document;
+            _xDocument = new CodeXmlReader(csProjFile).Document;
         }
         /// <summary>
         /// 升级

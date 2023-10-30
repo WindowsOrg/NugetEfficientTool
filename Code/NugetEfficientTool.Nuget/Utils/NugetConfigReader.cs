@@ -1,9 +1,9 @@
-﻿namespace Kybs0.Csproj.Analyzer
+﻿namespace Kybs0.Project
 {
     /// <summary>
     /// Nuget 读取器
     /// </summary>
-    public class NugetConfigReader : XmlReader
+    public class NugetConfigReader : CodeXmlReader
     {
         #region 构造函数
 

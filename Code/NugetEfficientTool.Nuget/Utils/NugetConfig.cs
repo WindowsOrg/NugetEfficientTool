@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Csproj.Analyzer
+﻿namespace Kybs0.Project
 {
     /// <summary>
     /// Nuget 配置文件助手类

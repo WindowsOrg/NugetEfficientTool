@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Kybs0.Csproj.Analyzer;
+using Kybs0.Project;
 using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool.Business
@@ -19,7 +19,7 @@ namespace NugetEfficientTool.Business
         public PackageConfigReferenceWayUpdater(string csProjFile)
         {
             _packageFile = csProjFile;
-            _xDocument = new XmlReader(csProjFile).Document;
+            _xDocument = new CodeXmlReader(csProjFile).Document;
         }
 
         public string Log { get; private set; }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Kybs0.Csproj.Analyzer;
+using Kybs0.Project;
 
 namespace NugetEfficientTool.Business
 {

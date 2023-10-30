@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using NuGet.Versioning;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// NuGetVersion扩展方法

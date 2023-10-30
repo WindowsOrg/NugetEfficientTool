@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Version>1.0.0</Version>
+        <Authors>Kybs0</Authors>
+        <Description>项目文件解析</Description>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Kybs0.Project.csproj.DotSettings" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="NuGet.Common" Version="6.5.0" />
+        <PackageReference Include="NuGet.Configuration" Version="6.5.0" />
+        <PackageReference Include="NuGet.Frameworks" Version="6.5.0" />
+        <PackageReference Include="NuGet.Packaging" Version="6.5.0" />
+        <PackageReference Include="NuGet.Protocol" Version="6.5.0" />
+        <PackageReference Include="NuGet.Versioning" Version="6.5.0" />
+    </ItemGroup>
+</Project>

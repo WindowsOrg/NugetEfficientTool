@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Kybs0.Csproj.Analyzer;
+using Kybs0.Project;
 
 namespace NugetEfficientTool.Business
 {
@@ -24,7 +24,7 @@ namespace NugetEfficientTool.Business
             {
                 throw new ArgumentNullException(nameof(nugetFixStrategies));
             }
-            _xDocument = new XmlReader(configPath).Document;
+            _xDocument = new CodeXmlReader(configPath).Document;
             _configPath = configPath;
             switch (NugetConfig.GetNugetConfigType(configPath))
             {

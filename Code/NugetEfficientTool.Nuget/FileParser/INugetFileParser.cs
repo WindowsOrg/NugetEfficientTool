@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Csproj.Analyzer
+﻿namespace Kybs0.Project
 {
     /// <summary>
     /// Nuget 配置解析器接口

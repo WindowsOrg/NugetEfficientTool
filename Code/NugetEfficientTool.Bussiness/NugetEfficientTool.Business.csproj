@@ -97,9 +97,9 @@
     <Compile Include="UserPath.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NugetEfficientTool.Nuget\Kybs0.Csproj.Analyzer.csproj">
+    <ProjectReference Include="..\NugetEfficientTool.Nuget\Kybs0.Project.csproj">
       <Project>{8ba55cfa-d0de-4843-9284-a96bf3997275}</Project>
-      <Name>Kybs0.Csproj.Analyzer</Name>
+      <Name>Kybs0.Project</Name>
     </ProjectReference>
     <ProjectReference Include="..\NugetEfficientTool.Resources\NugetEfficientTool.Resources.csproj">
       <Project>{C0A7F2CD-E5C6-4270-BABA-9A1C03EC11E7}</Project>

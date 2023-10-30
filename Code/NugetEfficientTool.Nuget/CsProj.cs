@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// CsProject数据辅助类
@@ -66,7 +66,7 @@ namespace Kybs0.Csproj.Analyzer
         {
             var rootElement = xDocument.Root;
             var itemGroupElements = rootElement?.Elements().Where(x => x.Name.LocalName == CsProjConst.ItemGroupName).ToList();
-            return itemGroupElements??new List<XElement>();
+            return itemGroupElements ?? new List<XElement>();
         }
 
         #endregion
@@ -155,6 +155,29 @@ namespace Kybs0.Csproj.Analyzer
                 return string.Empty;
             }
             return matchCollection[matchCollection.Count - 1].Value;
+        }
+
+        /// <summary>
+        /// 获取所有Nuget信息
+        /// </summary>
+        /// <param name="xDocument"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static List<NugetInfo> GetNugetInfos(XDocument xDocument, string filePath)
+        {
+            var csProjFileParser = new CsProjFileParser(xDocument, filePath);
+            var nugetInfos = csProjFileParser.GetNugetInfos();
+            //对集成打包的Nuget，合并
+            var results = new List<NugetInfo>();
+            foreach (var nugetInfo in nugetInfos)
+            {
+                if (results.Any(i => i.Name == nugetInfo.Name))
+                {
+                    continue;
+                }
+                results.Add(nugetInfo);
+            }
+            return results;
         }
 
         #endregion

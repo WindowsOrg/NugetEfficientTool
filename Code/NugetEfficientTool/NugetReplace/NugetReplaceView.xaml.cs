@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Kybs0.Csproj.Analyzer;
+using Kybs0.Project;
 using Microsoft.Win32;
 using NugetEfficientTool.Business;
-using NugetEfficientTool.Utils;
 using static NuGet.Packaging.PackagingConstants;
+using FolderHelper = NugetEfficientTool.Utils.FolderHelper;
 
 namespace NugetEfficientTool
 {

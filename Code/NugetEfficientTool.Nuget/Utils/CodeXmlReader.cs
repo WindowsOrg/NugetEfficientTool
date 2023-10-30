@@ -1,12 +1,12 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     /// <summary>
     /// XML 读取器
     /// </summary>
-    public class XmlReader
+    public class CodeXmlReader
     {
         #region 构造函数
 
@@ -14,7 +14,7 @@ namespace Kybs0.Csproj.Analyzer
         /// 构造一个 XML 读取器
         /// </summary>
         /// <param name="filePath">XML 文件路径</param>
-        public XmlReader( string filePath)
+        public CodeXmlReader( string filePath)
         {
             if (filePath == null)
             {

@@ -1,6 +1,6 @@
 ﻿using NuGet.Versioning;
 
-namespace Kybs0.Csproj.Analyzer
+namespace Kybs0.Project
 {
     public class NugetVersionContrast
     {
