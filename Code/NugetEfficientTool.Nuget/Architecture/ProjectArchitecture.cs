@@ -2,8 +2,11 @@
 using System.Text;
 using System.Xml.Linq;
 
-namespace Kybs0.Project.Architecture
+namespace Kybs0.Project
 {
+    /// <summary>
+    /// 项目架构生成类，用于生成一个可描述当前项目集结构的解决方案
+    /// </summary>
     public class ProjectArchitecture
     {
         /// <summary>
@@ -15,18 +18,23 @@ namespace Kybs0.Project.Architecture
         /// 是否只显示项目中有项目源码的依赖
         /// </summary>
         public bool OnlyShowCsprojDependency { get; set; } = true;
-        public void Generate(string codeFolder)
+        /// <summary>
+        /// 生成
+        /// </summary>
+        /// <param name="codeFolder">源代码目录</param>
+        /// <param name="slnFolder">生成的解决方案目录</param>
+        /// <returns></returns>
+        public void Generate(string codeFolder, string slnFolder)
         {
             var allFiles = FolderHelper.GetAllFiles(codeFolder, "*.csproj");
             var csprojFiles = allFiles.Where(i => !i.Contains("ComponentsArchitecture")).ToList();
             var projectDependencies = GetProjectDependencies(csprojFiles);
-            CreateArchitectureSln(projectDependencies);
+            CreateArchitectureSln(projectDependencies, slnFolder);
         }
 
-        private void CreateArchitectureSln(List<CodeModule> codeModules)
+        private string CreateArchitectureSln(List<CodeModule> codeModules, string slnFolder)
         {
             //创建解决方案文件夹
-            var slnFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Architecture");
             FolderHelper.DeleteFolder(slnFolder);
             FolderHelper.CreateFolder(slnFolder);
             //创建项目
@@ -38,6 +46,7 @@ namespace Kybs0.Project.Architecture
             }
             //创建解决方案
             CreateSln(slnFolder, codeModules);
+            return slnFolder;
         }
 
         private static void CreateProject(string projectFolder, CodeModule codeModule)
@@ -120,7 +129,7 @@ namespace Kybs0.Project.Architecture
 
                 var readAllLines = File.ReadAllLines(csprojFile);
                 //暂时只处理组件
-                if (OnlyComponentCsproj&&
+                if (OnlyComponentCsproj &&
                     !readAllLines.Any(i => i.Contains("<GeneratePackageOnBuild>true</GeneratePackageOnBuild>") ||
                                                         i.Contains("<GeneratePackageOnBuild>True</GeneratePackageOnBuild>") ||
                                                         i.Contains("<GeneratePackageOnBuild>TRUE</GeneratePackageOnBuild>")))
@@ -149,7 +158,7 @@ namespace Kybs0.Project.Architecture
                 //添加Nuget依赖
                 var nugetReferences = CsProj.GetNugetInfos(csprojDocument, projectModule.CsprojFile);
                 //去除自己
-                nugetReferences = nugetReferences.Where(i=>i.Name!=Path.GetFileNameWithoutExtension(projectModule.CsprojFile)).ToList();
+                nugetReferences = nugetReferences.Where(i => i.Name != Path.GetFileNameWithoutExtension(projectModule.CsprojFile)).ToList();
                 foreach (var nugetReference in nugetReferences)
                 {
                     var otherProjectModule = projectModules.FirstOrDefault(i => i.Name == nugetReference.Name);

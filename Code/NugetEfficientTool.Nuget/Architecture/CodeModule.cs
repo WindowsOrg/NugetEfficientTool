@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Project.Architecture
+﻿namespace Kybs0.Project
 {
     public abstract class CodeModule
     {

@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Project.Architecture
+﻿namespace Kybs0.Project
 {
     /// <summary>
     /// 项目文件
