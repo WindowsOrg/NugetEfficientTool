@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>net45;</TargetFrameworks>
+    <TargetFrameworks>net46</TargetFrameworks>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Kybs0(QQ:1016724958)</Authors>
     <UseWpf>True</UseWpf>
