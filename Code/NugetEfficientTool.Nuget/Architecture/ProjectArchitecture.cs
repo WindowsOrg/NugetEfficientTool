@@ -2,7 +2,7 @@
 using System.Text;
 using System.Xml.Linq;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// 项目架构生成类，用于生成一个可描述当前项目集结构的解决方案

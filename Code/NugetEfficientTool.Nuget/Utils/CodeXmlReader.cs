@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// XML 读取器

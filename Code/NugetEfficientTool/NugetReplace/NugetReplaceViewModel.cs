@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using Kybs0.Project;
 using NugetEfficientTool.Business;
+using NugetEfficientTool.Nuget;
 using NugetEfficientTool.Utils;
 
 namespace NugetEfficientTool

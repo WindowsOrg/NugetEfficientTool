@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     class NetFrameworkCsprojService : CsProjFileBase, ICsProjFileService
     {

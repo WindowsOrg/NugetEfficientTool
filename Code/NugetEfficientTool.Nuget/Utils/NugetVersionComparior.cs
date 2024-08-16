@@ -1,6 +1,6 @@
 ﻿using NuGet.Versioning;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     public class NugetVersionContrast
     {

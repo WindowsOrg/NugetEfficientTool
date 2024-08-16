@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// 解决方案文件辅助类

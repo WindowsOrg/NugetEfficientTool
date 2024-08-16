@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Kybs0.Project;
 using NugetEfficientTool.Business;
+using NugetEfficientTool.Nuget;
 
 namespace NugetEfficientTool
 {

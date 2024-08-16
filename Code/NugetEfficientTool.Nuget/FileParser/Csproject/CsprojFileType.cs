@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Project
+﻿namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// Csproj文件平台类型

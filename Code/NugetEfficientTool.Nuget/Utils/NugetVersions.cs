@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using NuGet.Versioning;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// NuGetVersion扩展方法

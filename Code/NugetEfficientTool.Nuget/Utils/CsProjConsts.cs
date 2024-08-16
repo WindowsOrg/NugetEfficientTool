@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Project
+﻿namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// CsProject属性

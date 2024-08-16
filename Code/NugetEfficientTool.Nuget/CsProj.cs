@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// CsProject数据辅助类

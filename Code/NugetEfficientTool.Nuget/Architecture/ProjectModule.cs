@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Project
+﻿namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// 项目文件

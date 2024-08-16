@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Kybs0.Project;
 using NugetEfficientTool.Business;
+using NugetEfficientTool.Nuget;
 
 namespace NugetEfficientTool
 {

@@ -1,4 +1,4 @@
-﻿namespace Kybs0.Project
+﻿namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// Nuget 配置解析器接口

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     /// <summary>
     /// package.config文件辅助类

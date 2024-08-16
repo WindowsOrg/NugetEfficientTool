@@ -10,7 +10,7 @@
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="Kybs0.Project.csproj.DotSettings" />
+        <None Remove="NugetEfficientTool.Nuget.csproj.DotSettings" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="NuGet.Common" Version="6.5.0" />

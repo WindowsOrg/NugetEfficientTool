@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     internal interface ICsProjFileService
     {

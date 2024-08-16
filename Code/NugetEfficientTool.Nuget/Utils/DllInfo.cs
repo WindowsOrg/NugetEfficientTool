@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Kybs0.Project
+namespace NugetEfficientTool.Nuget
 {
     public class NugetDllInfo
     {
