@@ -13,8 +13,8 @@
 2. 输入Nuget包H3C.Family.App对应的源代码csproj文件路径，或者csproj所在目录。输入后，会自动填充Nuget名称H3C.Family.App
 3. 点击“替换”，替换所有csproj项目内H3C.Family.App的Nuget引用PackageReference，为H3C.Family.App的项目引用ProjectReference，就可以开始源代码调试了
 
-支持目录下的Nuget替换，极大提升了多项目多仓库协同开发的效率。如下图是操作图：
-![image](https://github.com/user-attachments/assets/531a21a2-5b40-4342-91b3-4b5d4e8d188b)
+支持目录下的Nuget替换，极大提升了多项目多仓库协同开发的效率。如下图是操作图：<br/>
+![image](https://github.com/user-attachments/assets/531a21a2-5b40-4342-91b3-4b5d4e8d188b)<br/>
 Nuget替换，目前版本支持：
 1. 一个解决方案，对多个Nuget源的替换
 2. 目录即多个解决方案，对多个Nuget源的替换
@@ -24,6 +24,7 @@ Nuget替换，目前版本支持：
 1. 项目路径，输入仓库代码所在的目录（也可以外层目录）、解决方案sln文件路径
 2. 点击“开始检测”，会显示Nuget待修复信息。如上图，H3C.Setting.Camera存在很多csproj文件内版本是一致的，但与Nuget源最新版本不一致，需要升级
 3. 点击“修复版本冲突”，弹出版本选择窗口，选择相应版本执行修复。执行后，csproj都会同步H3C.Setting.Camera版本为1.1.15
+
 如下图，这是某个目录下对所有项目检测的版本冲突信息：<br>
 ![image](https://github.com/user-attachments/assets/9a2b67fa-3654-46d1-b386-4943430af235)<br/>
 选择一键修复，就可以统一指定组件的版本号了：<br>
