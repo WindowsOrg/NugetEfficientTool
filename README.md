@@ -12,13 +12,13 @@
 * 项目路径，输入仓库代码所在的目录(也可以是多仓库目录)，或者仓库解决方案.sln文件路径
 * 输入Nuget包H3C.Family.App对应的源代码csproj文件路径，或者csproj所在目录。输入后，会自动填充Nuget名称H3C.Family.App
 * 点击“替换”，替换所有csproj项目内H3C.Family.App的Nuget引用PackageReference，为H3C.Family.App的项目引用ProjectReference，就可以开始源代码调试了
-支持目录下的Nuget替换，极大提升了多项目多仓库协同开发的效率<br>
+<p>支持目录下的Nuget替换，极大提升了多项目多仓库协同开发的效率</p>
 如下图是操作图：<br>
-![image](https://github.com/user-attachments/assets/cf8c2942-da95-4f94-8486-2ce5c9980d81)
 Nuget替换，目前版本支持：
 * 一个解决方案，对多个Nuget源的替换
 * 目录即多个解决方案，对多个Nuget源的替换
 * 支持多个相互之间依赖的Nuget包替换（自动识别依赖）和还原
+![image](https://github.com/user-attachments/assets/2ddddf19-075e-4542-9a40-cce41c24320a)
 
 2. Nuget版本升级
 * 项目路径，输入仓库代码所在的目录（也可以外层目录）、解决方案sln文件路径
