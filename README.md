@@ -14,7 +14,7 @@
 * 点击“替换”，替换所有csproj项目内H3C.Family.App的Nuget引用PackageReference，为H3C.Family.App的项目引用ProjectReference，就可以开始源代码调试了
 <p>支持目录下的Nuget替换，极大提升了多项目多仓库协同开发的效率</p>
 如下图是操作图：<br>
-![image](https://github.com/user-attachments/assets/2ddddf19-075e-4542-9a40-cce41c24320a)<br>
+![image](https://github.com/user-attachments/assets/531a21a2-5b40-4342-91b3-4b5d4e8d188b)
 Nuget替换，目前版本支持：<br>
 * 一个解决方案，对多个Nuget源的替换
 * 目录即多个解决方案，对多个Nuget源的替换
