@@ -35,4 +35,4 @@ Nuget替换，目前版本支持：
 
 ### 下载安装
 点击下载最新版本：[Nuget工具_1.0.3.1012.exe](/Readme/Nuget工具_1.0.3.1012.exe)<br/>
-注：Jenkins打包用到的修复工具，请切换至代码分支JenkinsFix，编译生成。<br/>
+注：Jenkins打包用到一键修复，可以通过控制台调用exe来修复。同时在代码中配置好Nuget源地址
